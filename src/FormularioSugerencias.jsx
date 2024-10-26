@@ -5,7 +5,8 @@ const FormElementInput = () => {
   const optionsPersona = ["Estudiante", "Docente", "Personal Administrativo"];
   return (
     <>
-      <form className="max-w-md mx-auto">
+      <form className=" mx-auto bg-slate-100 w-1/3 p-6 m-8 rounded-xl shadow-xl">
+        <h1 className="text-center mb-8 text-xl font-semibold">Sugerencias</h1>
         <div className="grid md:grid-cols-2 md:gap-4">
           <div className="relative z-0 w-full mb-5 group">
             <InfoInput label="Nombre" />
