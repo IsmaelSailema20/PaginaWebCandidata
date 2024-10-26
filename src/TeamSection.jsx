@@ -43,13 +43,15 @@ const TeamSection = () => {
                   alt={member.name}
                   className="w-full h-full object-cover object-center"
                 />
-                <div className="absolute inset-0 bg-black bg-opacity-65 opacity-0 group-hover:opacity-100 transition duration-500 flex items-center justify-center">
+                <div className="absolute inset-0 bg-black bg-opacity-70 opacity-0 group-hover:opacity-100 transition duration-500 flex items-center justify-center">
                   <div className="text-center px-4">
-                    <p className="text-sm ">{member.title}</p>
+                    
+                    <p className="text-xl font-bold mb-9">{member.tipo_miembro}</p>
+                    <p className="text-s">{member.title}</p>
                   </div>
                 </div>
               </div>
-              <h3 className="text-xl font-bold text-center mt-4 transition-transform duration-500 ease-in-out group-hover:-translate-y-24 group-hover:text-white">
+              <h3 className="text-xl font-bold text-center mt-7 transition-transform duration-500 ease-in-out group-hover:-translate-y-24 group-hover:text-white">
                 {member.nombre_miembro}
               </h3>
             </div>
