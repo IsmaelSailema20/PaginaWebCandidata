@@ -4,6 +4,20 @@ const TeamSection = () => {
   const [teamMembers, setTeamMembers] = useState([]);
 
   useEffect(() => {
+    fetch('http://localhost/proyectopaginawebcandidata/models/ConsultaMiembros.php')
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setTeamMembers(data);
+        console.log('Datos obtenidos:', data); 
+      })
+      .catch((error) => {
+        console.error('Error fetching the team members:', error);
+      });
   }, []);
 
   return (
