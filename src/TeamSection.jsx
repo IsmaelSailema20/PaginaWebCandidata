@@ -33,21 +33,23 @@ const TeamSection = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {teamMembers.map((member, index) => (
-            <div
-              key={index}
-              className="relative overflow-hidden rounded-lg shadow-lg group h-96"
-            >
-              <img
-                src={member.imgSrc}
-                alt={member.name}
-                className="w-full h-full object-cover object-center transform transition duration-500 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition duration-500 flex items-center justify-center">
-                <div className="text-center px-4">
-                  <h3 className="text-xl font-bold">{member.nombre_miembro}</h3>
-                  <p className="text-sm">{member.title}</p>
+            <div key={index} className="relative group">
+              <div className="overflow-hidden rounded-lg shadow-lg h-96">
+                <img
+                  src={member.imgSrc}
+                  alt={member.name}
+                  className="w-full h-full object-cover object-center transform transition duration-500 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition duration-500 flex items-center justify-center">
+                  <div className="text-center px-4">
+                    <p className="text-sm">{member.title}</p>
+                  </div>
                 </div>
               </div>
+              {/* Nombre del miembro, visible inicialmente debajo del div */}
+              <h3 className="text-xl font-bold text-center mt-4 transition-transform duration-500 ease-in-out group-hover:-translate-y-24 group-hover:text-white">
+                {member.nombre_miembro}
+              </h3>
             </div>
           ))}
         </div>
