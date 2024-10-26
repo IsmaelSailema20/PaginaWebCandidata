@@ -1,6 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const TeamSection = () => {
+  const [teamMembers, setTeamMembers] = useState([]);
+
+  useEffect(() => {
+  }, []);
+
   return (
     <section className="bg-gray-900 text-white py-16">
       <div className="container mx-auto">
@@ -13,7 +18,6 @@ const TeamSection = () => {
           </p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-          {/* Aquí irán los miembros del equipo */}
         </div>
       </div>
     </section>
