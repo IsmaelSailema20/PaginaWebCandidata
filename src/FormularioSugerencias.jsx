@@ -4,6 +4,7 @@ import SuccessAlert from "./SuccessAlert";
 import ErrorAlert from "./ErrorAlert";
 import useFieldValidation from "./useFieldValidation";
 import { useState } from "react";
+import { enviarCorreoConfirmacion } from "./emailService";
 const FormElementInput = () => {
   const optionsGenero = ["Masculino", "Femenino", "Prefiero no decirlo"];
   const optionsPersona = ["Estudiante", "Docente", "Personal Administrativo"];
@@ -25,6 +26,7 @@ const FormElementInput = () => {
 
     const form = document.getElementById("form-sugerencias");
     const formData = new FormData(form);
+
     for (let [key, value] of formData.entries()) {
       // Considera campos vacíos o el valor "" del ComboBox como inválido
       if (!value.trim() || value === "") {
@@ -48,6 +50,12 @@ const FormElementInput = () => {
 
       if (response.ok) {
         const jsonResponse = await response.json();
+        const nombre = formData.get("nombre_usuario");
+        const apellido = formData.get("apellido_usuario");
+        const correo = formData.get("correo_electronico");
+        const mensaje =
+          "Te notifico que recibimos tu sugerencia de manera exitosa y la vamos a tener en cuenta:";
+        const nombreCompleto = nombre + " " + apellido;
         // Mostrar la alerta de éxito
         setShowSuccessAlert(true);
 
@@ -58,6 +66,12 @@ const FormElementInput = () => {
         mensajeField.resetField();
         setGenero("");
         setTipoPersona("");
+        await enviarCorreoConfirmacion(
+          nombreCompleto,
+          "devTeam",
+          mensaje,
+          correo
+        );
       } else {
         setMensajeErrorAlert(
           "No se pudo completar la solicitud, inténtelo más tarde."
