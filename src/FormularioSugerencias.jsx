@@ -3,9 +3,49 @@ import ComboBox from "./ComboBox";
 const FormElementInput = () => {
   const optionsGenero = ["Masculino", "Femenino", "Prefiero no decirlo"];
   const optionsPersona = ["Estudiante", "Docente", "Personal Administrativo"];
+  async function guardar(event) {
+    event.preventDefault(); // Evita el envío automático del formulario
+
+    const form = document.getElementById("form-sugerencias");
+    const formData = new FormData(form);
+
+    // Verificar que todos los campos obligatorios tengan valores
+    for (let [key, value] of formData.entries()) {
+      if (!value.trim()) {
+        console.warn(`El campo "${key}" está vacío.`);
+        return; // Detiene la ejecución si hay campos vacíos
+      }
+    }
+
+    try {
+      const response = await fetch(
+        "http://localhost:8081/ProyectoManejo/paginaWebCandidata/models/guardarSugerencia.php",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      if (response.ok) {
+        const jsonResponse = await response.json();
+        console.log(jsonResponse);
+      } else {
+        console.error(
+          "Error en la respuesta del servidor:",
+          response.statusText
+        );
+      }
+    } catch (error) {
+      console.error("Error en la solicitud:", error);
+    }
+  }
   return (
     <>
-      <form className=" mx-auto bg-slate-100 w-1/3 p-6 m-8 rounded-xl shadow-xl">
+      <form
+        className=" mx-auto bg-slate-100 w-1/3 p-6 m-8 rounded-xl shadow-xl"
+        id="form-sugerencias"
+        onSubmit={guardar}
+      >
         <h1 className="text-center mb-8 text-xl font-semibold">Sugerencias</h1>
         <div className="grid md:grid-cols-2 md:gap-4">
           <div className="relative z-0 w-full mb-5 group">
@@ -55,6 +95,7 @@ const InfoInput = ({ label }) => {
       </label>
       <div className="relative">
         <input
+          name={label === "Nombre" ? "nombre_usuario" : "apellido_usuario"}
           type="text"
           placeholder={label === "Nombre" ? "Juan" : "Pérez"}
           className="w-full bg-transparent rounded-md border border-stroke py-[10px] pr-3 pl-12 text-dark-6 outline-none transition focus:border-blue-700  active:border-blue-700 disabled:cursor-default disabled:bg-gray-2"
@@ -89,6 +130,7 @@ const EmailInput = () => {
       </label>
       <div className="relative">
         <input
+          name="correo_electronico"
           type="email"
           placeholder="info@yourmai.com"
           className="w-full bg-transparent rounded-md border border-stroke py-[10px] pr-3 pl-12 text-dark-6 outline-none transition focus:border-blue-700  active:border-blue-700 disabled:cursor-default disabled:bg-gray-2"
@@ -117,52 +159,6 @@ const EmailInput = () => {
   );
 };
 
-const InvalidInput = () => {
-  return (
-    <>
-      <label className="mb-[10px] block text-base font-medium text-dark ">
-        Email
-      </label>
-      <div className="relative">
-        <input
-          type="email"
-          placeholder="Devid Jhon"
-          className="w-full bg-transparent rounded-md border border-red py-[10px] pl-5 pr-12 text-dark-6 outline-none transition"
-        />
-        <span className="absolute top-1/2 right-4 -translate-y-1/2">
-          <svg
-            width={20}
-            height={20}
-            viewBox="0 0 20 20"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M9.9987 2.50065C5.85656 2.50065 2.4987 5.85852 2.4987 10.0007C2.4987 14.1428 5.85656 17.5007 9.9987 17.5007C14.1408 17.5007 17.4987 14.1428 17.4987 10.0007C17.4987 5.85852 14.1408 2.50065 9.9987 2.50065ZM0.832031 10.0007C0.832031 4.93804 4.93609 0.833984 9.9987 0.833984C15.0613 0.833984 19.1654 4.93804 19.1654 10.0007C19.1654 15.0633 15.0613 19.1673 9.9987 19.1673C4.93609 19.1673 0.832031 15.0633 0.832031 10.0007Z"
-              fill="#DC3545"
-            />
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M10.0013 5.83398C10.4615 5.83398 10.8346 6.20708 10.8346 6.66732V10.0007C10.8346 10.4609 10.4615 10.834 10.0013 10.834C9.54106 10.834 9.16797 10.4609 9.16797 10.0007V6.66732C9.16797 6.20708 9.54106 5.83398 10.0013 5.83398Z"
-              fill="#DC3545"
-            />
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M9.16797 13.3333C9.16797 12.8731 9.54106 12.5 10.0013 12.5H10.0096C10.4699 12.5 10.843 12.8731 10.843 13.3333C10.843 13.7936 10.4699 14.1667 10.0096 14.1667H10.0013C9.54106 14.1667 9.16797 13.7936 9.16797 13.3333Z"
-              fill="#DC3545"
-            />
-          </svg>
-        </span>
-      </div>
-      <p className="mt-[10px] text-sm text-red">Invalid email address</p>
-    </>
-  );
-};
-
 const MessageTextarea = () => {
   return (
     <>
@@ -171,6 +167,7 @@ const MessageTextarea = () => {
       </label>
       <div className="relative">
         <textarea
+          name="sugerencia"
           rows="6"
           placeholder="Escribe tu mensaje!"
           className="w-full bg-transparent rounded-md border border-stroke p-3 pl-12 text-dark-6 outline-none transition focus:border-blue-700  active:border-blue-700 disabled:cursor-default disabled:bg-gray-2"
