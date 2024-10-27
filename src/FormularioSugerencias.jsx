@@ -1,12 +1,14 @@
 import React from "react";
 import ComboBox from "./ComboBox";
 import SuccessAlert from "./SuccessAlert";
+import ErrorAlert from "./ErrorAlert";
 import { useState } from "react";
 const FormElementInput = () => {
   const optionsGenero = ["Masculino", "Femenino", "Prefiero no decirlo"];
   const optionsPersona = ["Estudiante", "Docente", "Personal Administrativo"];
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
-
+  const [mensajeErrorAlert, setMensajeErrorAlert] = useState("");
+  const [showErrorAlert, setShowErrorAlert] = useState(false);
   async function guardar(event) {
     event.preventDefault(); // Evita el envío automático del formulario
 
@@ -16,6 +18,8 @@ const FormElementInput = () => {
     // Verificar que todos los campos obligatorios tengan valores
     for (let [key, value] of formData.entries()) {
       if (!value.trim()) {
+        setMensajeErrorAlert("Existen campos vacíos.");
+        setShowErrorAlert(true);
         console.warn(`El campo "${key}" está vacío.`);
         return; // Detiene la ejecución si hay campos vacíos
       }
@@ -35,12 +39,20 @@ const FormElementInput = () => {
         // Mostrar la alerta de éxito
         setShowSuccessAlert(true);
       } else {
+        setMensajeErrorAlert(
+          "No se pudo completar la solicitud, inténtelo más tarde."
+        );
+        setShowErrorAlert(true);
         console.error(
           "Error en la respuesta del servidor:",
           response.statusText
         );
       }
     } catch (error) {
+      setShowErrorAlert(true);
+      setMensajeErrorAlert(
+        "No se pudo completar la solicitud, inténtelo más tarde."
+      );
       console.error("Error en la solicitud:", error);
     }
   }
@@ -52,6 +64,13 @@ const FormElementInput = () => {
           message="Tu opinión siempre es importante, trabajaremos duro para cumplir con tus expectivas."
           visible={showSuccessAlert}
           onClose={() => setShowSuccessAlert(false)}
+        />
+      )}
+      {showErrorAlert && (
+        <ErrorAlert
+          visible={showErrorAlert}
+          message={mensajeErrorAlert}
+          onClose={() => setShowErrorAlert(false)}
         />
       )}
       <form
