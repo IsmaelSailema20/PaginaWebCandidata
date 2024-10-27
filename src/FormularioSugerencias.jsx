@@ -1,8 +1,12 @@
 import React from "react";
 import ComboBox from "./ComboBox";
+import SuccessAlert from "./SuccessAlert";
+import { useState } from "react";
 const FormElementInput = () => {
   const optionsGenero = ["Masculino", "Femenino", "Prefiero no decirlo"];
   const optionsPersona = ["Estudiante", "Docente", "Personal Administrativo"];
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+
   async function guardar(event) {
     event.preventDefault(); // Evita el envío automático del formulario
 
@@ -28,7 +32,8 @@ const FormElementInput = () => {
 
       if (response.ok) {
         const jsonResponse = await response.json();
-        console.log(jsonResponse);
+        // Mostrar la alerta de éxito
+        setShowSuccessAlert(true);
       } else {
         console.error(
           "Error en la respuesta del servidor:",
@@ -41,6 +46,14 @@ const FormElementInput = () => {
   }
   return (
     <>
+      {showSuccessAlert && (
+        <SuccessAlert
+          encabezado="Sugerencia enviada con éxito"
+          message="Tu opinión siempre es importante, trabajaremos duro para cumplir con tus expectivas."
+          visible={showSuccessAlert}
+          onClose={() => setShowSuccessAlert(false)}
+        />
+      )}
       <form
         className=" mx-auto bg-slate-100 w-1/3 p-6 m-8 rounded-xl shadow-xl"
         id="form-sugerencias"
