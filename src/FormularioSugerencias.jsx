@@ -2,26 +2,38 @@ import React from "react";
 import ComboBox from "./ComboBox";
 import SuccessAlert from "./SuccessAlert";
 import ErrorAlert from "./ErrorAlert";
+import useFieldValidation from "./useFieldValidation";
 import { useState } from "react";
 const FormElementInput = () => {
   const optionsGenero = ["Masculino", "Femenino", "Prefiero no decirlo"];
   const optionsPersona = ["Estudiante", "Docente", "Personal Administrativo"];
+
+  // Estados para el valor seleccionado de cada ComboBox
+  const [genero, setGenero] = useState("");
+  const [tipoPersona, setTipoPersona] = useState("");
+  // Hooks de validación para cada campo
+  const nombreField = useFieldValidation();
+  const apellidoField = useFieldValidation();
+  const emailField = useFieldValidation();
+  const mensajeField = useFieldValidation();
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [mensajeErrorAlert, setMensajeErrorAlert] = useState("");
   const [showErrorAlert, setShowErrorAlert] = useState(false);
+
   async function guardar(event) {
     event.preventDefault(); // Evita el envío automático del formulario
 
     const form = document.getElementById("form-sugerencias");
     const formData = new FormData(form);
-
-    // Verificar que todos los campos obligatorios tengan valores
     for (let [key, value] of formData.entries()) {
-      if (!value.trim()) {
-        setMensajeErrorAlert("Existen campos vacíos.");
+      // Considera campos vacíos o el valor "" del ComboBox como inválido
+      if (!value.trim() || value === "") {
+        setMensajeErrorAlert("Existen campos vacíos o no seleccionados.");
         setShowErrorAlert(true);
-        console.warn(`El campo "${key}" está vacío.`);
-        return; // Detiene la ejecución si hay campos vacíos
+        console.warn(
+          `El campo "${key}" está vacío o no tiene una opción válida seleccionada.`
+        );
+        return;
       }
     }
 
@@ -38,6 +50,14 @@ const FormElementInput = () => {
         const jsonResponse = await response.json();
         // Mostrar la alerta de éxito
         setShowSuccessAlert(true);
+
+        // Restablecer los valores de los campos
+        nombreField.resetField();
+        apellidoField.resetField();
+        emailField.resetField();
+        mensajeField.resetField();
+        setGenero("");
+        setTipoPersona("");
       } else {
         setMensajeErrorAlert(
           "No se pudo completar la solicitud, inténtelo más tarde."
@@ -81,28 +101,39 @@ const FormElementInput = () => {
         <h1 className="text-center mb-8 text-xl font-semibold">Sugerencias</h1>
         <div className="grid md:grid-cols-2 md:gap-4">
           <div className="relative z-0 w-full mb-5 group">
-            <InfoInput label="Nombre" />
+            <InfoInput label="Nombre" {...nombreField} />
           </div>
           <div className="relative z-0 w-full mb-5 group">
-            <InfoInput label="Apellido" />
+            <InfoInput label="Apellido" {...apellidoField} />
           </div>
         </div>
         <div className="relative z-0 w-full mb-5 group">
-          <EmailInput />
+          <EmailInput {...emailField} />
         </div>
         <div className="grid md:grid-cols-2 md:gap-6">
           <div className="relative z-0 w-full mb-5 group">
-            <ComboBox options={optionsGenero} label="Género"></ComboBox>
+            <input type="hidden" name="genero" value={genero} />
+            <ComboBox
+              options={optionsGenero}
+              label="Género"
+              name={"genero"}
+              selectedOption={genero}
+              setSelectedOption={setGenero}
+            ></ComboBox>
           </div>
           <div className="relative z-0 w-full mb-5 group">
+            <input type="hidden" name="tipo_persona" value={tipoPersona} />
             <ComboBox
               options={optionsPersona}
               label="Tipo de persona"
+              name={"tipo_persona"}
+              selectedOption={tipoPersona}
+              setSelectedOption={setTipoPersona}
             ></ComboBox>
           </div>
         </div>
         <div className="relative z-0 w-full mb-5 group">
-          <MessageTextarea />
+          <MessageTextarea {...mensajeField} />
         </div>
         <div className="w-full text-center">
           <button
@@ -119,7 +150,7 @@ const FormElementInput = () => {
 
 export default FormElementInput;
 
-const InfoInput = ({ label }) => {
+const InfoInput = ({ label, value, isEmpty, handleBlur, handleChange }) => {
   return (
     <>
       <label className="mb-[10px] block text-base font-medium text-dark ">
@@ -129,8 +160,13 @@ const InfoInput = ({ label }) => {
         <input
           name={label === "Nombre" ? "nombre_usuario" : "apellido_usuario"}
           type="text"
+          value={value}
           placeholder={label === "Nombre" ? "Juan" : "Pérez"}
-          className="w-full bg-transparent rounded-md border border-stroke py-[10px] pr-3 pl-12 text-dark-6 outline-none transition focus:border-blue-700  active:border-blue-700 disabled:cursor-default disabled:bg-gray-2"
+          className={`w-full bg-transparent rounded-md border py-[10px] pr-3 pl-12 text-dark-6 outline-none transition ${
+            isEmpty ? "border-red-500" : "border-stroke"
+          }`}
+          onBlur={handleBlur}
+          onChange={handleChange}
         />
         <span className="absolute top-1/2 left-4 -translate-y-1/2">
           <svg
@@ -154,7 +190,7 @@ const InfoInput = ({ label }) => {
   );
 };
 
-const EmailInput = () => {
+const EmailInput = ({ value, isEmpty, handleBlur, handleChange }) => {
   return (
     <>
       <label className="mb-[10px] block text-base font-medium text-dark ">
@@ -164,8 +200,13 @@ const EmailInput = () => {
         <input
           name="correo_electronico"
           type="email"
-          placeholder="info@yourmai.com"
-          className="w-full bg-transparent rounded-md border border-stroke py-[10px] pr-3 pl-12 text-dark-6 outline-none transition focus:border-blue-700  active:border-blue-700 disabled:cursor-default disabled:bg-gray-2"
+          value={value}
+          placeholder="info@yourmail.com"
+          className={`w-full bg-transparent rounded-md border py-[10px] pr-3 pl-12 text-dark-6 outline-none transition ${
+            isEmpty ? "border-red-500" : "border-stroke"
+          }`}
+          onBlur={handleBlur}
+          onChange={handleChange}
         />
         <span className="absolute top-1/2 left-4 -translate-y-1/2">
           <svg
@@ -191,7 +232,7 @@ const EmailInput = () => {
   );
 };
 
-const MessageTextarea = () => {
+const MessageTextarea = ({ value, isEmpty, handleBlur, handleChange }) => {
   return (
     <>
       <label className="mb-[10px] block text-base font-medium text-dark ">
@@ -200,9 +241,14 @@ const MessageTextarea = () => {
       <div className="relative">
         <textarea
           name="sugerencia"
+          value={value}
           rows="6"
           placeholder="Escribe tu mensaje!"
-          className="w-full bg-transparent rounded-md border border-stroke p-3 pl-12 text-dark-6 outline-none transition focus:border-blue-700  active:border-blue-700 disabled:cursor-default disabled:bg-gray-2"
+          className={`w-full bg-transparent rounded-md border p-3 pl-12 text-dark-6 outline-none transition ${
+            isEmpty ? "border-red-500" : "border-stroke"
+          }`}
+          onBlur={handleBlur}
+          onChange={handleChange}
         />
         <span className="absolute top-[18px] left-4">
           <svg
