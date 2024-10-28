@@ -9,7 +9,7 @@ header('Content-Type: application/json');
 try {
     $objetoConexion = new Conexion();
     $conn = $objetoConexion->conectar();
-    $selectMiembros = "SELECT nombre_miembro, descripcion_miembro AS title, url_to_image_placeholder AS imgSrc FROM miembros";
+    $selectMiembros = "SELECT nombre_miembro, tipo_miembro, descripcion_miembro AS title, url_to_image_placeholder AS imgSrc FROM miembros";
     
     $result = $conn->prepare($selectMiembros);
     $result->execute();
@@ -23,5 +23,3 @@ try {
 } catch (Exception $e) {
     echo json_encode(["error" => $e->getMessage()]);
 }
-
-

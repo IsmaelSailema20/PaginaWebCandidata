@@ -18,16 +18,30 @@ const TeamSection = () => {
         console.error('Error fetching the team members:', error);
       });
   }, []);
-
   return (
-    <section className="bg-gray-900 text-white py-16">
-      <div className="container mx-auto">
+<section className="w-full min-h-screen bg-gradient-to-br from-[#ff6b6b] to-[#ffb6b6] text-white py-16">
+<div className="container mx-auto">
         <div className="mb-12 text-center">
-          <h2 className="text-4xl font-bold">Nuestro Equipo</h2>
-          <p className="text-lg mt-4">
-            Aquí nos enfocamos en mercados donde la tecnología e innovación pueden desbloquear valor a largo plazo.
-            Interactuarás con profesionales talentosos, te desafiarán a resolver problemas difíciles
-            y a pensar de formas nuevas y creativas.
+        <div className="bg-white bg-opacity-80 p-4 rounded-md inline-block">
+  <h1 className="text-4xl font-bold text-center mb-5">
+    <span className="text-5xl text-pink-500 drop-shadow-[4px_2px_0px_#ded2d2]">
+      C
+    </span>
+    <span className="text-[#40b2e6] drop-shadow-[4px_2px_0px_#ded2d2]">
+      andidatos
+    </span>
+  
+  </h1>
+</div>
+
+          <p className="text-lg mt-4 font-bold">
+          Te invitamos a conocer a cada uno de nuestros candidatos, 
+          quienes aportan su experiencia, pasión y compromiso para representar 
+          los intereses de todos los estudiantes. Juntos, podemos lograr que nuestra
+           universidad sea un lugar donde todos podamos crecer y desarrollarnos, 
+           tanto académica como personalmente.
+
+
           </p>
         </div>
 
