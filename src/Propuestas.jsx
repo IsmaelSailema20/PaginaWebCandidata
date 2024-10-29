@@ -121,6 +121,7 @@ const Propuestas = () => {
   return (
     <div className="relative w-full min-h-screen overflow-hidden bg-gradient-to-br from-[#FF8D99] to-[#FF9EA8]">
         <div className="relative z-10 flex flex-col md:flex-row min-h-screen">
+          {/* Sección izquierda */}
           <div className="w-full md:w-5/12 p-8 flex flex-col justify-center items-center">
             <div className="relative mb-8">
               <img
@@ -166,12 +167,92 @@ const Propuestas = () => {
               </div>
             </div>
           </div>
-        </div>
-        <div className="w-full md:w-7/12">
-          {/* Right section */}
+
+          {/* Sección derecha con carrusel de propuestas */}
+          <div className="w-full md:w-7/12 p-8 flex flex-col justify-center">
+            <div className="flex flex-col items-center">
+                <div className="text-center mb-20">
+              <h3 className="text-5xl font-bold bg-gradient-to-r from-[#42B9E5] to-[#FF5B8E] text-transparent bg-clip-text animate-gradient font-montserrat">
+                Nuestras Propuestas
+              </h3>
+            </div>
+
+            {/* Carrusel de propuestas */}
+              <div className="w-full max-w-xl">
+                <div className="relative h-96">
+                  {filteredPropuestas.length > 0 ? (
+                    filteredPropuestas.map((propuesta, index) => {
+                      const isActive = index === currentIndex;
+                      return (
+                        <div
+                          key={index}
+                          className={`absolute inset-0 w-full transition-all duration-500 ease-out ${
+                            isActive ? 'opacity-100 translate-x-0 scale-100' :
+                            index < currentIndex ? 'opacity-0 -translate-x-full scale-95' :
+                            'opacity-0 translate-x-full scale-95'
+                          }`}
+                        >
+                          <div className="bg-white rounded-xl shadow-lg p-8 h-full flex flex-col border border-gray-100">
+                            <div className="flex justify-center mb-4">
+                              {/* Icono de la propuesta */}
+                              <div className="p-3 rounded-full bg-gradient-to-r from-[#42B9E5] to-[#FF5B8E]">
+                                {propuesta.icon}
+                              </div>
+                            </div>
+                            <div className="text-center mb-4">
+                              <h3 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#FF8B9A] to-[#72D5FF] font-montserrat">
+                                {propuesta.title}
+                              </h3>
+                              <h4 className="text-lg font-semibold text-[#72D5FF] font-montserrat">{propuesta.subtitle}</h4>
+                            </div>
+                            <p className="text-gray-600 leading-relaxed text-center flex-grow font-montserrat">
+                              {propuesta.description}
+                            </p>
+                          </div>
+                        </div>
+                      );
+                    })
+                  ) : (
+                    <p className="text-center text-gray-500">No hay propuestas que coincidan con los tags seleccionados.</p>
+                  )}
+                </div>
+
+                {/* Indicadores de navegación */}
+                <div className="flex justify-center gap-2 mt-6">
+                  {filteredPropuestas.map((_, index) => (
+                    <button
+                      key={index}
+                      className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                        index === currentIndex ? 'bg-[#FF8B9A] w-4' : 'bg-gray-300'
+                      }`}
+                      onClick={() => setCurrentIndex(index)}
+                    />
+                  ))}
+                </div>
+
+                {/* Botones de navegación */}
+                <div className="flex justify-between mt-8">
+                  <button
+                    onClick={() => handleNavigation('prev')}
+                    className="bg-gradient-to-r from-[#FF8B9A] to-[#72D5FF] text-white p-3 rounded-full shadow-lg hover:opacity-90 transition-all duration-300 transform hover:scale-110 disabled:opacity-50"
+                    disabled={isAnimating}
+                  >
+                    <ChevronLeft size={24} />
+                  </button>
+                  <button
+                    onClick={() => handleNavigation('next')}
+                    className="bg-gradient-to-r from-[#FF8B9A] to-[#72D5FF] text-white p-3 rounded-full shadow-lg hover:opacity-90 transition-all duration-300 transform hover:scale-110 disabled:opacity-50"
+                    disabled={isAnimating}
+                  >
+                    <ChevronRight size={24} />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-  );
-};
+    );
+  };
 
 export default Propuestas;
