@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Heart, Radio, ScrollText, Sparkles, Search, Building2, Briefcase, GraduationCap, Users, Target, Lightbulb, Users2, DollarSign, Building, UserCog } from 'lucide-react';
+import maryImage from './Mary.jpg';
 
 const Propuestas = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -118,16 +119,58 @@ const Propuestas = () => {
   };
 
   return (
-    <div className="min-h-screen">
-      <div className="flex flex-col md:flex-row">
-        <div className="w-full md:w-5/12">
-          {/* Left section */}
+    <div className="relative w-full min-h-screen overflow-hidden bg-gradient-to-br from-[#FF8D99] to-[#FF9EA8]">
+        <div className="relative z-10 flex flex-col md:flex-row min-h-screen">
+          <div className="w-full md:w-5/12 p-8 flex flex-col justify-center items-center">
+            <div className="relative mb-8">
+              <img
+                src={maryImage}
+                alt="Candidato"
+                className="w-60 h-50 relative rounded-lg shadow-2xl transform transition-transform duration-500 hover:scale-105"
+              />
+              {showSparkle && (
+                <Sparkles
+                  className="absolute -top-4 -right-4 w-8 h-8 text-yellow-300 animate-spin"
+                  style={{ animationDuration: '3s' }}
+                />
+              )}
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold text-white text-center mb-4 font-montserrat">
+              Mary Cruz Lascano
+            </h2>
+            <div className="flex items-center space-x-2">
+              <Heart className="w-6 h-6 text-white animate-pulse" />
+              <span className="text-white font-montserrat">Unidos lo haremos posible</span>
+            </div>
+
+            {/* Filtro por tags */}
+            <div className="mt-8 w-full">
+              <div className="bg-white/90 backdrop-blur-lg rounded-2xl p-4 shadow-xl">
+                <div className="flex items-center gap-2 mb-4">
+                  <Search className="w-5 h-5 text-gray-500" />
+                  <h4 className="text-lg font-semibold text-gray-700">Filtrar por temas</h4>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {allTags.map((tag) => (
+                    <button
+                      key={tag}
+                      onClick={() => handleTagClick(tag)}
+                      className={`px-3 py-1 rounded-full text-sm font-medium transition-all duration-300 ${
+                        selectedTags.includes(tag) ? 'bg-[#42B9E5] text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                      }`}
+                    >
+                      {tag}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div className="w-full md:w-7/12">
           {/* Right section */}
         </div>
       </div>
-    </div>
   );
 };
 
