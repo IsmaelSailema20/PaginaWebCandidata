@@ -7,6 +7,7 @@ const Propuestas = () => {
   const [isAnimating, setIsAnimating] = useState(false);
   const [selectedTags, setSelectedTags] = useState([]);
   const [filteredPropuestas, setFilteredPropuestas] = useState([]);
+  const [showSparkle, setShowSparkle] = useState(false);
 
   const propuestas = [
       {
