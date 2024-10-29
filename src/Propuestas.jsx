@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight, Heart, Radio, ScrollText, Sparkles, Search, 
 
 const Propuestas = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   const propuestas = [
       {
@@ -83,6 +84,17 @@ const Propuestas = () => {
         tags: ["bienestar", "desarrollo", "personal"]
       }
     ];
+
+  const handleNavigation = (direction) => {
+      if (isAnimating) return;
+      setIsAnimating(true);
+      setCurrentIndex((prev) =>
+        direction === 'next'
+          ? prev === propuestas.length - 1 ? 0 : prev + 1
+          : prev === 0 ? propuestas.length - 1 : prev - 1
+      );
+      setTimeout(() => setIsAnimating(false), 500);
+    };
 
   return (
     <div className="min-h-screen">
