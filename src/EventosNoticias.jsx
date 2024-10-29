@@ -9,60 +9,147 @@ const EventosNoticias = () => {
     ];
 
     const [currentSlide, setCurrentSlide] = useState(0);
+    const [transitionClass, setTransitionClass] = useState('');
 
     // Cambiar automáticamente cada 3 segundos
     useEffect(() => {
         const interval = setInterval(() => {
+            handleNextSlide();
+        }, 30000);
+
+        return () => clearInterval(interval);
+    }, [currentSlide]);
+
+    // Función para manejar el cambio de slide y activar la animación
+    const handleNextSlide = () => {
+        setTransitionClass('animate-slide'); // Activa la animación
+        setTimeout(() => {
             setCurrentSlide((prevSlide) =>
                 prevSlide === slides.length - 1 ? 0 : prevSlide + 1
             );
-        }, 3000);
+            setTransitionClass(''); // Remueve la animación después de cambiar de slide
+        }, 50); // Duración de la animación
+    };
 
-        return () => clearInterval(interval);
-    }, [slides.length]);
+    const handlePrevSlide = () => {
+        setTransitionClass('animate-slide'); // Activa la animación
+        setTimeout(() => {
+            setCurrentSlide((prevSlide) =>
+                prevSlide === 0 ? slides.length - 1 : prevSlide - 1
+            );
+            setTransitionClass(''); // Remueve la animación después de cambiar de slide
+        }, 50); // Duración de la animación
+    };
 
     // Función para obtener los índices de las imágenes en pantalla (anterior, actual, siguiente)
     const getPrevSlide = () => (currentSlide === 0 ? slides.length - 1 : currentSlide - 1);
     const getNextSlide = () => (currentSlide === slides.length - 1 ? 0 : currentSlide + 1);
 
     return (
-        <div className="general overflow-x-hidden p-10 w-screen bg-gradient-to-br from-[#ff6b6b] to-[#ffb6b6] py-16">
-            <div className="relative p-10 bg-slate-100 rounded-md border border-black">
-                <h1 className="text-center mt-2 mb-10 text-5xl font-bold">
-                    <span className="text-5x1 text-[#40b2e6] drop-shadow-[4px_2px_0px_#ded2d2]">
-                        EVENTOS
-                    </span>
-                    <span className="text-5x1 text-pink-500 drop-shadow-[4px_2px_0px_#ded2d2]">
-                        &
-                    </span>
-                    <span className="text-5x1 text-[#40b2e6] drop-shadow-[4px_2px_0px_#ded2d2]">
-                        NOTICIAS
-                    </span>
-                </h1>
+        <div className="general overflow-x-hidden p-10 relative w-full min-h-screen overflow-hidden bg-white">
+            <style>
+                {`
+          @keyframes float {
+            0% {
+              transform: translateY(0) rotate(0deg);
+              opacity: 0;
+            }
+            10% {
+              opacity: 0.5;
+            }
+            90% {
+              opacity: 0.5;
+            }
+            100% {
+              transform: translateY(-100vh) rotate(360deg);
+              opacity: 0;
+            }
+          }
+
+          .bubble {
+            position: absolute;
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.1));
+            backdrop-filter: blur(2px);
+            border-radius: 50%;
+            pointer-events: none;
+            will-change: transform;
+          }
+        `}
+            </style>
+
+            <h1 className="text-center mt-2 mb-10 text-5xl font-bold">
+                <span className="text-5x1 text-[#40b2e6] drop-shadow-[4px_2px_0px_#ded2d2]">
+                    EVENTOS
+                </span>
+                <span className="text-5x1 text-pink-500 drop-shadow-[4px_2px_0px_#ded2d2]">
+                    &
+                </span>
+                <span className="text-5x1 text-[#40b2e6] drop-shadow-[4px_2px_0px_#ded2d2]">
+                    NOTICIAS
+                </span>
+            </h1>
+            <div className="relative p-10 bg-slate-100 rounded-md border-dotted shadow-lg">
+                {/* Botón para ir al slide anterior */}
+                <button
+                    onClick={handlePrevSlide}
+                    className="absolute left-10 top-1/2 transform -translate-y-1/2 bg-gray-500 text-white rounded-full
+                    bg-gradient-to-r from-[#FF8B9A] to-[#72D5FF]  p-3 shadow-lg hover:opacity-90 transition-all duration-300 
+                    hover:scale-110 disabled:opacity-50"
+                >
+                    &#10094;
+                </button>
+
                 <div className="carrusel flex items-center justify-center space-x-4 max-w-screen-md mx-auto relative">
 
-                    {/* Imagen izquierda */}
+                    {/* Imagen izquierda - sin animación */}
                     <img
                         src={slides[getPrevSlide()]}
                         alt="Prev Slide"
-                        className="rounded-md w-1/3 h-64 object-cover opacity-60 transition-all duration-500 transform scale-90"
+                        className="rounded-md w-1/3 h-64 object-cover opacity-60 scale-90"
                     />
 
-                    {/* Imagen central */}
+                    {/* Imagen central - con animación hacia la derecha */}
                     <img
                         src={slides[currentSlide]}
                         alt="Current Slide"
-                        className="rounded-md w-8/12 h-96 object-cover transition-all duration-500 transform scale-105"
+                        className={`rounded-md w-8/12 h-96 object-cover transition-transform duration-500 transform scale-105`}
                     />
 
-                    {/* Imagen derecha */}
+                    {/* Imagen derecha - con animación hacia la derecha */}
                     <img
                         src={slides[getNextSlide()]}
                         alt="Next Slide"
-                        className="rounded-md w-1/3 h-64 object-cover opacity-60 transition-all duration-500 transform scale-90"
+                        className={`rounded-md w-1/3 h-64 object-cover opacity-60 scale-90 transition-transform duration-500 `}
                     />
                 </div>
+
+                {/* Botón para ir al siguiente slide */}
+                <button
+                    onClick={handleNextSlide}
+                    className="absolute right-10 top-1/2 -translate-y-1/2 bg-gray-500 text-white rounded-full
+                    bg-gradient-to-r from-[#FF8B9A] to-[#72D5FF]  p-3 shadow-lg hover:opacity-90 transition-all duration-300 
+                    transform hover:scale-110 disabled:opacity-50"
+                >
+                    &#10095;
+                </button>
+
+                {/* Estilos para la animación */}
+                <style jsx>{`
+        @keyframes slideRight {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(100%);
+          }
+        }
+
+        .animate-slide {
+          animation: slideRight 0.2s ease-in-out forwards;
+        }
+      `}</style>
             </div>
+
             <div className="noticias mt-10 text-5xl">
                 <h1 className="text-center mt-2 mb-20 text-5xl font-bold">
                     <span className="text-5x1 text-[#40b2e6] drop-shadow-[4px_2px_0px_#ded2d2]">
