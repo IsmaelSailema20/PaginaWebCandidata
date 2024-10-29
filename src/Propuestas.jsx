@@ -253,7 +253,7 @@ const Propuestas = () => {
                 ))}
               </div>
 
-              <div className="flex justify-center gap-4 mt-8">
+              <div className="flex justify-center gap-20 mt-8">
                 <button
                   onClick={() => handleNavigation('prev')}
                   className="bg-gradient-to-r from-[#FF8B9A] to-[#72D5FF] text-white p-3 rounded-full shadow-lg hover:opacity-90 transition-all duration-300 transform hover:scale-110 disabled:opacity-50"
