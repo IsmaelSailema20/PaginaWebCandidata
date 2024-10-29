@@ -251,19 +251,16 @@ const EventosNoticias = () => {
                 <div className="eventos flex flex-col gap-8 w-full max-w-screen-lg mx-auto">
                     {/* Evento 1 (Texto a la izquierda, imágenes a la derecha) */}
                     <div className="flex w-full flex-row">
-                        <div className="contenidoIzquierda rounded-md shadow-lg bg-slate-50 border w-1/2 p-4 flex justify-start">
+                        <div className="contenidoIzquierda hover:scale-105 rounded-md shadow-lg bg-slate-50 border w-1/2 p-4 flex justify-start">
                             <p className="mb-4 text-justify ">
                                 <h1 className="tituloEvento1 text-pink-500 text-xl  font-bold mb-2">INICIO DE CAMPAÑA</h1>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac
-                                ligula sit amet urna ultrices posuere. Integer sed lorem nec
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac
-                                ligula sit amet urna ultrices posuere. Integer sed lorem nec
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac
-                                ligula sit amet urna ultrices posuere. Integer sed lorem nec
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac
-                                ligula sit amet urna ultrices posuere. Integer sed lorem nec
+                                Te invitamos a ser parte de un evento lleno de energía y entusiasmo en el que compartiremos
+                                nuestra visión, metas y el compromiso de hacer una diferencia. Descubre nuestras propuestas y
+                                conoce al equipo que está listo para trabajar por un futuro mejor. Habrá actividades, música,
+                                y un espacio para que puedas aportar tus ideas y apoyar la campaña desde el inicio.
+                                ¡Tu participación es clave para el cambio!
                             </p>
-                            <div className="before:absolute ml-10 before:w-12 before:h-12 before:bg-orange-800 before:rounded-full before:blur-xl before:top-16 relative   flex flex-col justify-around items-center w-24 h-24 rounded-2xl shadow-inner shadow-gray-50 bg-[#40b2e6] text-gray-50">
+                            <div className="before:absolute ml-10 before:w-12 before:h-12  before:rounded-full before:blur-xl before:top-16 relative flex flex-col justify-around items-center w-24 h-24 rounded-2xl shadow-md bg-[#40b2e6] text-gray-50">
                                 <span className="">Lun, Oct 28</span>
                                 <span className="z-10 flex items-center text-4xl text-[#ffff] [text-shadow:_2px_2px_#231917,_1px_2px_#231917]">
                                     08
@@ -278,20 +275,20 @@ const EventosNoticias = () => {
                             <img
                                 src="https://scontent.fuio32-1.fna.fbcdn.net/v/t39.30808-6/464875819_1095877289209296_5262507630370797234_n.jpg?stp=cp6_dst-jpg&_nc_cat=106&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeF5kfrZyNN8zuVgW_EaOZWVtUUyqG2z-m-1RTKobbP6b7FoLoZimKQ_JEbiAmu9mUXYg4yoV6Oyj-qpwOduII26&_nc_ohc=_i4hhxx2f1MQ7kNvgFxX_dL&_nc_zt=23&_nc_ht=scontent.fuio32-1.fna&_nc_gid=A6g5JE1d1dKvaYYZb-nYe8i&oh=00_AYAfz9DhIh5GcsY9u7aixKS4zyk1yUsxVgsOOw11ARPDlQ&oe=672716A4"
                                 alt="Imagen 1"
-                                className="w-52 h-46 object-cover ml-52 rounded-md"
+                                className="w-72 h-60 object-cover ml-52 rounded-md"
                             />
                             <img
                                 src="https://scontent.fuio13-1.fna.fbcdn.net/v/t39.30808-6/464965109_1095635895900102_6323470146362526041_n.jpg?stp=cp6_dst-jpg&_nc_cat=109&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeEZw5xJHZ7dpimDJV47COmuEVdlzluYlaQRV2XOW5iVpKPFswUgsqm1-6TyO810kdDLB-B9O67ASUdXyiXVQDbx&_nc_ohc=qdRv9SpM2lEQ7kNvgHhH2jG&_nc_zt=23&_nc_ht=scontent.fuio13-1.fna&_nc_gid=AgwBfrMfbC_L5U1TAe60Xk5&oh=00_AYD9e-Pgrjs5DSlXl0_E4z9bSmbq1Uej_nTjsGv8HiH7MQ&oe=6726E8E7"
                                 alt="Imagen 2"
-                                className="w-52 h-46 object-cover absolute top-1/4 left-1/2 rounded-md shadow-lg"
+                                className="w-72 h-60 object-cover absolute top-1/4 left-1/4 rounded-md shadow-lg"
                             />
                         </div>
                     </div>
 
                     {/* Evento 2 (Texto a la derecha, imágenes a la izquierda) */}
                     <div className="flex w-full flex-row-reverse mt-10">
-                        <div className="contenidoDerecha flex bg-slate-50 border w-1/2 p-4 justify-end">
-                            <div className="before:absolute before:w-12 before:h-12 before:bg-orange-800 before:rounded-full before:blur-xl before:top-16 relative   flex flex-col justify-around items-center w-24 h-24 rounded-2xl shadow-inner shadow-gray-50 bg-pink-600 text-gray-50">
+                        <div className="contenidoDerecha hover:scale-105 rounded-md shadow-md flex bg-slate-50 border w-1/2 p-4 justify-end">
+                            <div className="before:absolute before:w-12 before:h-12 before:rounded-full before:blur-xl before:top-16 relative flex flex-col justify-around items-center w-24 h-24 rounded-2xl shadow-lg  bg-pink-600 text-gray-50">
                                 <span className="">Sab, Oct 26</span>
                                 <span className="z-10 flex items-center text-4xl text-white [text-shadow:_2px_2px_#231917,_1px_2px_#231917]">
                                     07
@@ -304,27 +301,25 @@ const EventosNoticias = () => {
                             <div className="text-right">
 
                                 <h1 className="tituloEvento2 mr-5 text-pink-500 text-xl font-bold mb-2">CORRE CON MARY CRUZ</h1>
-                                <p className="mb-4 text-justify w-[85%] ml-10"> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac
-                                    ligula sit amet urna ultrices posuere. Integer sed lorem nec
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac
-                                    ligula sit amet urna ultrices posuere. Integer sed lorem nec
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac
-                                    ligula sit amet urna ultrices posuere. Integer sed lorem nec
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac
-                                    ligula sit amet urna ultrices posuere. Integer sed lorem nec
+                                <p className="mb-4 text-justify w-[85%] ml-10">
+                                    Te invitamos a ser parte de un evento lleno de energía y entusiasmo en el que compartiremos nuestra
+                                    visión, metas y el compromiso de hacer una diferencia. Descubre nuestras propuestas y conoce al equipo
+                                    que está listo para trabajar por un futuro mejor. Habrá actividades, música, y un espacio para que
+                                    puedas aportar tus ideas y apoyar la campaña desde el inicio.
+                                    ¡Tu participación es clave para el cambio!
                                 </p>
                             </div>
                         </div>
-                        <div className="flex flex-col gap-2 mr-20 self-center mt-[6%] relative w-64 h-64">
+                        <div className="flex flex-col gap-2 mr-20 self-center relative w-64 h-64">
                             <img
                                 src="https://scontent.fuio13-1.fna.fbcdn.net/v/t39.30808-6/464631094_1094176136046078_7886738714664910566_n.jpg?stp=cp6_dst-jpg&_nc_cat=111&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeGqM42Rqu11sik6j4I8R0SDNG_MuGMzpkc0b8y4YzOmRz6oiXtTcuuPuXRFdsPtZnN6M9C5zA5k6LkUaVK9wJbo&_nc_ohc=Cvv0aooqdWIQ7kNvgFD2tSa&_nc_zt=23&_nc_ht=scontent.fuio13-1.fna&_nc_gid=A6ThMySODzi8sNHiXkxjLIb&oh=00_AYDGUvPS2tOxKNBYD8iASCz2ELlzMrI7vm0PlH9Ftw_Xqw&oe=6726F323"
                                 alt="Imagen 1"
-                                className="w-52 h-46 object-cover mr-52 rounded-md"
+                                className="w-72 h-60 object-cover mr-52  rounded-md"
                             />
                             <img
                                 src="https://scontent.fuio13-1.fna.fbcdn.net/v/t39.30808-6/461802250_1094176059379419_197602262070915405_n.jpg?stp=cp6_dst-jpg&_nc_cat=108&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeGThSNwuBmQb2Ab0GlVaZL0fmrYwWgriGB-atjBaCuIYBi3XzKOlAJSkI5WiK88dTaY6q8czougkWolo7wGafvK&_nc_ohc=7KZyYTNl_MQQ7kNvgHj03r-&_nc_zt=23&_nc_ht=scontent.fuio13-1.fna&_nc_gid=AtAYTYxZ1XttPd5TWKQMuLr&oh=00_AYA16khmwrnvZMT1F4uE0rSrV6B6Ubsx2dB5PdfqxCv-8g&oe=6727259D"
                                 alt="Imagen 2"
-                                className="w-52 h-46 object-cover absolute top-1/4 right-1/2 rounded-md shadow-lg"
+                                className="w-72 h-60 object-cover absolute top-[20%] right-1/2 rounded-md shadow-lg"
                             />
                         </div>
                     </div>
