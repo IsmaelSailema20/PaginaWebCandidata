@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {ChevronLeft, ChevronRight, Heart, ScrollText, Search, Sparkles, Building2, Briefcase, GraduationCap, Users, Target, Lightbulb, Users2, DollarSign, Building, UserCog} from 'lucide-react';
+import { ChevronLeft, ChevronRight, Heart, ScrollText, Search, Sparkles, Building2, Briefcase, GraduationCap, Users, Target, Lightbulb, Users2, DollarSign, Building, UserCog } from 'lucide-react';
 import maryImage from './Mary.jpg';
 
 const Propuestas = () => {
@@ -12,64 +12,60 @@ const Propuestas = () => {
   const [allCategories, setAllCategories] = useState([]);
 
   const iconMap = {
-      'ScrollText': ScrollText,
-      'Building2': Building2,
-      'Briefcase': Briefcase,
-      'GraduationCap': GraduationCap,
-      'Users': Users,
-      'Target': Target,
-      'Lightbulb': Lightbulb,
-      'Users2': Users2,
-      'DollarSign': DollarSign,
-      'Building': Building,
-      'UserCog': UserCog
+    'ScrollText': ScrollText,
+    'Building2': Building2,
+    'Briefcase': Briefcase,
+    'GraduationCap': GraduationCap,
+    'Users': Users,
+    'Target': Target,
+    'Lightbulb': Lightbulb,
+    'Users2': Users2,
+    'DollarSign': DollarSign,
+    'Building': Building,
+    'UserCog': UserCog
   };
 
   useEffect(() => {
-      const fetchPropuestas = async () => {
-        try {
-          const response = await fetch('http://localhost/models/get_propuestas.php');
-          if (!response.ok) {
-            throw new Error(`Error en la solicitud: ${response.status}`);
-          }
-          const data = await response.json();
+    const fetchPropuestas = async () => {
+      try {
+        const response = await fetch('http://localhost/models/get_propuestas.php');
+        if (!response.ok) throw new Error(`Error en la solicitud: ${response.status}`);
 
-          const uniquePropuestas = Array.from(new Map(
-            data.propuestas.map(item => [item.titulo_propuesta, item])
-          ).values());
-
-          setPropuestas(data.propuestas);
-          setFilteredPropuestas(uniquePropuestas);
-          setAllCategories(Array.from(new Set(data.categorias.map((cat) => cat.nombre_cat_propuesta))));
-        } catch (error) {
-          console.error("Error al obtener las propuestas:", error);
-          setPropuestas([]);
-          setFilteredPropuestas([]);
-          setAllCategories([]);
-        }
-      };
-      fetchPropuestas();
-    }, []);
-
-    useEffect(() => {
-      if (selectedCategories.length === 0) {
+        const data = await response.json();
         const uniquePropuestas = Array.from(new Map(
-          propuestas.map(item => [item.titulo_propuesta, item])
+          data.propuestas.map(item => [item.titulo_propuesta, item])
         ).values());
+
+        setPropuestas(data.propuestas);
         setFilteredPropuestas(uniquePropuestas);
-      } else {
-        const filtered = propuestas.filter((propuesta) =>
-          selectedCategories.includes(propuesta.categoria)
-        );
-
-        const uniqueFiltered = Array.from(new Map(
-          filtered.map(item => [item.titulo_propuesta, item])
-        ).values());
-
-        setFilteredPropuestas(uniqueFiltered);
+        setAllCategories(Array.from(new Set(data.categorias.map((cat) => cat.nombre_cat_propuesta))));
+      } catch (error) {
+        console.error("Error al obtener las propuestas:", error);
+        setPropuestas([]);
+        setFilteredPropuestas([]);
+        setAllCategories([]);
       }
-      setCurrentIndex(0);
-    }, [selectedCategories, propuestas]);
+    };
+    fetchPropuestas();
+  }, []);
+
+  useEffect(() => {
+    if (selectedCategories.length === 0) {
+      const uniquePropuestas = Array.from(new Map(
+        propuestas.map(item => [item.titulo_propuesta, item])
+      ).values());
+      setFilteredPropuestas(uniquePropuestas);
+    } else {
+      const filtered = propuestas.filter((propuesta) =>
+        selectedCategories.includes(propuesta.categoria)
+      );
+      const uniqueFiltered = Array.from(new Map(
+        filtered.map(item => [item.titulo_propuesta, item])
+      ).values());
+      setFilteredPropuestas(uniqueFiltered);
+    }
+    setCurrentIndex(0);
+  }, [selectedCategories, propuestas]);
 
   const handleCategoryClick = (category) =>
     setSelectedCategories((prev) =>
@@ -92,16 +88,16 @@ const Propuestas = () => {
   };
 
   const renderIcon = (iconName) => {
-      const IconComponent = iconMap[iconName];
-      if (!IconComponent) {
-        console.warn(`Icon not found: ${iconName}`);
-        return null;
-      }
-      return <IconComponent className="w-8 h-8 text-white" />;
-    };
+    const IconComponent = iconMap[iconName];
+    if (!IconComponent) {
+      console.warn(`Icon not found: ${iconName}`);
+      return null;
+    }
+    return <IconComponent className="w-8 h-8 text-white" />;
+  };
 
   return (
-    <div className="relative w-full min-h-screen overflow-hidden bg-gradient-to-br from-[#FF8D99] to-[#FF9EA8]">
+    <div className="relative w-full min-h-screen overflow-hidden bg-white">
       <style>
         {`
           @keyframes float {
@@ -123,7 +119,7 @@ const Propuestas = () => {
 
           .bubble {
             position: absolute;
-            background: linear-gradient(to right, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2));
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.1));
             backdrop-filter: blur(2px);
             border-radius: 50%;
             pointer-events: none;
@@ -169,17 +165,17 @@ const Propuestas = () => {
               />
             )}
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-white text-center mb-4 font-montserrat">
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-4 font-montserrat">
             Mary Cruz Lascano
           </h2>
           <div className="flex items-center space-x-2">
-            <Heart className="w-6 h-6 text-white animate-pulse" />
-            <span className="text-white font-montserrat">Unidos lo haremos posible</span>
+            <Heart className="w-6 h-6 text-gray-900 animate-pulse" />
+            <span className="text-gray-900 font-montserrat">Unidos lo haremos posible</span>
           </div>
           <div className="mt-8 w-full">
-            <div className="bg-white/90 backdrop-blur-lg rounded-2xl p-4 shadow-xl">
+            <div className="bg-gray-100 backdrop-blur-lg rounded-2xl p-4 shadow-xl">
               <div className="flex items-center gap-2 mb-4">
-                <Search className="w-5 h-5 text-gray-500" />
+                <Search className="w-5 h-5 text-gray-600" />
                 <h4 className="text-lg font-semibold text-gray-700">Filtrar por temas</h4>
               </div>
               <div className="flex flex-wrap gap-2">
@@ -188,7 +184,7 @@ const Propuestas = () => {
                     key={category}
                     onClick={() => handleCategoryClick(category)}
                     className={`px-3 py-1 rounded-full text-sm font-medium transition-all duration-300 ${
-                      selectedCategories.includes(category) ? 'bg-[#42B9E5] text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                      selectedCategories.includes(category) ? 'bg-[#42B9E5] text-white' : 'bg-gray-300 text-gray-700 hover:bg-gray-400'
                     }`}
                   >
                     {category}
@@ -221,7 +217,7 @@ const Propuestas = () => {
                           'opacity-0 translate-x-full scale-95'
                         }`}
                       >
-                        <div className="bg-white rounded-xl shadow-lg p-8 h-full flex flex-col border border-gray-100">
+                        <div className="bg-gray-100 rounded-xl shadow-lg p-8 h-full flex flex-col border border-gray-200">
                           <div className="flex justify-center mb-4">
                               <div className="p-3 rounded-full bg-gradient-to-r from-[#42B9E5] to-[#FF5B8E]">
                                 {renderIcon(propuesta.icon)}
@@ -257,7 +253,7 @@ const Propuestas = () => {
                 ))}
               </div>
 
-              <div className="flex justify-between mt-8">
+              <div className="flex justify-center gap-4 mt-8">
                 <button
                   onClick={() => handleNavigation('prev')}
                   className="bg-gradient-to-r from-[#FF8B9A] to-[#72D5FF] text-white p-3 rounded-full shadow-lg hover:opacity-90 transition-all duration-300 transform hover:scale-110 disabled:opacity-50"
