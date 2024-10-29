@@ -107,57 +107,67 @@ const FormElementInput = () => {
           onClose={() => setShowErrorAlert(false)}
         />
       )}
-      <form
-        className=" mx-auto bg-slate-100 w-1/3 p-6 m-8 rounded-xl shadow-xl"
-        id="form-sugerencias"
-        onSubmit={guardar}
-      >
-        <h1 className="text-center mb-8 text-xl font-semibold">Sugerencias</h1>
-        <div className="grid md:grid-cols-2 md:gap-4">
-          <div className="relative z-0 w-full mb-5 group">
-            <InfoInput label="Nombre" {...nombreField} />
+      <div className="relative bg-slate-100 w-[580px] p-8 m-4 rounded-xl shadow-xl fade-in">
+        <img
+          className="absolute top-[-80px] left-[-80px] w-40 h-auto z-10"
+          src="https://gitlab.com/alexjavier/img_mc/-/raw/main/unidos.PNG"
+          alt=""
+        />
+        <form id="form-sugerencias" onSubmit={guardar}>
+          <h1 className="text-4xl font-bold text-center mb-5">
+            <span className=" text-5xl text-pink-500 drop-shadow-[4px_2px_0px_#ded2d2]">
+              S
+            </span>
+            <span className="text-[#40b2e6] drop-shadow-[4px_2px_0px_#ded2d2]">
+              ugerencias
+            </span>
+          </h1>
+          <div className="grid md:grid-cols-2 md:gap-4">
+            <div className="relative z-0 w-full mb-5 group">
+              <InfoInput label="Nombre" {...nombreField} />
+            </div>
+            <div className="relative z-0 w-full mb-5 group">
+              <InfoInput label="Apellido" {...apellidoField} />
+            </div>
           </div>
           <div className="relative z-0 w-full mb-5 group">
-            <InfoInput label="Apellido" {...apellidoField} />
+            <EmailInput {...emailField} />
           </div>
-        </div>
-        <div className="relative z-0 w-full mb-5 group">
-          <EmailInput {...emailField} />
-        </div>
-        <div className="grid md:grid-cols-2 md:gap-6">
+          <div className="grid md:grid-cols-2 md:gap-6">
+            <div className="relative z-0 w-full mb-5 group">
+              <input type="hidden" name="genero" value={genero} />
+              <ComboBox
+                options={optionsGenero}
+                label="Género"
+                name={"genero"}
+                selectedOption={genero}
+                setSelectedOption={setGenero}
+              />
+            </div>
+            <div className="relative z-0 w-full mb-5 group">
+              <input type="hidden" name="tipo_persona" value={tipoPersona} />
+              <ComboBox
+                options={optionsPersona}
+                label="Tipo de persona"
+                name={"tipo_persona"}
+                selectedOption={tipoPersona}
+                setSelectedOption={setTipoPersona}
+              />
+            </div>
+          </div>
           <div className="relative z-0 w-full mb-5 group">
-            <input type="hidden" name="genero" value={genero} />
-            <ComboBox
-              options={optionsGenero}
-              label="Género"
-              name={"genero"}
-              selectedOption={genero}
-              setSelectedOption={setGenero}
-            ></ComboBox>
+            <MessageTextarea {...mensajeField} />
           </div>
-          <div className="relative z-0 w-full mb-5 group">
-            <input type="hidden" name="tipo_persona" value={tipoPersona} />
-            <ComboBox
-              options={optionsPersona}
-              label="Tipo de persona"
-              name={"tipo_persona"}
-              selectedOption={tipoPersona}
-              setSelectedOption={setTipoPersona}
-            ></ComboBox>
+          <div className="w-full text-center">
+            <button
+              type="submit"
+              className="text-lg px-14 py-3 font-bold text-center rounded-lg  focus:ring-4 focus:outline-none bg-gradient-to-r from-[#FF8B9A] to-[#72D5FF] text-white p-3  shadow-lg hover:opacity-90 transition-all duration-300 transform hover:scale-110 disabled:opacity-50"
+            >
+              Enviar
+            </button>
           </div>
-        </div>
-        <div className="relative z-0 w-full mb-5 group">
-          <MessageTextarea {...mensajeField} />
-        </div>
-        <div className="w-full text-center">
-          <button
-            type="submit"
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-1/3 px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-          >
-            Enviar
-          </button>
-        </div>
-      </form>
+        </form>
+      </div>
     </>
   );
 };
