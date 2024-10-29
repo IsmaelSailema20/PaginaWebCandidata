@@ -263,9 +263,9 @@ const EventosNoticias = () => {
                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac
                                 ligula sit amet urna ultrices posuere. Integer sed lorem nec
                             </p>
-                            <div className="before:absolute ml-10 before:w-12 before:h-12 before:bg-orange-800 before:rounded-full before:blur-xl before:top-16 relative   flex flex-col justify-around items-center w-24 h-24 rounded-2xl shadow-inner shadow-gray-50 bg-neutral-900 text-gray-50">
+                            <div className="before:absolute ml-10 before:w-12 before:h-12 before:bg-orange-800 before:rounded-full before:blur-xl before:top-16 relative   flex flex-col justify-around items-center w-24 h-24 rounded-2xl shadow-inner shadow-gray-50 bg-[#40b2e6] text-gray-50">
                                 <span className="">Lun, Oct 28</span>
-                                <span className="z-10 flex items-center text-4xl text-[#40b2e6] [text-shadow:_2px_2px_#fff,_1px_2px_#fff]">
+                                <span className="z-10 flex items-center text-4xl text-[#ffff] [text-shadow:_2px_2px_#231917,_1px_2px_#231917]">
                                     08
                                     <span class="text-xl font-bold text-gray-50 [text-shadow:none]">:</span>
                                     30
@@ -291,9 +291,9 @@ const EventosNoticias = () => {
                     {/* Evento 2 (Texto a la derecha, imágenes a la izquierda) */}
                     <div className="flex w-full flex-row-reverse mt-10">
                         <div className="contenidoDerecha flex bg-slate-50 border w-1/2 p-4 justify-end">
-                            <div className="before:absolute before:w-12 before:h-12 before:bg-orange-800 before:rounded-full before:blur-xl before:top-16 relative   flex flex-col justify-around items-center w-24 h-24 rounded-2xl shadow-inner shadow-gray-50 bg-neutral-900 text-gray-50">
+                            <div className="before:absolute before:w-12 before:h-12 before:bg-orange-800 before:rounded-full before:blur-xl before:top-16 relative   flex flex-col justify-around items-center w-24 h-24 rounded-2xl shadow-inner shadow-gray-50 bg-pink-600 text-gray-50">
                                 <span className="">Sab, Oct 26</span>
-                                <span className="z-10 flex items-center text-4xl text-[#40b2e6] [text-shadow:_2px_2px_#fff,_1px_2px_#fff]">
+                                <span className="z-10 flex items-center text-4xl text-white [text-shadow:_2px_2px_#231917,_1px_2px_#231917]">
                                     07
                                     <span class="text-xl font-bold text-gray-50 [text-shadow:none]">:</span>
                                     00
