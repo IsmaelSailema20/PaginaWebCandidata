@@ -4,6 +4,8 @@ import { ChevronLeft, ChevronRight, Heart, Radio, ScrollText, Sparkles, Search, 
 const Propuestas = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [filteredPropuestas, setFilteredPropuestas] = useState([]);
 
   const propuestas = [
       {
@@ -85,6 +87,25 @@ const Propuestas = () => {
       }
     ];
 
+  const allTags = [...new Set(propuestas.flatMap((p) => p.tags))];
+
+  useEffect(() => {
+      if (selectedTags.length === 0) {
+        setFilteredPropuestas(propuestas);
+      } else {
+        const filtered = propuestas.filter((propuesta) =>
+          selectedTags.some((tag) => propuesta.tags.includes(tag))
+        );
+        setFilteredPropuestas(filtered);
+        setCurrentIndex(0);
+      }
+    }, [selectedTags]);
+
+  const handleTagClick = (tag) =>
+      setSelectedTags((prev) =>
+        prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
+  );
+
   const handleNavigation = (direction) => {
       if (isAnimating) return;
       setIsAnimating(true);
@@ -94,7 +115,7 @@ const Propuestas = () => {
           : prev === 0 ? propuestas.length - 1 : prev - 1
       );
       setTimeout(() => setIsAnimating(false), 500);
-    };
+  };
 
   return (
     <div className="min-h-screen">
