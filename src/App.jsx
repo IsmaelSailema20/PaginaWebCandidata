@@ -1,10 +1,13 @@
-
+import React from 'react';
+import Propuestas from './Propuestas';
+import './index.css';
 
 function App() {
-
   return (
-    <h1 className='bg-slate-400 font-semibold text-center'>Página principal</h1>
-  )
+    <div className="App">
+      <Propuestas />
+    </div>
+  );
 }
 
-export default App
+export default App;
