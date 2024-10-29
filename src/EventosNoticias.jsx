@@ -150,19 +150,25 @@ const EventosNoticias = () => {
       `}</style>
             </div>
 
-            <div className="noticias mt-10 text-5xl">
-                <h1 className="text-center mt-2 mb-20 text-5xl font-bold">
+            <div className="noticias mt-10 mb10 text-5xl">
+                <h1 className="text-center mt-2 mb-10 text-5xl font-bold">
                     <span className="text-5x1 text-[#40b2e6] drop-shadow-[4px_2px_0px_#ded2d2]">
-                        NOTICIAS
+                        NO
+                    </span>
+                    <span className="text-5x1 text-pink-500 drop-shadow-[4px_2px_0px_#ded2d2]">
+                        TICI
+                    </span>
+                    <span className="text-5x1 text-[#40b2e6] drop-shadow-[4px_2px_0px_#ded2d2]">
+                        AS
                     </span>
                 </h1>
-                <div className="contenedorNoticias flex">
+                <div className="contenedorNoticias flex mt-14">
                     <div className="relative mr-10 flex w-80 flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md hover:scale-105">
                         <div className="relative mx-4 -mt-6 h-40 overflow-hidden rounded-xl bg-blue-gray-500 bg-clip-border text-white shadow-lg shadow-blue-gray-500/40 bg-gradient-to-r from-blue-500 to-blue-600">
                             <img src="https://scontent.fuio13-1.fna.fbcdn.net/v/t39.30808-6/464965109_1095635895900102_6323470146362526041_n.jpg?stp=cp6_dst-jpg&_nc_cat=109&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeEZw5xJHZ7dpimDJV47COmuEVdlzluYlaQRV2XOW5iVpKPFswUgsqm1-6TyO810kdDLB-B9O67ASUdXyiXVQDbx&_nc_ohc=qdRv9SpM2lEQ7kNvgHhH2jG&_nc_zt=23&_nc_ht=scontent.fuio13-1.fna&_nc_gid=A7fbj9yAQV9QyFySTjIVQ9v&oh=00_AYAIE2eM1cDfB9JJHR3WipvHXVzAbjzix1ETlgauTA81-g&oe=6726E8E7"></img>
                         </div>
                         <div className="p-6">
-                            <h5 className="mb-2 block font-sans text-xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
+                            <h5 className="text-pink-500 mb-2 block font-sans text-xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
                                 INICIO DE CAMPAÑA
                             </h5>
                             <p className="block font-sans text-base font-light leading-relaxed text-inherit antialiased">
@@ -172,7 +178,7 @@ const EventosNoticias = () => {
                             </p>
                         </div>
                         <div className="p-6 pt-0">
-                            <p className="text-xl absolute bottom-5"> Lun, 28 Oct 2024</p>
+                            <p className="text-[#40b2e6] text-xl absolute bottom-5"> Lun, 28 Oct 2024</p>
                         </div>
                     </div>
                     <div className="relative mr-10 flex w-80 flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md hover:scale-105">
@@ -180,7 +186,7 @@ const EventosNoticias = () => {
                             <img src="https://scontent.fuio13-1.fna.fbcdn.net/v/t39.30808-6/464691522_1094172892713069_614902590782850419_n.jpg?stp=cp6_dst-jpg&_nc_cat=103&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFXyvfU-kSeY0EWsm_7bL6kty9w6ZDF9vq3L3DpkMX2-krkcrqfBIaX7iP-T6zqg2gn1lYG9J5R-VNJ1F5aD3Vf&_nc_ohc=3f-1-ZDwgt4Q7kNvgHuVt3v&_nc_zt=23&_nc_ht=scontent.fuio13-1.fna&_nc_gid=AHNRl-p5Qbb89cDDNW2IAXg&oh=00_AYD73Bzs8Le8QLIIf-R_8c3lrleJbND5ZCut1B4NH4tjdQ&oe=6726F166"></img>
                         </div>
                         <div className="p-6">
-                            <h5 className="mb-2 block font-sans text-xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
+                            <h5 className="text-pink-500 mb-2 block font-sans text-xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
                                 CORRE CON MARY CRUZ
                             </h5>
                             <p className="block font-sans text-base font-light leading-relaxed text-inherit antialiased">
@@ -189,7 +195,7 @@ const EventosNoticias = () => {
                             </p>
                         </div>
                         <div className="p-6 pt-0">
-                            <p className="text-xl absolute bottom-5"> Sab, 26 Oct 2024</p>
+                            <p className="text-xl text-[#40b2e6] absolute bottom-5"> Sab, 26 Oct 2024</p>
                         </div>
                     </div>
                     <div className="relative mr-10 flex w-80 flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md hover:scale-105">
@@ -197,7 +203,7 @@ const EventosNoticias = () => {
                             <img src="https://scontent.fuio13-1.fna.fbcdn.net/v/t39.30808-6/464875819_1095877289209296_5262507630370797234_n.jpg?stp=cp6_dst-jpg&_nc_cat=106&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeF5kfrZyNN8zuVgW_EaOZWVtUUyqG2z-m-1RTKobbP6b7FoLoZimKQ_JEbiAmu9mUXYg4yoV6Oyj-qpwOduII26&_nc_ohc=_i4hhxx2f1MQ7kNvgFxX_dL&_nc_zt=23&_nc_ht=scontent.fuio13-1.fna&_nc_gid=AxjU1RUpOp7h4EArTtj7Xzi&oh=00_AYDJYXnRxCmmKkarD4ZSZBYMpeNixhoY2YvX-2-9bj0aaQ&oe=6726DE64"></img>
                         </div>
                         <div className="p-6">
-                            <h5 className="mb-2 block font-sans text-xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
+                            <h5 className="text-pink-500 mb-2 block font-sans text-xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
                                 REGALAMOS HELADOS
                             </h5>
                             <p className="block font-sans text-base font-light leading-relaxed text-inherit antialiased">
@@ -206,7 +212,7 @@ const EventosNoticias = () => {
                             </p>
                         </div>
                         <div className="p-6 pt-0">
-                            <p className="text-xl absolute bottom-5"> Lun, 28 Oct 2024</p>
+                            <p className="text-xl text-[#40b2e6] absolute bottom-5"> Lun, 28 Oct 2024</p>
                         </div>
                     </div>
                     <div className="relative mr-10 flex w-80 flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md hover:scale-105">
@@ -214,7 +220,7 @@ const EventosNoticias = () => {
                             <img src="https://scontent.fuio13-1.fna.fbcdn.net/v/t39.30808-6/464965109_1095635895900102_6323470146362526041_n.jpg?stp=cp6_dst-jpg&_nc_cat=109&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeEZw5xJHZ7dpimDJV47COmuEVdlzluYlaQRV2XOW5iVpKPFswUgsqm1-6TyO810kdDLB-B9O67ASUdXyiXVQDbx&_nc_ohc=qdRv9SpM2lEQ7kNvgHhH2jG&_nc_zt=23&_nc_ht=scontent.fuio13-1.fna&_nc_gid=A7fbj9yAQV9QyFySTjIVQ9v&oh=00_AYAIE2eM1cDfB9JJHR3WipvHXVzAbjzix1ETlgauTA81-g&oe=6726E8E7"></img>
                         </div>
                         <div className="p-6">
-                            <h5 className="mb-2 block font-sans text-xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
+                            <h5 className="text-pink-500 mb-2 block font-sans text-xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
                                 INICIO DE CAMPAÑA
                             </h5>
                             <p className="block font-sans text-base font-light leading-relaxed text-inherit antialiased">
@@ -224,22 +230,28 @@ const EventosNoticias = () => {
                             </p>
                         </div>
                         <div className="p-6 pt-0">
-                            <p className="text-xl absolute bottom-5"> Lun, 28 Oct 2024</p>
+                            <p className="text-xl text-[#40b2e6] absolute bottom-5"> Lun, 28 Oct 2024</p>
                         </div>
                     </div>
                 </div>
 
             </div>
-            <div className="contenedorEventos">
-                <h1 className="text-center mt-10 mb-10 text-5xl font-bold">
+            <div className="contenedorEventos mt-10">
+                <h1 className="text-center mt-2 mb-10 text-5xl font-bold">
                     <span className="text-5x1 text-[#40b2e6] drop-shadow-[4px_2px_0px_#ded2d2]">
-                        EVENTOS
+                        EV
+                    </span>
+                    <span className="text-5x1 text-pink-500 drop-shadow-[4px_2px_0px_#ded2d2]">
+                        ENT
+                    </span>
+                    <span className="text-5x1 text-[#40b2e6] drop-shadow-[4px_2px_0px_#ded2d2]">
+                        OS
                     </span>
                 </h1>
                 <div className="eventos flex flex-col gap-8 w-full max-w-screen-lg mx-auto">
                     {/* Evento 1 (Texto a la izquierda, imágenes a la derecha) */}
-                    <div className="flex w-full justify-center flex-row">
-                        <div className="contenidoIzquierda bg-slate-50 border w-1/2 p-4">
+                    <div className="flex w-full flex-row">
+                        <div className="contenidoIzquierda bg-slate-50 border w-1/2 p-4 justify-start">
                             <h1 className="tituloEvento1 text-xl font-bold mb-2">EVENTO 1</h1>
                             <div className="reloj text-gray-500 text-sm mb-2">12:40</div>
                             <p className="mb-4">
@@ -255,25 +267,24 @@ const EventosNoticias = () => {
                                 <div className="text-gray-50 w-48 flex flex-row justify-evenly">
                                 </div>
                             </div>
-
                         </div>
-                        <div className="flex flex-col gap-2 ml-4 self-center">
+                        <div className="flex flex-col gap-2 ml-4 self-center relative w-64 h-64">
                             <img
                                 src="https://via.placeholder.com/100"
                                 alt="Imagen 1"
-                                className="w-24 h-24 object-cover"
+                                className="w-52 h-46 object-cover ml-52 rounded-lg"
                             />
                             <img
                                 src="https://via.placeholder.com/100"
                                 alt="Imagen 2"
-                                className="w-24 h-24 object-cover"
+                                className="w-52 h-46 object-cover absolute top-8 left-1/2 rounded-lg shadow-lg"
                             />
                         </div>
                     </div>
 
                     {/* Evento 2 (Texto a la derecha, imágenes a la izquierda) */}
-                    <div className="flex w-full justify-center flex-row-reverse">
-                        <div className="contenidoDerecha bg-slate-50 border w-1/2 p-4">
+                    <div className="flex w-full flex-row-reverse">
+                        <div className="contenidoDerecha bg-slate-50 border w-1/2 p-4 justify-end">
                             <h1 className="tituloEvento2 text-xl font-bold mb-2">EVENTO 2</h1>
                             <div className="reloj text-gray-500 text-sm mb-2">13:30</div>
                             <p className="mb-4">
@@ -283,13 +294,13 @@ const EventosNoticias = () => {
                         <div className="flex flex-col gap-2 mr-4 self-center">
                             <img
                                 src="https://via.placeholder.com/100"
-                                alt="Imagen 1"
-                                className="w-24 h-24 object-cover"
+                                alt="Imagen 3"
+                                className="w-52 h-46 object-cover mr-52 rounded-lg"
                             />
                             <img
                                 src="https://via.placeholder.com/100"
                                 alt="Imagen 2"
-                                className="w-24 h-24 object-cover"
+                                className="w-52 h-46 object-cover  top-8 left-1/2 rounded-lg shadow-lg"
                             />
                         </div>
                     </div>
