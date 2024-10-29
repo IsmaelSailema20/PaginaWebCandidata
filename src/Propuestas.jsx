@@ -92,6 +92,11 @@ const Propuestas = () => {
   const allTags = [...new Set(propuestas.flatMap((p) => p.tags))];
 
   useEffect(() => {
+    const interval = setInterval(() => setShowSparkle((prev) => !prev), 2000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
       if (selectedTags.length === 0) {
         setFilteredPropuestas(propuestas);
       } else {
