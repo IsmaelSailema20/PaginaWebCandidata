@@ -126,8 +126,59 @@ const Propuestas = () => {
 
   return (
     <div className="relative w-full min-h-screen overflow-hidden bg-gradient-to-br from-[#FF8D99] to-[#FF9EA8]">
+          <style>
+            {`
+              @keyframes float {
+                0% {
+                  transform: translateY(0) rotate(0deg);
+                  opacity: 0;
+                }
+                10% {
+                  opacity: 0.5;
+                }
+                90% {
+                  opacity: 0.5;
+                }
+                100% {
+                  transform: translateY(-100vh) rotate(360deg);
+                  opacity: 0;
+                }
+              }
+
+              .bubble {
+                position: absolute;
+                background: linear-gradient(to right, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2));
+                backdrop-filter: blur(2px);
+                border-radius: 50%;
+                pointer-events: none;
+                will-change: transform;
+              }
+            `}
+          </style>
+          <div className="absolute inset-0 overflow-hidden">
+            {[...Array(20)].map((_, i) => {
+              const size = Math.random() * 4 + 1;
+              const left = Math.random() * 100;
+              const delay = Math.random() * 5;
+              const duration = Math.random() * 3 + 6; // Increased duration for smoother movement
+
+              return (
+                <div
+                  key={i}
+                  className="bubble"
+                  style={{
+                    width: `${size}rem`,
+                    height: `${size}rem`,
+                    left: `${left}%`,
+                    bottom: '-20px',
+                    animation: `float ${duration}s linear infinite`,
+                    animationDelay: `${delay}s`,
+                  }}
+                />
+              );
+            })}
+          </div>
         <div className="relative z-10 flex flex-col md:flex-row min-h-screen">
-          {/* Sección izquierda */}
           <div className="w-full md:w-5/12 p-8 flex flex-col justify-center items-center">
             <div className="relative mb-8">
               <img
@@ -149,8 +200,6 @@ const Propuestas = () => {
               <Heart className="w-6 h-6 text-white animate-pulse" />
               <span className="text-white font-montserrat">Unidos lo haremos posible</span>
             </div>
-
-            {/* Filtro por tags */}
             <div className="mt-8 w-full">
               <div className="bg-white/90 backdrop-blur-lg rounded-2xl p-4 shadow-xl">
                 <div className="flex items-center gap-2 mb-4">
@@ -173,8 +222,6 @@ const Propuestas = () => {
               </div>
             </div>
           </div>
-
-          {/* Sección derecha con carrusel de propuestas */}
           <div className="w-full md:w-7/12 p-8 flex flex-col justify-center">
             <div className="flex flex-col items-center">
                 <div className="text-center mb-20">
@@ -182,8 +229,6 @@ const Propuestas = () => {
                 Nuestras Propuestas
               </h3>
             </div>
-
-            {/* Carrusel de propuestas */}
               <div className="w-full max-w-xl">
                 <div className="relative h-96">
                   {filteredPropuestas.length > 0 ? (
@@ -200,7 +245,6 @@ const Propuestas = () => {
                         >
                           <div className="bg-white rounded-xl shadow-lg p-8 h-full flex flex-col border border-gray-100">
                             <div className="flex justify-center mb-4">
-                              {/* Icono de la propuesta */}
                               <div className="p-3 rounded-full bg-gradient-to-r from-[#42B9E5] to-[#FF5B8E]">
                                 {propuesta.icon}
                               </div>
@@ -222,8 +266,6 @@ const Propuestas = () => {
                     <p className="text-center text-gray-500">No hay propuestas que coincidan con los tags seleccionados.</p>
                   )}
                 </div>
-
-                {/* Indicadores de navegación */}
                 <div className="flex justify-center gap-2 mt-6">
                   {filteredPropuestas.map((_, index) => (
                     <button
@@ -235,8 +277,6 @@ const Propuestas = () => {
                     />
                   ))}
                 </div>
-
-                {/* Botones de navegación */}
                 <div className="flex justify-between mt-8">
                   <button
                     onClick={() => handleNavigation('prev')}
