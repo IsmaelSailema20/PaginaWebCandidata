@@ -46,7 +46,7 @@ const Propuestas = () => {
     const fetchPropuestas = async () => {
       try {
         const response = await fetch(
-          "http://localhost/models/get_propuestas.php"
+          "http://localhost:8081/ProyectoManejo/paginaWebCandidata/models/get_propuestas.php"
         );
         if (!response.ok)
           throw new Error(`Error en la solicitud: ${response.status}`);
