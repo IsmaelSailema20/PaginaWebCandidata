@@ -51,15 +51,15 @@ function Home() {
                 {sections.slice(startIndex, startIndex + 3).map((section, index) => (
                   <div 
                     key={index} 
-                    className="bg-red-100 hover:bg-red-200 text-center rounded-lg shadow-md flex-grow h-full flex flex-col"
+                    className="bg-red-100 hover:bg-red-200 text-center rounded-lg shadow-md flex-1 h-80 flex flex-col mx-2"
                   >
                     <h3 className="text-2xl font-semibold mb-2 p-4">{section.title}</h3>
                     <p className="text-sm mb-2 px-4">{section.description}</p>
-                    <div className="flex-grow flex items-center justify-center"> {/* Contenedor flexible para la imagen */}
+                    <div className="flex-grow flex items-center justify-center h-20">
                       <img 
                         src={`/seccionesMenuIm/${section.title}.png`} 
                         alt={section.title} 
-                        className="w-full h-full object-cover object-center rounded-lg" // Ajusta la imagen
+                        className="h-full object-contain"
                       />
                     </div>
                     {section.link && (
@@ -79,15 +79,18 @@ function Home() {
           <footer className="mt-auto p-4 text-center">
             <h4 className="text-lg font-semibold">Síguenos en redes sociales</h4>
             <div className="flex justify-center space-x-2 mt-2">
-              <img src="/facebook.png" alt="Facebook" className="w-10 h-10" />
-              <img src="/instagram.png" alt="Instagram" className="w-10 h-10" />
-              <img src="/tiktok.png" alt="TikTok" className="w-10 h-10" />
+              <img src="/iconosRedes/facebook.png" alt="Facebook" className="w-10 h-10" />
+              <img src="/iconosRedes/instagram.png" alt="Instagram" className="w-10 h-10" />
+              <img src="/iconosRedes/tiktok.png" alt="TikTok" className="w-10 h-10" />
             </div>
           </footer>
         </div>
 
-        <div className="w-1/4 p-4">
-          {/* Aquí va el contenido de la parte derecha */}
+        <div className="w-1/4 p-4 flex flex-col h-full"> {/* Flex y altura total */}
+          <div className="bg-purple-500 text-white p-4 flex-grow rounded-lg">
+            <h2 className="text-lg font-bold">Dinos por quien vas a votar</h2>
+            <img src="/seccionesMenuIm/Encuesta.png" alt="Encuesta" className="mt-2" />
+          </div>
         </div>
       </div>
     </div>
@@ -95,3 +98,4 @@ function Home() {
 }
 
 export default Home;
+
