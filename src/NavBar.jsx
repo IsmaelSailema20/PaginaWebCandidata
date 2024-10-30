@@ -11,11 +11,6 @@ const Navbar = () => {
       path: "/candidatos",
     },
     {
-      name: "Encuestas",
-      image: "iconosBarra/encuestas.png",
-      path: "/encuestas",
-    },
-    {
       name: "Propuestas",
       image: "iconosBarra/propuestas.png",
       path: "/propuestas",
@@ -28,8 +23,8 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="bg-pink-500 p-2">
-      <ul className="flex items-center">
+    <nav className="bg-pink-500 p-5">
+      <ul className="flex items-center gap-10">
         {navItems.map((item) => (
           <li key={item.name} className="flex items-center mr-4">
             <Link to={item.path} className="flex items-center">
