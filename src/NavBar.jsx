@@ -1,13 +1,30 @@
-import React from 'react';
+import React from "react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const navItems = [
-    { name: 'Inicio', image: 'iconosBarra/inicio.png' },
-    { name: 'Eventos', image: 'iconosBarra/eventos.png' },
-    { name: 'Candidatos', image: 'iconosBarra/candidatos.png' },
-    { name: 'Encuestas', image: 'iconosBarra/encuestas.png' },
-    { name: 'Propuestas', image: 'iconosBarra/propuestas.png' },
-    { name: 'Sugerencias', image: 'iconosBarra/sugerencias.png' },
+    { name: "Inicio", image: "iconosBarra/inicio.png", path: "/" },
+    { name: "Eventos", image: "iconosBarra/eventos.png", path: "/eventos" },
+    {
+      name: "Candidatos",
+      image: "iconosBarra/candidatos.png",
+      path: "/candidatos",
+    },
+    {
+      name: "Encuestas",
+      image: "iconosBarra/encuestas.png",
+      path: "/encuestas",
+    },
+    {
+      name: "Propuestas",
+      image: "iconosBarra/propuestas.png",
+      path: "/propuestas",
+    },
+    {
+      name: "Sugerencias",
+      image: "iconosBarra/sugerencias.png",
+      path: "/sugerencias",
+    },
   ];
 
   return (
@@ -15,10 +32,16 @@ const Navbar = () => {
       <ul className="flex items-center">
         {navItems.map((item) => (
           <li key={item.name} className="flex items-center mr-4">
-            <img src={`/${item.image}`} alt={item.name} className="h-5 w-5 mr-1" />
-            <span className="text-white font-bold cursor-pointer hover:text-pink-200">
-              {item.name}
-            </span>
+            <Link to={item.path} className="flex items-center">
+              <img
+                src={`/${item.image}`}
+                alt={item.name}
+                className="h-5 w-5 mr-1"
+              />
+              <span className="text-white font-bold cursor-pointer hover:text-pink-200">
+                {item.name}
+              </span>
+            </Link>
           </li>
         ))}
       </ul>
