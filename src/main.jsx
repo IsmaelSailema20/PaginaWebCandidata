@@ -1,11 +1,12 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import App from './App.jsx'
-import EventosNoticias from './EventosNoticias.jsx'
+import Home from './home.jsx'
+import NavBar from './NavBar.jsx'
 import './index.css'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <EventosNoticias />
+     <NavBar />
+    <Home />
   </StrictMode>,
 )
