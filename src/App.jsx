@@ -1,12 +1,12 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import Propuestas from "./Propuestas";
-import EventosNoticias from "./EventosNoticias.jsx";
-import TeamSection from "./TeamSection.jsx";
-import Navbar from "./NavBar.jsx";
-import Home from "./home.jsx";
+import Propuestas from "./pages/Propuestas.jsx";
+import EventosNoticias from "./pages/EventosNoticias.jsx";
+import TeamSection from "./pages/TeamSection.jsx";
+import Navbar from "./components/NavBar.jsx";
+import Home from "./pages/home.jsx";
 import "./index.css";
-import PaginaSugerenciasVotos from "./PaginaSugerenciasVotos.jsx";
+import PaginaSugerenciasVotos from "./pages/PaginaSugerenciasVotos.jsx";
 
 function App() {
   return (

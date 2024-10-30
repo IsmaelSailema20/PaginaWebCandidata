@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./styleNotificaciones.css";
+import "../styles/styleNotificaciones.css";
 
 const SuccessAlert = ({ encabezado, message, visible, onClose }) => {
   const [show, setShow] = useState(true);

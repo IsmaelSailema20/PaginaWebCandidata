@@ -2,9 +2,9 @@ import React from "react";
 import ComboBox from "./ComboBox";
 import SuccessAlert from "./SuccessAlert";
 import ErrorAlert from "./ErrorAlert";
-import useFieldValidation from "./useFieldValidation";
+import useFieldValidation from "../logic/useFieldValidation";
 import { useState } from "react";
-import { enviarCorreoConfirmacion } from "./emailService";
+import { enviarCorreoConfirmacion } from "../logic/emailService";
 const FormElementInput = () => {
   const optionsGenero = ["Masculino", "Femenino", "Prefiero no decirlo"];
   const optionsPersona = ["Estudiante", "Docente", "Personal Administrativo"];

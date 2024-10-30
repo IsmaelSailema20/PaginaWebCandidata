@@ -1,8 +1,8 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import FormularioSugerencias from "./FormularioSugerencias.jsx";
-import CardVotaciones from "./CardVotaciones.jsx";
-import "./styles.css";
+import FormularioSugerencias from "../components/FormularioSugerencias.jsx";
+import CardVotaciones from "../components/CardVotaciones.jsx";
+import "../styles/stylesForm.css";
 function PaginaSugerenciasVotos() {
   const [votedCandidate, setVotedCandidate] = useState(null);
 
