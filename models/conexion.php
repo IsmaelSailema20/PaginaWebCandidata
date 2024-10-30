@@ -2,28 +2,26 @@
 
 class Conexion
 {
+    private $server = 'localhost';
+    private $db = 'candidatura';
+    private $user = 'root';
+    private $password = '';
+
     public function conectar()
     {
-        define('server', 'localhost');
-        define('db', 'candidatura');
-        define('user', 'root');
-        define('password', "");
-
         try {
-            $conn = new PDO("mysql:host=" . server . ";dbname=" . db, user, password);
+            $conn = new PDO("mysql:host=" . $this->server . ";dbname=" . $this->db, $this->user, $this->password);
             return $conn;
         } catch (Exception $e) {
-            die("error al conectar" . $e->getMessage());
+            die("error al conectar: " . $e->getMessage());
         }
     }
-
 }
+
 $conexion = new Conexion();
 $conn = $conexion->conectar();
 
-// Para comprobar la conexión, simplemente puedes devolver un mensaje
 if ($conn) {
-    echo json_encode(["message" => "Conexión exitosa a la base de datos."]);
 } else {
     echo json_encode(["error" => "No se pudo establecer la conexión."]);
 }
