@@ -14,11 +14,19 @@ function Home() {
   ];
 
   const handleNext = () => {
-    setStartIndex((prev) => (prev + 1) % sections.length);
+    if (startIndex + 3 >= sections.length) {
+      setStartIndex(0);
+    } else {
+      setStartIndex((prev) => prev + 1);
+    }
   };
 
   const handlePrevious = () => {
-    setStartIndex((prev) => (prev - 1 + sections.length) % sections.length);
+    if (startIndex === 0) {
+      setStartIndex(sections.length - 3);
+    } else {
+      setStartIndex((prev) => (prev - 1 + sections.length) % sections.length);
+    }
   };
 
   useEffect(() => {
@@ -39,19 +47,31 @@ function Home() {
           <div className="flex items-center mb-4">
             <button onClick={handlePrevious} className="bg-gray-200 rounded p-2">←</button>
             <div className="flex overflow-hidden w-full transition-all duration-500">
-              {sections.slice(startIndex, startIndex + 3).map((section, index) => (
-                <div key={index} className="bg-red-100 hover:bg-red-200 text-center p-4 rounded-lg shadow-md mx-2 flex-grow h-96">
-                  <h3 className="text-2xl font-semibold mb-2">{section.title}</h3>
-                  <p className="text-sm">{section.description}</p>
-                  {section.link && (
-                    <p>
-                      <a href={section.link} className="text-blue-600 hover:underline">
-                        {section.description}
-                      </a>
-                    </p>
-                  )}
-                </div>
-              ))}
+              <div className="flex space-x-4">
+                {sections.slice(startIndex, startIndex + 3).map((section, index) => (
+                  <div 
+                    key={index} 
+                    className="bg-red-100 hover:bg-red-200 text-center rounded-lg shadow-md flex-grow h-full flex flex-col"
+                  >
+                    <h3 className="text-2xl font-semibold mb-2 p-4">{section.title}</h3>
+                    <p className="text-sm mb-2 px-4">{section.description}</p>
+                    <div className="flex-grow flex items-center justify-center"> {/* Contenedor flexible para la imagen */}
+                      <img 
+                        src={`/seccionesMenuIm/${section.title}.png`} 
+                        alt={section.title} 
+                        className="w-full h-full object-cover object-center rounded-lg" // Ajusta la imagen
+                      />
+                    </div>
+                    {section.link && (
+                      <p className="mt-2">
+                        <a href={section.link} className="text-blue-600 hover:underline">
+                          {section.description}
+                        </a>
+                      </p>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
             <button onClick={handleNext} className="bg-gray-200 rounded p-2">→</button>
           </div>
