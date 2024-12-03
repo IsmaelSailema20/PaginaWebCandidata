@@ -2,99 +2,46 @@ import { useState, useEffect } from "react";
 
 const EventosNoticias = () => {
   const slides = [
-    "https://scontent.fuio13-1.fna.fbcdn.net/v/t39.30808-6/465031634_1095635932566765_2479774533372684715_n.jpg?stp=cp6_dst-jpg&_nc_cat=108&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeEmKs78K1SfOY4dGlu1zpaD9Zo0-UvvIuT1mjT5S-8i5HFUvOUiSkhMbdB0uZF0PoSdvT5PUISJaKhOys6JWOQZ&_nc_ohc=l8ZR1BfpzyMQ7kNvgH6aIP8&_nc_zt=23&_nc_ht=scontent.fuio13-1.fna&_nc_gid=A-QMUIn8DQ_aT0YvqFPy2ms&oh=00_AYA6KEjTUCVpta_-q-Sp6QdtEhMyE5Sa-PXDCjWQFqDQYg&oe=6726BAD1",
-    "https://scontent.fuio13-1.fna.fbcdn.net/v/t39.30808-6/464691522_1094172892713069_614902590782850419_n.jpg?stp=cp6_dst-jpg&_nc_cat=103&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFXyvfU-kSeY0EWsm_7bL6kty9w6ZDF9vq3L3DpkMX2-krkcrqfBIaX7iP-T6zqg2gn1lYG9J5R-VNJ1F5aD3Vf&_nc_ohc=3f-1-ZDwgt4Q7kNvgHuVt3v&_nc_zt=23&_nc_ht=scontent.fuio13-1.fna&_nc_gid=AHNRl-p5Qbb89cDDNW2IAXg&oh=00_AYD73Bzs8Le8QLIIf-R_8c3lrleJbND5ZCut1B4NH4tjdQ&oe=6726F166",
-    "https://scontent.fuio13-1.fna.fbcdn.net/v/t39.30808-6/464476926_122117652416531672_6924628406467556159_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=cc71e4&_nc_eui2=AeG4AOrtLw2pCZT1-j8lPCEV5mwht24wQnHmbCG3bjBCcfdir5QKGEGc_Y-lpQUp3JhjO7sGmJxwR6VYV9kWsi4W&_nc_ohc=Kud80t-T6esQ7kNvgHjeaLl&_nc_zt=23&_nc_ht=scontent.fuio13-1.fna&_nc_gid=AJInlzABgvzk1ncUtKPr6nP&oh=00_AYBEg82xdbxnNbxubWpigb4PlVcF1PSSYKAAT5p8_33_Hg&oe=6726CE85",
-    "https://scontent.fuio13-1.fna.fbcdn.net/v/t39.30808-6/464925443_1095635919233433_7993654235331919541_n.jpg?stp=cp6_dst-jpg&_nc_cat=103&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeHv9YY136X5JIx4GLynyo7fKb0EIIdSPzgpvQQgh1I_OHD8Y1VCBLHarxx7NWZm2zZJ219tFVzCkIm5mA9Mhxn_&_nc_ohc=BsPHRS7RE3sQ7kNvgH2TOJV&_nc_zt=23&_nc_ht=scontent.fuio13-1.fna&_nc_gid=A61F02hfYFb6YWnAjNbZIrd&oh=00_AYDlZlJ-F2YKKqMUWDZ0TkVkrXhHzqYVYnsyuxIAi5Wwjg&oe=6726C2DD",
+    "imagen1.jpg",
+    "imagen2.jpg",
+    "imagen3.jpg",
   ];
-
-  const eventos = [
-    {
-      id: 1,
-      titulo: "INICIO DE CAMPAÑA",
-      fecha: "Lun, Oct 28",
-      hora: "08:30",
-      descripcion: "Te invitamos a ser parte de un evento lleno de energía...",
-      imagen: "https://example.com/image1.jpg",
-      color: "#40b2e6",
-    },
-    {
-      id: 2,
-      titulo: "CORRE CON MARY CRUZ",
-      fecha: "Sab, Oct 26",
-      hora: "07:00",
-      descripcion: "Te invitamos a participar en una carrera emocionante...",
-      imagen: "https://example.com/image2.jpg",
-      color: "pink",
-    },
-    {
-      id: 3,
-      titulo: "CORRE CON MARY CRUZ",
-      fecha: "Sab, Oct 26",
-      hora: "07:00",
-      descripcion: "Te invitamos a participar en una carrera emocionante...",
-      imagen: "https://example.com/image2.jpg",
-      color: "pink",
-    },
-    {
-      id: 4,
-      titulo: "CORRE CON MARY CRUZ",
-      fecha: "Sab, Oct 26",
-      hora: "07:00",
-      descripcion: "Te invitamos a participar en una carrera emocionante...",
-      imagen: "https://example.com/image2.jpg",
-      color: "pink",
-    },
-  ];
-
-  const noticias = [
-    {
-      id: 1,
-      titulo: "INICIO DE CAMPAÑA",
-      descripcion:
-        "Ni la lluvia nos detiene 🩵🌧️ Que energía! 🩷 gracias por todo ese apoyo tan lindo. Con Mary Cruz 🫶🏻, Unidos lo haremos posible",
-      fecha: "Lun, 28 Oct 2024",
-      imagen:
-        "https://scontent.fuio13-1.fna.fbcdn.net/v/t39.30808-6/464965109_1095635895900102_6323470146362526041_n.jpg?stp=cp6_dst-jpg&_nc_cat=109&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeEZw5xJHZ7dpimDJV47COmuEVdlzluYlaQRV2XOW5iVpKPFswUgsqm1-6TyO810kdDLB-B9O67ASUdXyiXVQDbx&_nc_ohc=qdRv9SpM2lEQ7kNvgHhH2jG&_nc_zt=23&_nc_ht=scontent.fuio13-1.fna&_nc_gid=A7fbj9yAQV9QyFySTjIVQ9v&oh=00_AYAIE2eM1cDfB9JJHR3WipvHXVzAbjzix1ETlgauTA81-g&oe=6726E8E7",
-    },
-    {
-      id: 2,
-      titulo: "CORRE CON MARY CRUZ",
-      descripcion:
-        "Un día espléndido para hacer deporte 🏃🏻‍♀️ y salir con nuestras mascotas 🐶. Compartimos algo de baile y caminata junto a Mary Cruz 🫶🏻 Unidos lo haremos posible 🩷🩵",
-      fecha: "Sab, 26 Oct 2024",
-      imagen:
-        "https://scontent.fuio13-1.fna.fbcdn.net/v/t39.30808-6/464691522_1094172892713069_614902590782850419_n.jpg?stp=cp6_dst-jpg&_nc_cat=103&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFXyvfU-kSeY0EWsm_7bL6kty9w6ZDF9vq3L3DpkMX2-krkcrqfBIaX7iP-T6zqg2gn1lYG9J5R-VNJ1F5aD3Vf&_nc_ohc=3f-1-ZDwgt4Q7kNvgHuVt3v&_nc_zt=23&_nc_ht=scontent.fuio13-1.fna&_nc_gid=AHNRl-p5Qbb89cDDNW2IAXg&oh=00_AYD73Bzs8Le8QLIIf-R_8c3lrleJbND5ZCut1B4NH4tjdQ&oe=6726F166",
-    },
-    {
-      id: 3,
-      titulo: "REGALAMOS HELADOS",
-      descripcion:
-        "Llega Mary Cruz 🩷 y llega la lluvia 🩵, mejor día imposible 😊. Unidos lo haremos posible.",
-      fecha: "Lun, 28 Oct 2024",
-      imagen:
-        "https://scontent.fuio13-1.fna.fbcdn.net/v/t39.30808-6/464875819_1095877289209296_5262507630370797234_n.jpg?stp=cp6_dst-jpg&_nc_cat=106&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeF5kfrZyNN8zuVgW_EaOZWVtUUyqG2z-m-1RTKobbP6b7FoLoZimKQ_JEbiAmu9mUXYg4yoV6Oyj-qpwOduII26&_nc_ohc=_i4hhxx2f1MQ7kNvgFxX_dL&_nc_zt=23&_nc_ht=scontent.fuio13-1.fna&_nc_gid=AxjU1RUpOp7h4EArTtj7Xzi&oh=00_AYDJYXnRxCmmKkarD4ZSZBYMpeNixhoY2YvX-2-9bj0aaQ&oe=6726DE64",
-    },
-    {
-      id: 4,
-      titulo: "REGALAMOS HELADOS",
-      descripcion:
-        "Llega Mary Cruz 🩷 y llega la lluvia 🩵, mejor día imposible 😊. Unidos lo haremos posible.",
-      fecha: "Lun, 28 Oct 2024",
-      imagen:
-        "https://scontent.fuio13-1.fna.fbcdn.net/v/t39.30808-6/464875819_1095877289209296_5262507630370797234_n.jpg?stp=cp6_dst-jpg&_nc_cat=106&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeF5kfrZyNN8zuVgW_EaOZWVtUUyqG2z-m-1RTKobbP6b7FoLoZimKQ_JEbiAmu9mUXYg4yoV6Oyj-qpwOduII26&_nc_ohc=_i4hhxx2f1MQ7kNvgFxX_dL&_nc_zt=23&_nc_ht=scontent.fuio13-1.fna&_nc_gid=AxjU1RUpOp7h4EArTtj7Xzi&oh=00_AYDJYXnRxCmmKkarD4ZSZBYMpeNixhoY2YvX-2-9bj0aaQ&oe=6726DE64",
-    },
-    {
-      id: 5,
-      titulo: "REGALAMOS HELADOS",
-      descripcion:
-        "Llega Mary Cruz 🩷 y llega la lluvia 🩵, mejor día imposible 😊. Unidos lo haremos posible.",
-      fecha: "Lun, 28 Oct 2024",
-      imagen:
-        "https://scontent.fuio13-1.fna.fbcdn.net/v/t39.30808-6/464875819_1095877289209296_5262507630370797234_n.jpg?stp=cp6_dst-jpg&_nc_cat=106&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeF5kfrZyNN8zuVgW_EaOZWVtUUyqG2z-m-1RTKobbP6b7FoLoZimKQ_JEbiAmu9mUXYg4yoV6Oyj-qpwOduII26&_nc_ohc=_i4hhxx2f1MQ7kNvgFxX_dL&_nc_zt=23&_nc_ht=scontent.fuio13-1.fna&_nc_gid=AxjU1RUpOp7h4EArTtj7Xzi&oh=00_AYDJYXnRxCmmKkarD4ZSZBYMpeNixhoY2YvX-2-9bj0aaQ&oe=6726DE64",
-    },
-    // Agregar más elementos aquí
-  ];
+  const [eventos, setEventos] = useState([]);
+  useEffect(() => {
+    fetch(
+      "http://localhost/Version2Candidatura/paginaWebCandidata/models/ConsultaEventos.php"
+    )
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setEventos(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching the events:", error);
+      });
+  }, []);
+  const [noticias, setNoticias] = useState([]);
+  useEffect(() => {
+    fetch(
+      "http://localhost/Version2Candidatura/paginaWebCandidata/models/ConsultaNoticias.php"
+    )
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setNoticias(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching the events:", error);
+      });
+  }, []);
 
   const [currentSlide, setCurrentSlide] = useState(0);
   const [transitionClass, setTransitionClass] = useState('');
@@ -193,18 +140,18 @@ const EventosNoticias = () => {
 
         {/* Estilos para la animación */}
         <style jsx>{`
-                @keyframes slideRight {
-                 0% {
-                 transform: translateX(0);
-                 }
-                 100% {
-                  transform: translateX(100%);
-                 }
-                }
-                .animate-slide {
-                animation: slideRight 0.2s ease-in-out forwards;
-                }
-                `}</style>
+          @keyframes slideRight {
+            0% {
+            transform: translateX(0);
+            }
+            100% {
+            transform: translateX(100%);
+            }
+          }
+          .animate-slide {
+          animation: slideRight 0.2s ease-in-out forwards;
+          }
+        `}</style>
       </div>
 
       <div className="noticias mt-10 mb10 text-5xl">
@@ -266,14 +213,14 @@ const EventosNoticias = () => {
               <div className={`contenido${index % 2 === 0 ? "Izquierda" : "Derecha"} hover:scale-105 rounded-md shadow-lg bg-slate-50 border w-1/2 p-4 flex ${index % 2 === 0 ? "justify-start" : "justify-end"}`}>
                 {index % 2 === 0 && (
                   <p className="mb-4 text-justify">
-                    <h1 className={`text-${evento.color} text-xl font-bold mb-2`}>
+                    <h1 className={`text-xl font-bold mb-2`}>
                       {evento.titulo}
                     </h1>
                     {evento.descripcion}
                   </p>
                 )}
                 <div className="before:absolute before:w-12 before:h-12 before:rounded-full before:blur-xl before:top-16 relative flex flex-col justify-around items-center w-24 h-24 rounded-2xl shadow-lg  bg-pink-600 text-gray-50">
-                  <span className="">{evento.fecha}</span>
+                  <span className=""> {evento.fecha}</span>
                   <span className="z-10 flex items-center text-4xl text-white [text-shadow:_2px_2px_#231917,_1px_2px_#231917]">
                     {evento.hora.split(":")[0]}
                     <span class="text-xl font-bold text-gray-50 [text-shadow:none]">:</span>
@@ -284,10 +231,11 @@ const EventosNoticias = () => {
                 </div>
                 {index % 2 !== 0 && (
                   <div className="text-right">
-                    <h1 className={`mr-5 text-${evento.color} text-xl font-bold mb-2`}>
+                    <h1 className={`mr-5 text-xl font-bold mb-2`}>
                       {evento.titulo}
                     </h1>
                     <p className="mb-4 text-justify w-[85%] ml-10">{evento.descripcion}</p>
+                    <p>{evento.lugar}</p>
                   </div>
                 )}
               </div>
