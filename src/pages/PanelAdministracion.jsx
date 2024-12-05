@@ -4,6 +4,14 @@ import SeccionEventosAdm from "../components/ComponentesAdmin/SeccionEventosAdm"
 import SeccionCandidatosAdm from "../components/ComponentesAdmin/SeccionCandidatosAdm";
 import SeccionPropuestasAdm from "../components/ComponentesAdmin/SeccionPropuestasAdm";
 import SeccionSugerenciasAdm from "../components/ComponentesAdmin/SeccionSugerenciasAdm";
+import {
+  CalendarCog,
+  House,
+  LayoutPanelLeft,
+  NotebookPen,
+  NotepadText,
+  Users,
+} from "lucide-react";
 
 function PanelAdministracion() {
   // Estado para la sección activa
@@ -32,6 +40,7 @@ function PanelAdministracion() {
               onClick={() => handleSectionClick("principal")}
               className="flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 cursor-pointer"
             >
+              <House />
               <span className="mx-4 font-medium">Home</span>
             </a>
 
@@ -39,6 +48,7 @@ function PanelAdministracion() {
               onClick={() => handleSectionClick("inicio")}
               className="flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 cursor-pointer"
             >
+              <LayoutPanelLeft />
               <span className="mx-4 font-medium">Sección Inicio</span>
             </a>
 
@@ -46,6 +56,7 @@ function PanelAdministracion() {
               onClick={() => handleSectionClick("eventos")}
               className="flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 cursor-pointer"
             >
+              <CalendarCog />
               <span className="mx-4 font-medium">Sección Eventos</span>
             </a>
 
@@ -53,6 +64,7 @@ function PanelAdministracion() {
               onClick={() => handleSectionClick("candidatos")}
               className="flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 cursor-pointer"
             >
+              <Users />
               <span className="mx-4 font-medium">Sección Candidatos</span>
             </a>
 
@@ -60,6 +72,7 @@ function PanelAdministracion() {
               onClick={() => handleSectionClick("propuestas")}
               className="flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 cursor-pointer"
             >
+              <NotepadText />
               <span className="mx-4 font-medium">Sección Propuestas</span>
             </a>
 
@@ -67,6 +80,7 @@ function PanelAdministracion() {
               onClick={() => handleSectionClick("sugerencias")}
               className="flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 cursor-pointer"
             >
+              <NotebookPen />
               <span className="mx-4 font-medium">Sección Sugerencias</span>
             </a>
           </nav>
