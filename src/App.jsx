@@ -36,16 +36,14 @@ function Main() {
       {/* Condicional para no mostrar Navbar en /administracion */}
       {!isAdminPage && <Navbar />}
 
-      <div className="p-4">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/eventos" element={<EventosNoticias />} />
-          <Route path="/candidatos" element={<TeamSection />} />
-          <Route path="/propuestas" element={<Propuestas />} />
-          <Route path="/sugerencias" element={<PaginaSugerenciasVotos />} />
-          <Route path="/administracion" element={<PanelAdministracion />} />
-        </Routes>
-      </div>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/eventos" element={<EventosNoticias />} />
+        <Route path="/candidatos" element={<TeamSection />} />
+        <Route path="/propuestas" element={<Propuestas />} />
+        <Route path="/sugerencias" element={<PaginaSugerenciasVotos />} />
+        <Route path="/administracion" element={<PanelAdministracion />} />
+      </Routes>
     </div>
   );
 }
