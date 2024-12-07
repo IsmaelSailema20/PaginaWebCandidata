@@ -185,7 +185,7 @@ const EventosNoticias = () => {
             AS
           </span>
         </h1>
-        <div className="contenedorNoticias grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-14">
+        <div className="contenedorNoticias grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-20  mt-14">
           {noticias.map((noticia) => (
             <div
               key={noticia.id}
@@ -204,7 +204,7 @@ const EventosNoticias = () => {
               </div>
               <div className="p-6 pt-0">
                 <p className="text-[#40b2e6] text-xl absolute bottom-5">
-                  {noticia.fecha}
+                  {noticia.lugar}, {noticia.fecha}
                 </p>
               </div>
             </div>
@@ -231,14 +231,15 @@ const EventosNoticias = () => {
             >
               <div className={`contenido${index % 2 === 0 ? "Izquierda" : "Derecha"} hover:scale-105 rounded-md shadow-lg bg-slate-50 border w-1/2 p-4 flex ${index % 2 === 0 ? "justify-start" : "justify-end"}`}>
                 {index % 2 === 0 && (
-                  <p className="mb-4 text-justify">
+                  <p className="mb-4 mr-10 text-justify">
                     <h1 className={`text-xl font-bold mb-2`}>
                       {evento.titulo}
                     </h1>
                     {evento.descripcion}
+                    <p className="mt-5">{evento.lugar}</p>
                   </p>
                 )}
-                <div className="before:absolute before:w-12 before:h-12 before:rounded-full before:blur-xl before:top-16 relative flex flex-col justify-around items-center w-24 h-24 rounded-2xl shadow-lg  bg-pink-600 text-gray-50">
+                <div className="before:absolute border-black border-2 before:w-12 before:h-12 before:rounded-full before:blur-xl before:top-16 relative flex flex-col justify-around items-center w-24 h-24 rounded-2xl shadow-lg  bg-gray-600 text-gray-50">
                   <span className=""> {evento.fecha}</span>
                   <span className="z-10 flex items-center text-4xl text-white [text-shadow:_2px_2px_#231917,_1px_2px_#231917]">
                     {evento.hora.split(":")[0]}
@@ -254,11 +255,11 @@ const EventosNoticias = () => {
                       {evento.titulo}
                     </h1>
                     <p className="mb-4 text-justify w-[85%] ml-10">{evento.descripcion}</p>
-                    <p>{evento.lugar}</p>
+                    <p className="mt-5">{evento.lugar}</p>
                   </div>
                 )}
               </div>
-              <div className={`flex flex-col gap-2 ${index % 2 === 0 ? "ml-4" : "mr-4"} self-center relative w-64 h-64`}>
+              <div className={`flex gap-4 ${index % 2 === 0 ? "ml-32" : "mr-32"} self-center relative w-64 h-64`}>
                 <img
                   src={evento.imagen}
                   alt={evento.titulo}
