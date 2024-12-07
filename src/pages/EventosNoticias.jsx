@@ -1,15 +1,71 @@
 import { useState, useEffect } from "react";
 
 const EventosNoticias = () => {
-  const slides = [
-    "imagen1.jpg",
-    "imagen2.jpg",
-    "imagen3.jpg",
-  ];
+  const [slides, setSlides] = useState([]);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [transitionClass, setTransitionClass] = useState("");
+
+  useEffect(() => {
+    fetch(
+      "http://localhost/ProyectoManejo/paginaWebCandidata/models/ConsultaImagenesCarrusel.php"
+    )
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        // Supongamos que data es un arreglo de objetos y cada objeto tiene una propiedad `url` con la URL de la imagen.
+        setSlides(data.map((evento) => evento.url));
+      })
+      .catch((error) => {
+        console.error("Error fetching the events:", error);
+      });
+  }, []);
+
+  // Cambiar automáticamente cada 3 segundos
+  useEffect(() => {
+    const interval = setInterval(() => {
+      handleNextSlide();
+    }, 30000);
+
+    return () => clearInterval(interval);
+  }, [currentSlide]);
+
+  // Función para manejar el cambio de slide y activar la animación
+  const handleNextSlide = () => {
+    setTransitionClass("animate-slide"); // Activa la animación
+    setTimeout(() => {
+      setCurrentSlide((prevSlide) =>
+        prevSlide === slides.length - 1 ? 0 : prevSlide + 1
+      );
+      setTransitionClass(""); // Remueve la animación después de cambiar de slide
+    }, 50); // Duración de la animación
+  };
+
+  const handlePrevSlide = () => {
+    setTransitionClass("animate-slide"); // Activa la animación
+    setTimeout(() => {
+      setCurrentSlide((prevSlide) =>
+        prevSlide === 0 ? slides.length - 1 : prevSlide - 1
+      );
+      setTransitionClass(""); // Remueve la animación después de cambiar de slide
+    }, 50); // Duración de la animación
+  };
+
+  // Función para obtener los índices de las imágenes en pantalla (anterior, actual, siguiente)
+  const getPrevSlide = () =>
+    currentSlide === 0 ? slides.length - 1 : currentSlide - 1;
+  const getNextSlide = () =>
+    currentSlide === slides.length - 1 ? 0 : currentSlide + 1;
+
+
+
   const [eventos, setEventos] = useState([]);
   useEffect(() => {
     fetch(
-      "http://localhost/Version2Candidatura/paginaWebCandidata/models/ConsultaEventos.php"
+      "http://localhost/ProyectoManejo/paginaWebCandidata/models/ConsultaEventos.php"
     )
       .then((response) => {
         if (!response.ok) {
@@ -27,7 +83,7 @@ const EventosNoticias = () => {
   const [noticias, setNoticias] = useState([]);
   useEffect(() => {
     fetch(
-      "http://localhost/Version2Candidatura/paginaWebCandidata/models/ConsultaNoticias.php"
+      "http://localhost/ProyectoManejo/paginaWebCandidata/models/ConsultaNoticias.php"
     )
       .then((response) => {
         if (!response.ok) {
@@ -42,43 +98,6 @@ const EventosNoticias = () => {
         console.error("Error fetching the events:", error);
       });
   }, []);
-
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [transitionClass, setTransitionClass] = useState('');
-
-  // Cambiar automáticamente cada 3 segundos
-  useEffect(() => {
-    const interval = setInterval(() => {
-      handleNextSlide();
-    }, 30000);
-
-    return () => clearInterval(interval);
-  }, [currentSlide]);
-
-  // Función para manejar el cambio de slide y activar la animación
-  const handleNextSlide = () => {
-    setTransitionClass('animate-slide'); // Activa la animación
-    setTimeout(() => {
-      setCurrentSlide((prevSlide) =>
-        prevSlide === slides.length - 1 ? 0 : prevSlide + 1
-      );
-      setTransitionClass(''); // Remueve la animación después de cambiar de slide
-    }, 50); // Duración de la animación
-  };
-
-  const handlePrevSlide = () => {
-    setTransitionClass('animate-slide'); // Activa la animación
-    setTimeout(() => {
-      setCurrentSlide((prevSlide) =>
-        prevSlide === 0 ? slides.length - 1 : prevSlide - 1
-      );
-      setTransitionClass(''); // Remueve la animación después de cambiar de slide
-    }, 50); // Duración de la animación
-  };
-
-  // Función para obtener los índices de las imágenes en pantalla (anterior, actual, siguiente)
-  const getPrevSlide = () => (currentSlide === 0 ? slides.length - 1 : currentSlide - 1);
-  const getNextSlide = () => (currentSlide === slides.length - 1 ? 0 : currentSlide + 1);
 
   return (
     <div className="general overflow-x-hidden p-10 relative w-full min-h-screen overflow-hidden bg-white">
@@ -138,18 +157,18 @@ const EventosNoticias = () => {
           &#10095;
         </button>
 
-        {/* Estilos para la animación */}
         <style jsx>{`
           @keyframes slideRight {
             0% {
-            transform: translateX(0);
+              transform: translateX(0);
             }
             100% {
-            transform: translateX(100%);
+              transform: translateX(100%);
             }
           }
+
           .animate-slide {
-          animation: slideRight 0.2s ease-in-out forwards;
+            animation: slideRight 0.2s ease-in-out forwards;
           }
         `}</style>
       </div>
