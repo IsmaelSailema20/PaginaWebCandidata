@@ -14,6 +14,7 @@ import Home from "./pages/home.jsx";
 import "./index.css";
 import PaginaSugerenciasVotos from "./pages/PaginaSugerenciasVotos.jsx";
 import PanelAdministracion from "./pages/PanelAdministracion.jsx";
+import Login from "./pages/Login.jsx";
 
 function App() {
   return (
@@ -29,12 +30,14 @@ function Main() {
   const location = useLocation();
 
   // Verificar si estamos en la ruta de administración
-  const isAdminPage = location.pathname === "/administracion";
+  const isExcludedPage =
+    location.pathname === "/login" ||
+    location.pathname === "/panelAdministracion";
 
   return (
     <div>
-      {/* Condicional para no mostrar Navbar en /administracion */}
-      {!isAdminPage && <Navbar />}
+      {/* Condicional para no mostrar Navbar en /login */}
+      {!isExcludedPage && <Navbar />}
 
       <Routes>
         <Route path="/" element={<Home />} />
@@ -42,7 +45,8 @@ function Main() {
         <Route path="/candidatos" element={<TeamSection />} />
         <Route path="/propuestas" element={<Propuestas />} />
         <Route path="/sugerencias" element={<PaginaSugerenciasVotos />} />
-        <Route path="/administracion" element={<PanelAdministracion />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/panelAdministracion" element={<PanelAdministracion />} />
       </Routes>
     </div>
   );
