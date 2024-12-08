@@ -6,7 +6,7 @@ const TeamSection = () => {
 
   useEffect(() => {
     fetch(
-      "http://localhost/ProyectoManejo/paginaWebCandidata/models/ConsultaMiembros.php"
+      "http://localhost/Manejo/paginaWebCandidata/models/ConsultaMiembros.php"
     )
       .then((response) => {
         if (!response.ok) {
@@ -101,47 +101,49 @@ const TeamSection = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-          {teamMembers.map((member, index) => (
-            <div key={index} className="relative group">
-              <div className="overflow-hidden rounded-lg shadow-2xl hover:shadow-[0_10px_25px_rgba(0,0,0,0.3)] transition-shadow duration-300 h-96 transform transition-transform duration-500 group-hover:scale-95">
-                <img
-                  src={member.imgSrc}
-                  alt={member.name}
-                  className="w-full h-full object-cover object-center"
-                />
-                <div className="absolute inset-0 bg-black bg-opacity-70 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col items-center justify-center space-y-4">
-                  <div className="text-center px-4">
-                    <p className="text-xl font-bold mb-4 text-white">
-                      {member.tipo_miembro}
-                    </p>
-                    <p className="text-sm text-white">{member.descripcion_miembro}</p>
-                  </div>
-                  {/* Botones de redes sociales con íconos */}
-                  <div className="flex space-x-4">
-                    <a
-                      href={member.facebook_url || "#"}
-                      className="bg-gradient-to-r from-[#FF8B9A] to-[#72D5FF] text-white p-3 rounded-full shadow-lg hover:opacity-90 transition-all duration-300 transform hover:scale-110 disabled:opacity-50"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <FaFacebook size={24} /> {/* Ícono de Facebook */}
-                    </a>
-                    <a
-                      href={member.instagram_url || "#"}
-                      className="bg-gradient-to-r from-[#FF8B9A] to-[#72D5FF] text-white p-3 rounded-full shadow-lg hover:opacity-90 transition-all duration-300 transform hover:scale-110 disabled:opacity-50"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <FaInstagram size={24} /> {/* Ícono de Instagram */}
-                    </a>
+          {teamMembers
+            .filter((member) => member.visible === "1") // Filtra solo los miembros visibles
+            .map((member, index) => (
+              <div key={index} className="relative group">
+                <div className="overflow-hidden rounded-lg shadow-2xl hover:shadow-[0_10px_25px_rgba(0,0,0,0.3)] transition-shadow duration-300 h-96 transform transition-transform duration-500 group-hover:scale-95">
+                  <img
+                    src={member.imgSrc}
+                    alt={member.name}
+                    className="w-full h-full object-cover object-center"
+                  />
+                  <div className="absolute inset-0 bg-black bg-opacity-70 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col items-center justify-center space-y-4">
+                    <div className="text-center px-4">
+                      <p className="text-xl font-bold mb-4 text-white">
+                        {member.tipo_miembro}
+                      </p>
+                      <p className="text-sm text-white">{member.descripcion_miembro}</p>
+                    </div>
+                    {/* Botones de redes sociales con íconos */}
+                    <div className="flex space-x-4">
+                      <a
+                        href={member.facebook_url || "#"}
+                        className="bg-gradient-to-r from-[#FF8B9A] to-[#72D5FF] text-white p-3 rounded-full shadow-lg hover:opacity-90 transition-all duration-300 transform hover:scale-110 disabled:opacity-50"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <FaFacebook size={24} /> {/* Ícono de Facebook */}
+                      </a>
+                      <a
+                        href={member.instagram_url || "#"}
+                        className="bg-gradient-to-r from-[#FF8B9A] to-[#72D5FF] text-white p-3 rounded-full shadow-lg hover:opacity-90 transition-all duration-300 transform hover:scale-110 disabled:opacity-50"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <FaInstagram size={24} /> {/* Ícono de Instagram */}
+                      </a>
+                    </div>
                   </div>
                 </div>
+                <h3 className="text-xl font-bold text-center mt-10 transition-transform duration-500 ease-in-out group-hover:-translate-y-24 group-hover:text-white">
+                  {member.nombre_miembro}
+                </h3>
               </div>
-              <h3 className="text-xl font-bold text-center mt-10 transition-transform duration-500 ease-in-out group-hover:-translate-y-24 group-hover:text-white">
-                {member.nombre_miembro}
-              </h3>
-            </div>
-          ))}
+            ))}
         </div>
       </div>
     </section>
