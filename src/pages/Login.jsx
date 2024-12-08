@@ -26,7 +26,6 @@ function Login() {
 
       if (response.ok && data.length > 0) {
         setError("");
-        alert("Login exitoso");
         navigate("/panelAdministracion"); // Redirigir al panel de administración
       } else {
         throw new Error("Credenciales inválidas");
