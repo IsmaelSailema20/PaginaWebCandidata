@@ -6,7 +6,7 @@ const TeamSection = () => {
 
   useEffect(() => {
     fetch(
-      "http://localhost:8081/ProyectoManejo/paginaWebCandidata/models/ConsultaMiembros.php"
+      "http://localhost/ProyectoManejo/paginaWebCandidata/models/ConsultaMiembros.php"
     )
       .then((response) => {
         if (!response.ok) {
@@ -114,7 +114,7 @@ const TeamSection = () => {
                     <p className="text-xl font-bold mb-4 text-white">
                       {member.tipo_miembro}
                     </p>
-                    <p className="text-sm text-white">{member.title}</p>
+                    <p className="text-sm text-white">{member.descripcion_miembro}</p>
                   </div>
                   {/* Botones de redes sociales con íconos */}
                   <div className="flex space-x-4">
