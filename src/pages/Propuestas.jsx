@@ -46,7 +46,7 @@ const Propuestas = () => {
     const fetchPropuestas = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8081/ProyectoManejo/paginaWebCandidata/models/get_propuestas.php"
+          "http://localhost/models/get_propuestas.php"
         );
         if (!response.ok)
           throw new Error(`Error en la solicitud: ${response.status}`);
@@ -59,7 +59,7 @@ const Propuestas = () => {
         );
 
         setPropuestas(data.propuestas);
-        setFilteredPropuestas(uniquePropuestas);
+        setFilteredPropuestas(uniquePropuestas.filter(p => p.visible));
         setAllCategories(
           Array.from(
             new Set(data.categorias.map((cat) => cat.nombre_cat_propuesta))
@@ -82,10 +82,10 @@ const Propuestas = () => {
           propuestas.map((item) => [item.titulo_propuesta, item])
         ).values()
       );
-      setFilteredPropuestas(uniquePropuestas);
+      setFilteredPropuestas(uniquePropuestas.filter(p => p.visible));
     } else {
       const filtered = propuestas.filter((propuesta) =>
-        selectedCategories.includes(propuesta.categoria)
+        selectedCategories.includes(propuesta.categoria) && propuesta.visible
       );
       const uniqueFiltered = Array.from(
         new Map(filtered.map((item) => [item.titulo_propuesta, item])).values()
@@ -322,3 +322,4 @@ const Propuestas = () => {
 };
 
 export default Propuestas;
+
