@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -28,37 +28,74 @@ export default function EditModal({
   handleClose,
   miembroEditado,
   handleChange,
+  mode = "edit", 
 }) {
   const [error, setError] = useState("");
+  const [nuevoMiembro, setNuevoMiembro] = useState({
+    nombre_miembro: "",
+    descripcion_miembro: "",
+    tipo_miembro: "",
+    nivel_academico: "",
+    imgSrc: "",
+    facebook_url: "",
+    instagram_url: "",
+    visible: "1",  
+  });
+
+  useEffect(() => {
+    if (mode === "edit" && miembroEditado) {
+      setNuevoMiembro(miembroEditado);
+    } else if (mode === "create") {
+      setNuevoMiembro({
+        nombre_miembro: "",
+        descripcion_miembro: "",
+        tipo_miembro: "",
+        nivel_academico: "",
+        imgSrc: "",
+        facebook_url: "",
+        instagram_url: "",
+        visible: "1", 
+      });
+    }
+  }, [mode, miembroEditado]);
 
   const handleSave = async () => {
-    console.log(miembroEditado.id_miembro);
     if (
-      !miembroEditado.nombre_miembro ||
-      !miembroEditado.title ||
-      !miembroEditado.tipo_miembro ||
-      !miembroEditado.nivel_academico ||
-      !miembroEditado.imgSrc
+      !nuevoMiembro.nombre_miembro ||
+      !nuevoMiembro.descripcion_miembro ||
+      !nuevoMiembro.tipo_miembro ||
+      !nuevoMiembro.nivel_academico ||
+      !nuevoMiembro.imgSrc
     ) {
       setError("Por favor, complete todos los campos obligatorios.");
       return;
     }
 
-    setError("");
+    setError(""); // Limpiar errores antes de continuar
+
+    const url =
+      mode === "edit"
+        ? "http://localhost/ProyectoManejo/paginaWebCandidata/models/editCandidato.php"
+        : "http://localhost/ProyectoManejo/paginaWebCandidata/models/createCandidato.php";
 
     try {
-      const response = await fetch("http://localhost/Manejo/paginaWebCandidata/models/editCandidato.php", {
+      const response = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(miembroEditado),
+        body: JSON.stringify(nuevoMiembro),
       });
 
       const result = await response.json();
 
       if (result.success) {
-        console.log("Datos guardados exitosamente:", result);
+        console.log(
+          mode === "edit"
+            ? "Candidato editado exitosamente:"
+            : "Candidato creado exitosamente:",
+          result
+        );
         handleClose(); 
       } else {
         setError("Hubo un error al guardar los cambios.");
@@ -69,8 +106,17 @@ export default function EditModal({
     }
   };
 
-  const handleRadioChange = (event) => {
-    handleChange(event); 
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+
+    if (name === "descripcion_miembro" && value.length > 210) {
+      return;
+    }
+
+    setNuevoMiembro((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   return (
@@ -81,14 +127,16 @@ export default function EditModal({
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-        <h4 className="text-lg font-semibold mb-4">Editar Miembro</h4>
+        <h4 className="text-lg font-semibold mb-4">
+          {mode === "edit" ? "Editar Miembro" : "Crear Miembro"}
+        </h4>
         <form>
           <div className="mb-2">
             <TextField
               label="Nombre"
               name="nombre_miembro"
-              value={miembroEditado?.nombre_miembro || ""}
-              onChange={handleChange}
+              value={nuevoMiembro.nombre_miembro || ""}
+              onChange={handleInputChange}
               fullWidth
               required
             />
@@ -97,19 +145,21 @@ export default function EditModal({
             <TextField
               label="Descripción"
               name="descripcion_miembro"
-              value={miembroEditado?.title || ""}
-              onChange={handleChange}
+              value={nuevoMiembro.descripcion_miembro || ""}
+              onChange={handleInputChange}
               fullWidth
               required
               multiline
+              inputProps={{ maxLength: 210 }} // Limitar a 200 caracteres
             />
+            <p>{nuevoMiembro.descripcion_miembro?.length || 0} / 210</p> {/* Mostrar la cantidad de caracteres restantes */}
           </div>
           <div className="mb-2">
             <TextField
               label="Tipo"
               name="tipo_miembro"
-              value={miembroEditado?.tipo_miembro || ""}
-              onChange={handleChange}
+              value={nuevoMiembro.tipo_miembro || ""}
+              onChange={handleInputChange}
               fullWidth
               required
             />
@@ -118,8 +168,8 @@ export default function EditModal({
             <TextField
               label="Nivel Académico"
               name="nivel_academico"
-              value={miembroEditado?.nivel_academico || ""}
-              onChange={handleChange}
+              value={nuevoMiembro.nivel_academico || ""}
+              onChange={handleInputChange}
               fullWidth
             />
           </div>
@@ -127,8 +177,8 @@ export default function EditModal({
             <TextField
               label="URL de Imagen"
               name="imgSrc"
-              value={miembroEditado?.imgSrc || ""}
-              onChange={handleChange}
+              value={nuevoMiembro.imgSrc || ""}
+              onChange={handleInputChange}
               fullWidth
             />
           </div>
@@ -136,8 +186,8 @@ export default function EditModal({
             <TextField
               label="URL de Facebook"
               name="facebook_url"
-              value={miembroEditado?.facebook_url || ""}
-              onChange={handleChange}
+              value={nuevoMiembro.facebook_url || ""}
+              onChange={handleInputChange}
               fullWidth
             />
           </div>
@@ -145,20 +195,19 @@ export default function EditModal({
             <TextField
               label="URL de Instagram"
               name="instagram_url"
-              value={miembroEditado?.instagram_url || ""}
-              onChange={handleChange}
+              value={nuevoMiembro.instagram_url || ""}
+              onChange={handleInputChange}
               fullWidth
             />
           </div>
 
-          {/* Radio buttons para Visible/Oculto */}
           <FormControl component="fieldset" className="mb-4">
             <FormLabel component="legend">Estado de Visibilidad</FormLabel>
             <RadioGroup
               row
               name="visible"
-              value={miembroEditado?.visible || "1"} // Valor predeterminado en "Visible"
-              onChange={handleRadioChange}
+              value={nuevoMiembro.visible || "1"}
+              onChange={handleInputChange}
             >
               <FormControlLabel
                 value="1"
@@ -181,7 +230,7 @@ export default function EditModal({
             color="primary"
             onClick={handleSave}
           >
-            Guardar Cambios
+            {mode === "edit" ? "Guardar Cambios" : "Crear Miembro"}
           </Button>
         </form>
       </Box>
