@@ -58,86 +58,98 @@ function Home() {
 
       <div className="flex flex-1">
         <div className="flex flex-col w-4/5 p-4 h-300">
-        <div className="relative h-[380px] w-25 bg-white rounded-lg shadow-md dark:bg-neutral-800">
-      
-      <div className="  relative overflow-hidden h-130 w-3/4 bg-white rounded-lg">
-        <div
-          className=" flex w-80 transition-transform duration-700"
-          style={{
-            transform: `translateX(-${currentSlide * 30}%)`,
-          }}
-        >
-          {sections.map((slide, index) => (
-            <div
-              key={index}
-              className={`  flex-shrink-0 w-full h-full flex justify-center items-center p-6  dark:bg-neutral-${900 - index * 100}`}
-            >
-              <span className=" text-4xl text-gray-800 dark:text-white">
-                {slide.description}
-              </span>
-              <img src={"/seccionesMenuIm/"+slide.title+".png"}></img>
-            </div>
-            
-          ))}
-        </div>
-      </div>
+        <div className="relative h-[500px] w-full bg-white rounded-lg shadow-md dark:bg-neutral-800">
+  <div className="relative h-full overflow-hidden flex items-center justify-center">
+    <div
+      className="flex transition-transform duration-700 h-full"
+      style={{
+        transform: `translateX(-${currentSlide * 33.33}%)`, // Desplazamiento del carrusel
+      }}
+    >
+      {sections.map((slide, index) => {
+        const isActive = index === currentSlide;
 
-      <button
-        onClick={prevSlide}
-        className="z-[9999]  absolute inset-y-0 left-0 flex justify-center items-center w-[46px] text-gray-800 hover:bg-gray-800/10 focus:outline-none focus:bg-gray-800/10 rounded-l-lg dark:text-white dark:hover:bg-white/10 dark:focus:bg-white/10"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          fill="none"
-          stroke="grey"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="shrink-0"
-        >
-          <path d="M15 18L9 12l6-6"></path>
-        </svg>
-        <span className="sr-only">Previous</span>
-      </button>
-
-      <button
-        onClick={nextSlide}
-        className="z-[9999] absolute inset-y-0 right-0 flex justify-center items-center w-[46px] text-gray-800 hover:bg-gray-800/10 focus:outline-none focus:bg-gray-800/10 rounded-r-lg dark:text-white dark:hover:bg-white/10 dark:focus:bg-white/10"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          fill="none"
-          stroke="grey"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="shrink-0"
-          
-        >
-           <path  d="m1 9 4-4-4-4"/>
-        </svg>
-        <span className="sr-only">Next</span>
-      </button>
-
-      <div   className=" flex justify-center space-x-2 absolute bottom-3 left-0 right-0"
-     >
-        {sections.map((_, index) => (
-          <button
+        return (
+          <div
             key={index}
-            onClick={() => setCurrentSlide(index)}
-            className={`w-3 h-3 border rounded-full ${
-              index === currentSlide
-                ? "bg-blue-700 border-blue-700"
-                : "bg-gray-400 border-gray-400"
-            } dark:border-neutral-600`}
-          ></button>
-        ))}
-      </div>
+            className={`flex-shrink-0 h-full ${
+              isActive ? "w-[70%] ml-[25%]" : "w-[15%] opacity-60"
+            } flex justify-center items-center transition-all duration-500`}
+          >
+            <div className="relative w-full h-full flex flex-col items-center">
+              <img
+                src={`/seccionesMenuIm/${slide.title}.png`}
+                alt={slide.title}
+                className="h-full object-contain"
+              />
+              {isActive && (
+                <span className="absolute bottom-4 text-lg font-bold text-gray-800 dark:text-white text-center px-4">
+                  {slide.description}
+                </span>
+              )}
+            </div>
+          </div>
+        );
+      })}
     </div>
+  </div>
+
+  {/* Botón Anterior */}
+  <button
+    onClick={prevSlide}
+    className="z-10 absolute inset-y-0 left-0 flex justify-center items-center w-[46px] bg-gray-300 hover:bg-gray-400 rounded-l-lg"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="shrink-0"
+    >
+      <path d="M15 18L9 12l6-6"></path>
+    </svg>
+  </button>
+
+  {/* Botón Siguiente */}
+  <button
+    onClick={nextSlide}
+    className="z-10 absolute inset-y-0 right-0 flex justify-center items-center w-[46px] bg-gray-300 hover:bg-gray-400 rounded-r-lg"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="shrink-0"
+    >
+      <path d="M9 18l6-6-6-6"></path>
+    </svg>
+  </button>
+
+  {/* Indicadores */}
+  <div className="flex justify-center space-x-2 absolute bottom-3 left-0 right-0">
+    {sections.map((_, index) => (
+      <button
+        key={index}
+        onClick={() => setCurrentSlide(index)}
+        className={`w-3 h-3 border rounded-full ${
+          index === currentSlide
+            ? "bg-blue-700 border-blue-700"
+            : "bg-gray-400 border-gray-400"
+        }`}
+      ></button>
+    ))}
+  </div>
+</div>
+
           <footer className="mt-auto p-4 text-center">
             <h4 className="text-lg font-semibold">
               Síguenos en redes sociales
