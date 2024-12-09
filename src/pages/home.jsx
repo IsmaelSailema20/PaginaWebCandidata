@@ -50,105 +50,111 @@ function Home() {
     window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
   };
 
-  
+
 
   return (
     <div className="min-h-screen bg-white text-gray-900 flex flex-col">
-      
+
 
       <div className="flex flex-1">
         <div className="flex flex-col w-4/5 p-4 h-300">
-        <div className="relative h-[500px] w-full bg-white rounded-lg shadow-md dark:bg-neutral-800">
-  <div className="relative h-full overflow-hidden flex items-center justify-center">
-    <div
-      className="flex transition-transform duration-700 h-full"
-      style={{
-        transform: `translateX(-${currentSlide * 33.33}%)`, // Desplazamiento del carrusel
-      }}
-    >
-      {sections.map((slide, index) => {
-        const isActive = index === currentSlide;
+          <div className="relative h-[500px] w-full bg-white rounded-lg shadow-md dark:bg-neutral-800">
+            <div className="relative h-full overflow-hidden flex items-center justify-center">
+              <div
+                className="flex transition-transform duration-700 h-full"
+                style={{
+                  transform: `translateX(position-${(currentSlide / sections.length) * 100+(currentSlide==0?(-50):-25)}%)`,
+                }}
+              >
+                {sections.map((slide, index) => {
+                  const isCenter = index === currentSlide;
+                  const isLeft = index === (currentSlide - 1 + sections.length) % sections.length;
+                  const isRight = index === (currentSlide + 1) % sections.length;
 
-        return (
-          <div
-            key={index}
-            className={`flex-shrink-0 h-full ${
-              isActive ? "w-[70%] ml-[25%]" : "w-[15%] opacity-60"
-            } flex justify-center items-center transition-all duration-500`}
-          >
-            <div className="relative w-full h-full flex flex-col items-center">
-              <img
-                src={`/seccionesMenuIm/${slide.title}.png`}
-                alt={slide.title}
-                className="h-full object-contain"
-              />
-              {isActive && (
-                <span className="absolute bottom-4 text-lg font-bold text-gray-800 dark:text-white text-center px-4">
-                  {slide.description}
-                </span>
-              )}
+                  return (
+                    <div
+                      key={index}
+                      className={`flex-shrink-0 h-full flex justify-center items-center transition-all duration-500`}
+                      style={{
+                        transform: isCenter ? "scale(1)" : isLeft || isRight ? "scale(0.8)" : "scale(0.7)",
+                        opacity: isCenter ? 1 : 0.6,
+                        width: isCenter ? "50%" : isLeft || isRight ? "25%" : "20%",
+                      }}
+                    >
+                      <div className="relative w-full h-full flex flex-col items-center">
+                        <img
+                          src={`/seccionesMenuIm/${slide.title}.png`}
+                          alt={slide.title}
+                          className="h-full object-contain"
+                        />
+                        {isCenter && (
+                          <span className="absolute bottom-4 text-lg font-bold text-gray-800 dark:text-white text-center px-4">
+                            {slide.description}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Botón Anterior */}
+            <button
+              onClick={prevSlide}
+              className="z-10 absolute inset-y-0 left-0 flex justify-center items-center w-[46px] bg-gray-300 hover:bg-gray-400 rounded-l-lg"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="shrink-0"
+              >
+                <path d="M15 18L9 12l6-6"></path>
+              </svg>
+            </button>
+
+            {/* Botón Siguiente */}
+            <button
+              onClick={nextSlide}
+              className="z-10 absolute inset-y-0 right-0 flex justify-center items-center w-[46px] bg-gray-300 hover:bg-gray-400 rounded-r-lg"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="shrink-0"
+              >
+                <path d="M9 18l6-6-6-6"></path>
+              </svg>
+            </button>
+
+            {/* Indicadores */}
+            <div className="flex justify-center space-x-2 absolute bottom-3 left-0 right-0">
+              {sections.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentSlide(index)}
+                  className={`w-3 h-3 border rounded-full ${index === currentSlide
+                      ? "bg-blue-700 border-blue-700"
+                      : "bg-gray-400 border-gray-400"
+                    }`}
+                ></button>
+              ))}
             </div>
           </div>
-        );
-      })}
-    </div>
-  </div>
 
-  {/* Botón Anterior */}
-  <button
-    onClick={prevSlide}
-    className="z-10 absolute inset-y-0 left-0 flex justify-center items-center w-[46px] bg-gray-300 hover:bg-gray-400 rounded-l-lg"
-  >
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="shrink-0"
-    >
-      <path d="M15 18L9 12l6-6"></path>
-    </svg>
-  </button>
 
-  {/* Botón Siguiente */}
-  <button
-    onClick={nextSlide}
-    className="z-10 absolute inset-y-0 right-0 flex justify-center items-center w-[46px] bg-gray-300 hover:bg-gray-400 rounded-r-lg"
-  >
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="shrink-0"
-    >
-      <path d="M9 18l6-6-6-6"></path>
-    </svg>
-  </button>
-
-  {/* Indicadores */}
-  <div className="flex justify-center space-x-2 absolute bottom-3 left-0 right-0">
-    {sections.map((_, index) => (
-      <button
-        key={index}
-        onClick={() => setCurrentSlide(index)}
-        className={`w-3 h-3 border rounded-full ${
-          index === currentSlide
-            ? "bg-blue-700 border-blue-700"
-            : "bg-gray-400 border-gray-400"
-        }`}
-      ></button>
-    ))}
-  </div>
-</div>
 
           <footer className="mt-auto p-4 text-center">
             <h4 className="text-lg font-semibold">
