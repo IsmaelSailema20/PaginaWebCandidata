@@ -3,8 +3,7 @@ import { Link } from "react-router-dom";
 
 function Home() {
   const [message, setMessage] = useState("Unión y Futuro Universitario");
-  const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
-
+  const [currentSlide, setCurrentSlide] = useState(0);
   const sections = [
     {
       title: "Eventos",
@@ -27,6 +26,17 @@ function Home() {
       path: "/sugerencias",
     },
   ];
+  const prevSlide = () => {
+    setCurrentSlide((prev) =>
+      prev === 0 ? sections.length - 1 : prev - 1
+    );
+  };
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) =>
+      prev === sections.length - 1 ? 0 : prev + 1
+    );
+  };
 
   useEffect(() => {
     fetch("/api/message")
@@ -40,72 +50,94 @@ function Home() {
     window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
   };
 
-  const nextSection = () => {
-    if (currentSectionIndex >= sections.length - 3) {
-      setCurrentSectionIndex(0);
-    } else {
-      setCurrentSectionIndex(currentSectionIndex + 1);
-    }
-  };
-
-  const prevSection = () => {
-    if (currentSectionIndex > 0) {
-      setCurrentSectionIndex(currentSectionIndex - 1);
-    }
-  };
+  
 
   return (
     <div className="min-h-screen bg-white text-gray-900 flex flex-col">
-      <div className="relative flex-1">
-        <img
-          src="/imagenInicio/inicio.png"
-          alt="Inicio"
-          className="w-full h-[90vh] object-cover"
-        />
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50">
-          <h1 className="text-4xl font-bold text-white">{message}</h1>
+      
+
+      <div className="flex flex-1">
+        <div className="flex flex-col w-4/5 p-4 h-300">
+        <div className="relative h-[380px] w-25 bg-white rounded-lg shadow-md dark:bg-neutral-800">
+      
+      <div className="  relative overflow-hidden h-130 w-3/4 bg-white rounded-lg">
+        <div
+          className=" flex w-80 transition-transform duration-700"
+          style={{
+            transform: `translateX(-${currentSlide * 30}%)`,
+          }}
+        >
+          {sections.map((slide, index) => (
+            <div
+              key={index}
+              className={`  flex-shrink-0 w-full h-full flex justify-center items-center p-6  dark:bg-neutral-${900 - index * 100}`}
+            >
+              <span className=" text-4xl text-gray-800 dark:text-white">
+                {slide.description}
+              </span>
+              <img src={"/seccionesMenuIm/"+slide.title+".png"}></img>
+            </div>
+            
+          ))}
         </div>
       </div>
 
-      <div className="flex flex-1">
-        <div className="flex flex-col w-3/4 p-4">
-          <div className="flex items-center mb-4">
-            <button
-              onClick={prevSection}
-              disabled={currentSectionIndex === 0}
-              className="bg-gray-300 p-2 rounded-l-md"
-            >
-              ←
-            </button>
-            <div className="flex overflow-hidden">
-              {sections
-                .slice(currentSectionIndex, currentSectionIndex + 3)
-                .map((section, index) => (
-                  <Link to={section.path} key={index} className="flex-1">
-                    <div className="bg-red-100 text-center rounded-lg shadow-md flex flex-col mx-2 h-[500px] transition-all duration-300 transform hover:scale-105 cursor-pointer">
-                      <h3 className="text-2xl font-semibold mb-2 p-4">
-                        {section.title}
-                      </h3>
-                      <p className="text-sm mb-2 px-4">{section.description}</p>
-                      <div className="flex-grow flex items-center justify-center h-20">
-                        <img
-                          src={`/seccionesMenuIm/${section.title}.png`}
-                          alt={section.title}
-                          className="h-full object-contain"
-                        />
-                      </div>
-                    </div>
-                  </Link>
-                ))}
-            </div>
-            <button
-              onClick={nextSection}
-              className="bg-gray-300 p-2 rounded-r-md"
-            >
-              →
-            </button>
-          </div>
+      <button
+        onClick={prevSlide}
+        className="z-[9999]  absolute inset-y-0 left-0 flex justify-center items-center w-[46px] text-gray-800 hover:bg-gray-800/10 focus:outline-none focus:bg-gray-800/10 rounded-l-lg dark:text-white dark:hover:bg-white/10 dark:focus:bg-white/10"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          stroke="grey"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="shrink-0"
+        >
+          <path d="M15 18L9 12l6-6"></path>
+        </svg>
+        <span className="sr-only">Previous</span>
+      </button>
 
+      <button
+        onClick={nextSlide}
+        className="z-[9999] absolute inset-y-0 right-0 flex justify-center items-center w-[46px] text-gray-800 hover:bg-gray-800/10 focus:outline-none focus:bg-gray-800/10 rounded-r-lg dark:text-white dark:hover:bg-white/10 dark:focus:bg-white/10"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          stroke="grey"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="shrink-0"
+          
+        >
+           <path  d="m1 9 4-4-4-4"/>
+        </svg>
+        <span className="sr-only">Next</span>
+      </button>
+
+      <div   className=" flex justify-center space-x-2 absolute bottom-3 left-0 right-0"
+     >
+        {sections.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrentSlide(index)}
+            className={`w-3 h-3 border rounded-full ${
+              index === currentSlide
+                ? "bg-blue-700 border-blue-700"
+                : "bg-gray-400 border-gray-400"
+            } dark:border-neutral-600`}
+          ></button>
+        ))}
+      </div>
+    </div>
           <footer className="mt-auto p-4 text-center">
             <h4 className="text-lg font-semibold">
               Síguenos en redes sociales
