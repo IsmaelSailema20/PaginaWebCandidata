@@ -20,6 +20,11 @@ const Navbar = () => {
       image: "iconosBarra/sugerencias.png",
       path: "/sugerencias",
     },
+    {
+      name: "Votaciones",
+      image: "iconosBarra/caja-de-votacion.png",
+      path: "/votaciones",
+    },
   ];
 
   return (
