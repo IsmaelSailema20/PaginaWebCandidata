@@ -16,9 +16,7 @@ function CardVotaciones({ src, candidata, alt, hasVoted, votedFor, onVote }) {
           alt={alt}
         />
         <h5 className="text-2xl font-bold text-center my-4">
-          <span className="text-[#40b2e6] drop-shadow-[4px_2px_0px_#dedede]">
-            {candidata}
-          </span>
+          <span className="text-black">{candidata}</span>
         </h5>
 
         <div className="flex mt-4 md:mt-6">
@@ -27,10 +25,10 @@ function CardVotaciones({ src, candidata, alt, hasVoted, votedFor, onVote }) {
             disabled={hasVoted}
             className={`text-lg inline-flex items-center px-6 py-3 font-bold text-center text-white rounded-lg transition-transform duration-300 focus:ring-4 focus:outline-none ${
               votedFor === candidata
-                ? "bg-pink-500 cursor-not-allowed"
+                ? "bg-blue-400 cursor-not-allowed"
                 : hasVoted
                 ? "bg-gray-400 cursor-not-allowed"
-                : "bg-gradient-to-r from-[#FF8B9A] to-[#72D5FF] text-white p-3 rounded-full shadow-lg hover:opacity-90 transition-all duration-300 transform  disabled:opacity-50 hover:scale-105"
+                : "bg-blue-600 text-white p-3 rounded-full shadow-lg hover:opacity-90 transition-all duration-300 transform  disabled:opacity-50 hover:scale-105"
             }`}
           >
             {votedFor === candidata ? (
