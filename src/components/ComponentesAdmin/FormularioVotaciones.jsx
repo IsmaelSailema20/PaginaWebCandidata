@@ -11,26 +11,37 @@ function FormularioVotaciones() {
   // Estado para las votaciones desde la base de datos
   const [votaciones, setVotaciones] = useState([]);
 
-  // Manejar el envío del formulario
   const handleAddVotacion = () => {
-    if (!newVotacion.nombre_votacion || !newVotacion.descripcion) {
+    if (
+      !newVotacion.nombre_votacion ||
+      !newVotacion.descripcion ||
+      !newVotacion.imagen
+    ) {
       alert("Por favor, completa todos los campos requeridos.");
       return;
     }
 
-    fetch("/api/votaciones", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newVotacion),
-    })
+    const formData = new FormData();
+    formData.append("nombre_votacion", newVotacion.nombre_votacion);
+    formData.append("descripcion", newVotacion.descripcion);
+    formData.append("imagen", newVotacion.imagen);
+
+    fetch(
+      "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/CrearVotaciones.php",
+      {
+        method: "POST",
+        body: formData,
+      }
+    )
       .then((response) => response.json())
       .then((data) => {
-        setVotaciones([...votaciones, data]); // Actualizar estado con la nueva votación
-        setNewVotacion({ nombre_votacion: "", descripcion: "", imagen: "" }); // Limpiar formulario
+        if (data === "Se inserto correctamente") {
+          alert("Votación guardada con éxito");
+          // Puedes actualizar el estado de tus votaciones aquí si es necesario
+          setNewVotacion({ nombre_votacion: "", descripcion: "", imagen: "" }); // Limpiar formulario
+        }
       })
-      .catch((error) => console.error("Error al agregar votación:", error));
+      .catch((error) => console.error("Error al guardar la votación:", error));
   };
 
   return (
