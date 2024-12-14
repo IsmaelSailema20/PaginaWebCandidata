@@ -24,6 +24,7 @@ export default function EditModal({
   miembroEditado,
   handleChange,
   mode = "edit",
+  onSave,
 }) {
   const [error, setError] = useState("");
   const [nuevoMiembro, setNuevoMiembro] = useState({
@@ -37,6 +38,10 @@ export default function EditModal({
     visible: "1",
   });
   const [imgError, setImgError] = useState(false);
+  const handleModalClose = () => {
+    setError(""); // Limpiar el mensaje de error
+    handleClose(); // Llamar al manejador proporcionado
+  };
 
   useEffect(() => {
     if (mode === "edit" && miembroEditado) {
@@ -56,6 +61,8 @@ export default function EditModal({
   }, [mode, miembroEditado]);
 
   const handleSave = async () => {
+    setError(""); // Limpiar errores antes de continuar
+
     if (
       !nuevoMiembro.nombre_miembro ||
       !nuevoMiembro.descripcion_miembro ||
@@ -93,6 +100,7 @@ export default function EditModal({
           result
         );
         handleClose();
+        if (onSave) onSave(); // Notificar al padre
       } else {
         setError("Hubo un error al guardar los cambios.");
       }
@@ -120,7 +128,7 @@ export default function EditModal({
   return (
     <Modal
       open={open}
-      onClose={handleClose}
+      onClose={handleModalClose}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
@@ -195,7 +203,7 @@ export default function EditModal({
 
             <div className="col-span-2 flex justify-end space-x-2">
               <button
-                onClick={handleClose}
+                onClick={handleModalClose}
                 className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
               >
                 <X className="mr-2 inline" /> Cancelar

@@ -5,7 +5,7 @@ import { ListWithAvatar } from "../ListadoCandidatos"; // Asegúrate de cambiar 
 function SeccionCandidatosAdm() {
   return (
     <div>
-      <h2>Sección de Candidatos</h2>
+      <h2 className="m">Sección de Candidatos</h2>
       <ListWithAvatar />
     </div>
   );

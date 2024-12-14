@@ -5,7 +5,7 @@ class Conexion
     private $server = 'localhost';
     private $db = 'candidatura';
     private $user = 'root';
-    private $password = '';
+    private $password = 'root';
 
     public function conectar()
     {
