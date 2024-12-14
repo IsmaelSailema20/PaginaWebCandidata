@@ -85,8 +85,43 @@ function SeccionEventosAdm() {
 
 
   const handleEditEvento = async () => {
+    // Verificar que todos los campos obligatorios estén completos
+    if (
+      !editingEvento.titulo ||
+      !editingEvento.tipo ||
+      !editingEvento.descripcion ||
+      !editingEvento.lugar ||
+      !editingEvento.fecha ||
+      !editingEvento.hora ||
+      !editingEvento.imagen
+    ) {
+      alert("Por favor complete todos los campos obligatorios");
+      return;
+    }
 
+    try {
+      const response = await fetch(
+        "http://localhost/ProyectoManejo/PaginaWebCandidata/models/editar_eventos.php",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(editingEvento),
+        }
+      );
+
+      if (response.ok) {
+        const updatedEventos = eventos.map((evento) =>
+          evento.id === editingEvento.id ? { ...editingEvento } : evento
+        );
+
+        setEventos(updatedEventos);
+        setEditingEvento(null);
+      }
+    } catch (error) {
+      console.error("Error editing event:", error);
+    }
   };
+
 
   const handleToggleVisibilidadEvento = async (id, currentVisibility) => {
     try {
@@ -176,7 +211,10 @@ function SeccionEventosAdm() {
                 </div>
                 <div className="flex space-x-2">
                   <button
-                    onClick={() => setEditingEvento(evento)}
+                    onClick={() => {
+                      setEditingEvento(evento);
+                      window.scrollTo({ top: 0, behavior: 'smooth' }); // Desplaza al inicio de la página
+                    }}
                     className="text-blue-500 hover:bg-blue-100 p-2 rounded"
                   >
                     <Edit2 />
