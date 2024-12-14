@@ -18,6 +18,37 @@ function SeccionSugerenciasAdm() {
       console.error("Error al cargar votaciones:", error);
     }
   };
+  const handleToggleVisibilidadVotacion = async (
+    id_votacion,
+    currentVisibility
+  ) => {
+    try {
+      const response = await fetch(
+        "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/visibilidadVotacion.php",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id_votacion: id_votacion,
+            visible: !currentVisibility,
+          }),
+        }
+      );
+
+      if (response.ok) {
+        // Actualiza el estado de las votaciones para reflejar el cambio de visibilidad
+        const updatedVotaciones = votaciones.map((votacion) =>
+          votacion.id_votacion === id_votacion
+            ? { ...votacion, visible: !currentVisibility }
+            : votacion
+        );
+        setVotaciones(updatedVotaciones);
+      }
+    } catch (error) {
+      console.error("Error cambiando visibilidad de la votacion:", error);
+    }
+  };
+
   // Llamar a fetchVotaciones cuando el componente se monta
   useEffect(() => {
     fetchVotaciones();
@@ -90,6 +121,12 @@ function SeccionSugerenciasAdm() {
                   <Edit2 />
                 </button>
                 <button
+                  onClick={() =>
+                    handleToggleVisibilidadVotacion(
+                      votacion.id_votacion,
+                      votacion.visible
+                    )
+                  }
                   className={`p-2 rounded ${
                     votacion.visible
                       ? "text-yellow-500 hover:bg-yellow-100"
