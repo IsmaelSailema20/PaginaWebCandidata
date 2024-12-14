@@ -20,7 +20,7 @@ try {
     DATE_FORMAT(fecha, '%Y-%m-%d') AS fecha,
     TIME_FORMAT(fecha, '%H:%i') AS hora,
     urlImagen AS imagen 
-    FROM eventos_noticias WHERE tipo = 'Evento'";
+    FROM eventos_noticias WHERE tipo = 'Evento' AND visible = 1";
 
     // Preparar y ejecutar la consulta
     $result = $conn->prepare($selectEventos);

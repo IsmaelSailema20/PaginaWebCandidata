@@ -14,7 +14,7 @@ try {
     // Consulta SQL para obtener los datos de eventos
     $selectEventos = "SELECT 
     urlImagen AS url 
-    FROM eventos_noticias";
+    FROM eventos_noticias WHERE visible = 1";
 
     // Preparar y ejecutar la consulta
     $result = $conn->prepare($selectEventos);
