@@ -5,19 +5,22 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
+import { X, Save, Delete, DeleteIcon, Trash2 } from "lucide-react";
 
 export function ListWithAvatar() {
   const [miembros, setMiembros] = useState([]);
   const [miembroEditado, setMiembroEditado] = useState(null);
   const [openModal, setOpenModal] = useState(false);
-  const [modalMode, setModalMode] = useState("edit"); 
+  const [modalMode, setModalMode] = useState("edit");
 
   const [openDialog, setOpenDialog] = useState(false);
   const [miembroAEliminar, setMiembroAEliminar] = useState(null);
 
   const fetchMiembros = async () => {
     try {
-      const response = await fetch("http://localhost/ProyectoManejo/paginaWebCandidata/models/ConsultaMiembros.php");
+      const response = await fetch(
+        "http://localhost/ProyectoManejo/paginaWebCandidata/models/ConsultaMiembros.php"
+      );
       const data = await response.json();
       setMiembros(data);
     } catch (error) {
@@ -36,8 +39,8 @@ export function ListWithAvatar() {
   };
 
   const handleCreate = () => {
-    setMiembroEditado(null); 
-    setModalMode("create"); 
+    setMiembroEditado(null);
+    setModalMode("create");
     setOpenModal(true);
   };
 
@@ -70,16 +73,22 @@ export function ListWithAvatar() {
         if (modalMode === "edit") {
           setMiembros((prevMiembros) =>
             prevMiembros.map((miembro) =>
-              miembro.id_miembro === miembroEditado.id_miembro ? miembroEditado : miembro
+              miembro.id_miembro === miembroEditado.id_miembro
+                ? miembroEditado
+                : miembro
             )
           );
         } else if (modalMode === "create") {
           setMiembros((prevMiembros) => [...prevMiembros, result.nuevoMiembro]);
         }
         setOpenModal(false);
-        console.log(`Miembro ${modalMode === "edit" ? "editado" : "creado"} con éxito.`);
+        console.log(
+          `Miembro ${modalMode === "edit" ? "editado" : "creado"} con éxito.`
+        );
       } else {
-        console.error(`Error al ${modalMode === "edit" ? "editar" : "crear"} el miembro.`);
+        console.error(
+          `Error al ${modalMode === "edit" ? "editar" : "crear"} el miembro.`
+        );
       }
     } catch (error) {
       console.error("Error al enviar los datos:", error);
@@ -93,19 +102,24 @@ export function ListWithAvatar() {
 
   const handleConfirmDelete = async () => {
     try {
-      const response = await fetch("http://localhost/manejo/paginaWebCandidata/models/deleteCandidato.php", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id_miembro: miembroAEliminar.id_miembro }),
-      });
+      const response = await fetch(
+        "http://localhost/manejo/paginaWebCandidata/models/deleteCandidato.php",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ id_miembro: miembroAEliminar.id_miembro }),
+        }
+      );
 
       const result = await response.json();
 
       if (result.success) {
         setMiembros((prevMiembros) =>
-          prevMiembros.filter((miembro) => miembro.id_miembro !== miembroAEliminar.id_miembro)
+          prevMiembros.filter(
+            (miembro) => miembro.id_miembro !== miembroAEliminar.id_miembro
+          )
         );
         console.log("Miembro eliminado con éxito.");
       } else {
@@ -147,8 +161,12 @@ export function ListWithAvatar() {
                   src={miembro.imgSrc}
                 />
                 <div>
-                  <h6 className="text-blue-600 text-lg">{miembro.nombre_miembro}</h6>
-                  <p className="text-gray-500 text-sm">{miembro.tipo_miembro}</p>
+                  <h6 className="text-blue-600 text-lg">
+                    {miembro.nombre_miembro}
+                  </h6>
+                  <p className="text-gray-500 text-sm">
+                    {miembro.tipo_miembro}
+                  </p>
                 </div>
               </div>
               <div className="flex space-x-2">
@@ -157,7 +175,6 @@ export function ListWithAvatar() {
                   className="text-yellow-500 hover:text-yellow-700"
                 >
                   Editar
-
                 </button>
                 <button
                   onClick={() => handleDelete(miembro)}
@@ -173,12 +190,12 @@ export function ListWithAvatar() {
         )}
       </ul>
 
-   <EditModal
+      <EditModal
         open={openModal}
         handleClose={() => setOpenModal(false)}
         miembroEditado={miembroEditado}
         handleChange={handleChange}
-        mode={modalMode}  
+        mode={modalMode}
         handleSave={handleSave}
       />
 
@@ -188,12 +205,18 @@ export function ListWithAvatar() {
           <p>¿Estás seguro de que deseas eliminar este candidato?</p>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDialog} color="secondary">
-            Cancelar
-          </Button>
-          <Button onClick={handleConfirmDelete} color="primary">
-            Aceptar
-          </Button>
+          <button
+            onClick={handleCloseDialog}
+            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+          >
+            <X className="mr-2 inline" /> Cancelar
+          </button>
+          <button
+            onClick={handleSave}
+            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+          >
+            <Trash2 className="mr-2 inline" /> Aceptar
+          </button>
         </DialogActions>
       </Dialog>
     </div>
