@@ -37,7 +37,7 @@ const ModalEventos = ({
                     <option value="Noticia">Noticia</option>
                 </select>
                 <textarea
-                    placeholder="Descripción"
+                    placeholder="Descripción *"
                     value={evento.descripcion}
                     onChange={(e) =>
                         setEvento({ ...evento, descripcion: e.target.value })
@@ -47,7 +47,7 @@ const ModalEventos = ({
                 />
                 <input
                     type="text"
-                    placeholder="Lugar del Evento"
+                    placeholder="Lugar del Evento *"
                     value={evento.lugar}
                     onChange={(e) =>
                         setEvento({ ...evento, lugar: e.target.value })
@@ -74,7 +74,7 @@ const ModalEventos = ({
                 />
                 <input
                     type="url"
-                    placeholder="URL de la Imagen"
+                    placeholder="URL de la Imagen *"
                     value={evento.imagen}
                     onChange={(e) =>
                         setEvento({ ...evento, imagen: e.target.value })

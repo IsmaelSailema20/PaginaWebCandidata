@@ -35,9 +35,17 @@ function SeccionEventosAdm() {
   }, []);
 
   const handleAddEvento = async () => {
-    // Verificar si los campos obligatorios están completos
-    if (!newEvento.titulo || !newEvento.fecha || !newEvento.hora) {
-      alert("Por favor complete todos los campos obligatorios");
+    // Verificar si todos los campos obligatorios están completos
+    if (
+      !newEvento.titulo ||
+      !newEvento.tipo ||
+      !newEvento.descripcion ||
+      !newEvento.lugar ||
+      !newEvento.fecha ||
+      !newEvento.hora ||
+      !newEvento.imagen
+    ) {
+      alert("Por favor complete todos los campos");
       return;
     }
 
@@ -50,21 +58,17 @@ function SeccionEventosAdm() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             ...newEvento,
-            visible: true, // Puedes agregar otros parámetros que necesites
+            visible: true,
           }),
         }
       );
 
       if (response.ok) {
         const result = await response.json();
-
-        // Actualizar el estado de eventos con el nuevo evento
         setEventos([...eventos, result.evento]);
-
-        // Limpiar los campos del formulario
         setNewEvento({
           titulo: "",
-          subtitulo: "",
+          tipo: "",
           descripcion: "",
           lugar: "",
           fecha: "",
@@ -72,14 +76,13 @@ function SeccionEventosAdm() {
           imagen: "",
           visible: true,
         });
-
-        // Cerrar el modal o restablecer el estado de "agregando evento"
         setIsAddingNew(false);
       }
     } catch (error) {
       console.error("Error adding event:", error);
     }
   };
+
 
   const handleEditEvento = async () => {
 
