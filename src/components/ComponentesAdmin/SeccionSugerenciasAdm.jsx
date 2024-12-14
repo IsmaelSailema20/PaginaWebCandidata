@@ -1,7 +1,8 @@
 import React from "react";
+import FormularioVotaciones from "./FormularioVotaciones";
 
 function SeccionSugerenciasAdm() {
-  return <div>SeccionSugerenciasAdm</div>;
+  return <FormularioVotaciones></FormularioVotaciones>;
 }
 
 export default SeccionSugerenciasAdm;
