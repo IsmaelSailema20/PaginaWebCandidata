@@ -25,13 +25,7 @@ const EventosNoticias = () => {
   }, []);
 
   // Cambiar automáticamente cada 3 segundos
-  useEffect(() => {
-    const interval = setInterval(() => {
-      handleNextSlide();
-    }, 30000);
 
-    return () => clearInterval(interval);
-  }, [currentSlide]);
 
   // Función para manejar el cambio de slide y activar la animación
   const handleNextSlide = () => {
@@ -112,66 +106,77 @@ const EventosNoticias = () => {
           NOTICIAS
         </span>
       </h1>
-      <div className="relative p-10 bg-slate-100 rounded-md border-dotted shadow-lg">
-        {/* Botón para ir al slide anterior */}
-        <button
-          onClick={handlePrevSlide}
-          className="absolute left-10 top-1/2 transform -translate-y-1/2 bg-gray-500 text-white rounded-full
+      {slides.length > 0 ? (
+        <div className="relative p-10 bg-slate-100 rounded-md border-dotted shadow-lg">
+          {/* Botón para ir al slide anterior */}
+          <button
+            onClick={handlePrevSlide}
+            className="absolute left-10 top-1/2 transform -translate-y-1/2 bg-gray-500 text-white rounded-full
                     bg-gradient-to-r from-[#FF8B9A] to-[#72D5FF]  p-3 shadow-lg hover:opacity-90 transition-all duration-300 
                     hover:scale-110 disabled:opacity-50"
-        >
-          &#10094;
-        </button>
+          >
+            &#10094;
+          </button>
 
-        <div className="carrusel flex items-center justify-center space-x-4 max-w-screen-md mx-auto relative">
+          <div className="carrusel flex items-center justify-center space-x-4 max-w-screen-md mx-auto relative">
 
-          {/* Imagen izquierda - sin animación */}
-          <img
-            src={slides[getPrevSlide()]}
-            alt="Prev Slide"
-            className="rounded-md w-1/3 h-64 object-cover opacity-60 scale-90"
-          />
+            {/* Imagen izquierda - sin animación */}
+            <img
+              src={slides[getPrevSlide()]}
+              alt="Prev Slide"
+              className="rounded-md w-1/3 h-64 object-cover opacity-60 scale-90"
+            />
 
-          {/* Imagen central - con animación hacia la derecha */}
-          <img
-            src={slides[currentSlide]}
-            alt="Current Slide"
-            className={`rounded-md w-8/12 h-96 object-cover transition-transform duration-500 transform scale-105`}
-          />
+            {/* Imagen central - con animación hacia la derecha */}
+            <img
+              src={slides[currentSlide]}
+              alt="Current Slide"
+              className={`rounded-md w-8/12 h-96 object-cover transition-transform duration-500 transform scale-105`}
+            />
 
-          {/* Imagen derecha - con animación hacia la derecha */}
-          <img
-            src={slides[getNextSlide()]}
-            alt="Next Slide"
-            className={`rounded-md w-1/3 h-64 object-cover opacity-60 scale-90 transition-transform duration-500 `}
-          />
-        </div>
+            {/* Imagen derecha - con animación hacia la derecha */}
+            <img
+              src={slides[getNextSlide()]}
+              alt="Next Slide"
+              className={`rounded-md w-1/3 h-64 object-cover opacity-60 scale-90 transition-transform duration-500 `}
+            />
+          </div>
 
-        {/* Botón para ir al siguiente slide */}
-        <button
-          onClick={handleNextSlide}
-          className="absolute right-10 top-1/2 -translate-y-1/2 bg-gray-500 text-white rounded-full
+          {/* Botón para ir al siguiente slide */}
+          <button
+            onClick={handleNextSlide}
+            className="absolute right-10 top-1/2 -translate-y-1/2 bg-gray-500 text-white rounded-full
                     bg-gradient-to-r from-[#FF8B9A] to-[#72D5FF]  p-3 shadow-lg hover:opacity-90 transition-all duration-300 
                     transform hover:scale-110 disabled:opacity-50"
-        >
-          &#10095;
-        </button>
+          >
+            &#10095;
+          </button>
+        </div>
+      ) : (
+        <div className="text-center text-gray-500 py-4">
+          No existen Eventos ni Noticias
+        </div>
+      )
+      }
 
-        <style jsx>{`
-          @keyframes slideRight {
-            0% {
-              transform: translateX(0);
-            }
-            100% {
-              transform: translateX(100%);
-            }
-          }
+      {/* Estilos para la animación */}
+      <style jsx>{`
+    @keyframes slideRight {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(100%);
+      }
+    }
+  
+    .animate-slide {
+      animation: slideRight 0.2s ease-in-out forwards;
+    }
+  `}</style>
 
-          .animate-slide {
-            animation: slideRight 0.2s ease-in-out forwards;
-          }
-        `}</style>
-      </div>
+
+
 
       <div className="noticias mt-10 mb10 text-5xl">
         <h1 className="text-center mt-2 mb-10 text-5xl font-bold">
