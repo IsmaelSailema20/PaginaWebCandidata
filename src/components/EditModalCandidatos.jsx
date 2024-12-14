@@ -1,20 +1,15 @@
 import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
 import Modal from "@mui/material/Modal";
-import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Radio from "@mui/material/Radio";
-
+import Button from "@mui/material/Button";
+import { X, Save } from "lucide-react";
 const style = {
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "500px",
+  width: "80%", // Ancho responsivo
+  maxWidth: "800px", // Máximo ancho para pantallas grandes
   maxHeight: "80vh",
   overflowY: "auto",
   bgcolor: "background.paper",
@@ -28,7 +23,7 @@ export default function EditModal({
   handleClose,
   miembroEditado,
   handleChange,
-  mode = "edit", 
+  mode = "edit",
 }) {
   const [error, setError] = useState("");
   const [nuevoMiembro, setNuevoMiembro] = useState({
@@ -39,8 +34,9 @@ export default function EditModal({
     imgSrc: "",
     facebook_url: "",
     instagram_url: "",
-    visible: "1",  
+    visible: "1",
   });
+  const [imgError, setImgError] = useState(false);
 
   useEffect(() => {
     if (mode === "edit" && miembroEditado) {
@@ -54,7 +50,7 @@ export default function EditModal({
         imgSrc: "",
         facebook_url: "",
         instagram_url: "",
-        visible: "1", 
+        visible: "1",
       });
     }
   }, [mode, miembroEditado]);
@@ -96,7 +92,7 @@ export default function EditModal({
             : "Candidato creado exitosamente:",
           result
         );
-        handleClose(); 
+        handleClose();
       } else {
         setError("Hubo un error al guardar los cambios.");
       }
@@ -118,7 +114,9 @@ export default function EditModal({
       [name]: value,
     }));
   };
-
+  const handleImageError = () => {
+    setImgError(true);
+  };
   return (
     <Modal
       open={open}
@@ -127,112 +125,91 @@ export default function EditModal({
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-        <h4 className="text-lg font-semibold mb-4">
-          {mode === "edit" ? "Editar Miembro" : "Crear Miembro"}
-        </h4>
-        <form>
-          <div className="mb-2">
-            <TextField
-              label="Nombre"
+        <div className="bg-gray-100 p-4 rounded-lg mb-6">
+          <h3 className="text-lg font-semibold mb-4">
+            {mode === "edit" ? "Editar Candidato" : "Crear Candidato"}
+          </h3>
+          <div className="grid grid-cols-2 gap-4">
+            <input
+              type="text"
+              placeholder="Nombre del Miembro *"
               name="nombre_miembro"
               value={nuevoMiembro.nombre_miembro || ""}
               onChange={handleInputChange}
-              fullWidth
+              className="border p-2 rounded"
               required
             />
-          </div>
-          <div className="mb-2">
-            <TextField
-              label="Descripción"
-              name="descripcion_miembro"
-              value={nuevoMiembro.descripcion_miembro || ""}
-              onChange={handleInputChange}
-              fullWidth
-              required
-              multiline
-              inputProps={{ maxLength: 210 }} // Limitar a 200 caracteres
-            />
-            <p>{nuevoMiembro.descripcion_miembro?.length || 0} / 210</p> {/* Mostrar la cantidad de caracteres restantes */}
-          </div>
-          <div className="mb-2">
-            <TextField
-              label="Tipo"
+            <input
+              type="text"
+              placeholder="Tipo de Miembro *"
               name="tipo_miembro"
               value={nuevoMiembro.tipo_miembro || ""}
               onChange={handleInputChange}
-              fullWidth
+              className="border p-2 rounded"
               required
             />
-          </div>
-          <div className="mb-2">
-            <TextField
-              label="Nivel Académico"
+            <textarea
+              placeholder="Descripción *"
+              name="descripcion_miembro"
+              value={nuevoMiembro.descripcion_miembro || ""}
+              onChange={handleInputChange}
+              className="border p-2 rounded col-span-2"
+              rows="3"
+              maxLength="210"
+            />
+            <input
+              type="text"
+              placeholder="Nivel Académico"
               name="nivel_academico"
               value={nuevoMiembro.nivel_academico || ""}
               onChange={handleInputChange}
-              fullWidth
+              className="border p-2 rounded"
             />
-          </div>
-          <div className="mb-2">
-            <TextField
-              label="URL de Imagen"
+
+            <input
+              type="text"
+              placeholder="URL de Imagen"
               name="imgSrc"
               value={nuevoMiembro.imgSrc || ""}
               onChange={handleInputChange}
-              fullWidth
+              className="border p-2 rounded"
+              required
             />
-          </div>
-          <div className="mb-2">
-            <TextField
-              label="URL de Facebook"
+
+            <input
+              type="text"
+              placeholder="URL de Facebook"
               name="facebook_url"
               value={nuevoMiembro.facebook_url || ""}
               onChange={handleInputChange}
-              fullWidth
+              className="border p-2 rounded"
             />
-          </div>
-          <div className="mb-2">
-            <TextField
-              label="URL de Instagram"
+            <input
+              type="text"
+              placeholder="URL de Instagram"
               name="instagram_url"
               value={nuevoMiembro.instagram_url || ""}
               onChange={handleInputChange}
-              fullWidth
+              className="border p-2 rounded"
             />
+
+            <div className="col-span-2 flex justify-end space-x-2">
+              <button
+                onClick={handleClose}
+                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+              >
+                <X className="mr-2 inline" /> Cancelar
+              </button>
+              <button
+                onClick={handleSave}
+                className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+              >
+                <Save className="mr-2 inline" /> Guardar
+              </button>
+            </div>
           </div>
-
-          <FormControl component="fieldset" className="mb-4">
-            <FormLabel component="legend">Estado de Visibilidad</FormLabel>
-            <RadioGroup
-              row
-              name="visible"
-              value={nuevoMiembro.visible || "1"}
-              onChange={handleInputChange}
-            >
-              <FormControlLabel
-                value="1"
-                control={<Radio />}
-                label="Visible"
-              />
-              <FormControlLabel
-                value="0"
-                control={<Radio />}
-                label="Oculto"
-              />
-            </RadioGroup>
-          </FormControl>
-
-          {error && <p className="text-red-500">{error}</p>}
-
-          <Button
-            type="button"
-            variant="contained"
-            color="primary"
-            onClick={handleSave}
-          >
-            {mode === "edit" ? "Guardar Cambios" : "Crear Miembro"}
-          </Button>
-        </form>
+          {error && <p className="text-red-500 mt-2">{error}</p>}
+        </div>
       </Box>
     </Modal>
   );
