@@ -49,6 +49,27 @@ function SeccionSugerenciasAdm() {
     }
   };
 
+  const handleDeleteVotacion = async (id) => {
+    try {
+      // Realizar la solicitud DELETE
+      const response = await fetch(
+        `http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/eliminar_votacion.php?id_votacion=${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (response.ok) {
+        const updatedVotaciones = votaciones.filter(
+          (votacion) => votacion.id_votacion !== id
+        );
+        setVotaciones(updatedVotaciones);
+      }
+    } catch (error) {
+      console.error("Error al borrar la votacion:", error);
+    }
+  };
+
   // Llamar a fetchVotaciones cuando el componente se monta
   useEffect(() => {
     fetchVotaciones();
@@ -136,7 +157,7 @@ function SeccionSugerenciasAdm() {
                   {votacion.visible ? <Eye /> : <EyeOff />}
                 </button>
                 <button
-                  onClick={() => console.log("Eliminar:", votacion)}
+                  onClick={() => handleDeleteVotacion(votacion.id_votacion)}
                   className="text-red-500 hover:bg-red-100 p-2 rounded"
                 >
                   <Trash2 />
