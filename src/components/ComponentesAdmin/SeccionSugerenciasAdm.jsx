@@ -1,15 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FormularioVotaciones from "./FormularioVotaciones";
-import { CirclePlus } from "lucide-react";
+import { CirclePlus, Edit2, Eye, EyeOff, Trash2 } from "lucide-react";
 
 function SeccionSugerenciasAdm() {
-  // Estado para controlar el modal
+  const [votaciones, setVotaciones] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // Función para cargar las votaciones desde la base de datos
+  const fetchVotaciones = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/ObtenerVotaciones.php"
+      );
+      const data = await response.json();
+      setVotaciones(data); // Actualizar el estado con las votaciones obtenidas
+    } catch (error) {
+      console.error("Error al cargar votaciones:", error);
+    }
+  };
+  // Llamar a fetchVotaciones cuando el componente se monta
+  useEffect(() => {
+    fetchVotaciones();
+  }, []);
   // Funciones para abrir y cerrar el modal
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-
   return (
     <div>
       <div className="flex flex-col gap-4">
@@ -41,6 +56,59 @@ function SeccionSugerenciasAdm() {
           </div>
         </div>
       )}
+
+      {/* Lista de votaciones */}
+      <div className="space-y-4">
+        {votaciones.length === 0 ? (
+          <div className="text-center text-gray-500 py-4">
+            No se encontraron votaciones
+          </div>
+        ) : (
+          votaciones.map((votacion, index) => (
+            <div
+              key={index}
+              className="bg-white border rounded-lg p-4 flex justify-between items-center hover:shadow-md transition"
+            >
+              {votacion.imagen && (
+                <img
+                  src={votacion.imagen}
+                  alt={votacion.nombre_votacion}
+                  className="w-32 h-20 object-cover mt-2 rounded-md"
+                />
+              )}
+              <div className="flex-grow ml-5">
+                <h3 className="font-bold text-lg">
+                  {votacion.nombre_votacion}
+                </h3>
+                <p className="text-gray-600">{votacion.descripcion}</p>
+              </div>
+              <div className="flex space-x-2">
+                <button
+                  onClick={() => console.log("Editar:", votacion)}
+                  className="text-blue-500 hover:bg-blue-100 p-2 rounded"
+                >
+                  <Edit2 />
+                </button>
+                <button
+                  className={`p-2 rounded ${
+                    votacion.visible
+                      ? "text-yellow-500 hover:bg-yellow-100"
+                      : "text-green-500 hover:bg-green-100"
+                  }`}
+                >
+                  {votacion.visible ? <Eye /> : <EyeOff />}
+                </button>
+                <button
+                  onClick={() => console.log("Eliminar:", votacion)}
+                  className="text-red-500 hover:bg-red-100 p-2 rounded"
+                >
+                  <Trash2 />
+                </button>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
     </div>
   );
 }
