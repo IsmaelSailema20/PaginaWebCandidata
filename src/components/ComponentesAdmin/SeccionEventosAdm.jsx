@@ -143,6 +143,23 @@ function SeccionEventosAdm() {
     }
   };
 
+  const handleDeleteEvento = async (id) => {
+    try {
+      // Realizar la solicitud DELETE
+      const response = await fetch(`http://localhost/ProyectoManejo/PaginaWebCandidata/models/eliminar_evento.php?id=${id}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        const updatedEventos = eventos.filter((evento) => evento.id !== id);
+        setEventos(updatedEventos);
+      }
+    } catch (error) {
+      console.error("Error deleting event:", error);
+    }
+  };
+
+
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <div className="bg-white shadow-md rounded-lg p-6">
