@@ -1,127 +1,132 @@
 import React, { useState, useEffect } from "react";
-import ModalNuevoEventos from "../modalNuevoEventos.jsx";
-
+import { PlusCircle, Edit2, Trash2 } from "lucide-react";
+import ModalEventos from "../ModalNuevoEventos.jsx";
 
 function SeccionEventosAdm() {
-  const [data, setData] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedCode, setSelectedCode] = useState(null);
-  const openModal = (id) => {
-    setIsModalOpen(id); // Guardar el ID del elemento seleccionado
+  const [eventos, setEventos] = useState([]);
+  const [editingEvento, setEditingEvento] = useState(null);
+  const [newEvento, setNewEvento] = useState({
+    titulo: "",
+    descripcion: "",
+    lugar: "",
+    fecha: "",
+    hora: "",
+    imagen: "",
+    tipo: "",
+    visible: true,
+  });
+  const [isAddingNew, setIsAddingNew] = useState(false);
+
+  useEffect(() => {
+    const fetchEventos = async () => {
+      try {
+        const response = await fetch("http://localhost/ProyectoManejo/PaginaWebCandidata/models/getEventosNoticias.php");
+        const data = await response.json();
+        const uniqueEventos = Array.from(
+          new Map(data.eventos.map((e) => [e.id, e])).values()
+        );
+        setEventos(uniqueEventos);
+      } catch (error) {
+        console.error("Error fetching events:", error);
+      }
+    };
+
+    fetchEventos();
+  }, []);
+
+  const handleAddEvento = async () => {
+
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const handleEditEvento = async () => {
+
   };
 
-  return <div>
-    <div className="flex flex-wrap -mx-3 mb-5">
-      <div className="w-full max-w-5xl px-3 mb-6 mx-auto">
-        <div className="relative flex-[1_auto] flex flex-col break-words min-w-0 bg-clip-border rounded-[.95rem] bg-white m-5">
-          <div className="relative flex flex-col min-w-0 break-words border border-dashed bg-clip-border rounded-2xl border-stone-200 bg-light/30">
-            <div className="px-9 pt-5 flex justify-between items-stretch flex-wrap min-h-[70px] pb-0 bg-transparent">
-              <h3 className="flex flex-col items-start justify-center m-2 ml-0 font-medium text-xl/tight text-dark">
-                <span className="mr-3 font-semibold text-dark">
-                  Lista de Eventos y Noticias
-                  <button className="ml-5 px-3 py-1 text-sm text-black bg-primary hover:bg-primary-200 rounded-md"
-                    onClick={() => setIsModalOpen(true)}>
-                    Nuevo Elemento
+  return (
+    <div className="p-6 bg-gray-50 min-h-screen">
+      <div className="bg-white shadow-md rounded-lg p-6">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold text-gray-800">Gestión de Eventos</h2>
+          <button
+            onClick={() => setIsAddingNew(true)}
+            className="flex items-center bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
+          >
+            <PlusCircle className="mr-2" /> Agregar Evento
+          </button>
+        </div>
+
+        {(isAddingNew || editingEvento) && (
+          <ModalEventos
+            evento={isAddingNew ? newEvento : editingEvento}
+            setEvento={isAddingNew ? setNewEvento : setEditingEvento}
+            onSave={isAddingNew ? handleAddEvento : handleEditEvento}
+            onCancel={() => {
+              if (isAddingNew) {
+                setIsAddingNew(false);
+                setNewEvento({
+                  titulo: "",
+                  descripcion: "",
+                  lugar: "",
+                  fecha: "",
+                  hora: "",
+                  imagen: "",
+                  visible: true,
+                });
+              } else {
+                setEditingEvento(null);
+              }
+            }}
+            isEditing={!!editingEvento}
+          />
+        )}
+
+        <div className="space-y-4">
+          {eventos.length === 0 ? (
+            <div className="text-center text-gray-500 py-4">
+              No se encontraron eventos
+            </div>
+          ) : (
+            eventos.map((evento) => (
+              <div
+                key={evento.id}
+                className="bg-white border rounded-lg p-4 flex justify-between items-center hover:shadow-md transition"
+              >
+                {evento.imagen && (
+                  <img
+                    src={evento.imagen}
+                    alt={evento.titulo}
+                    className="w-32 h-20 object-cover mt-2 rounded-md"
+                  />
+                )}
+                <div className="flex-grow ml-5">
+                  <h3 className="font-bold text-lg">{evento.titulo}</h3>
+                  <p className="text-gray-600">{evento.descripcion}</p>
+                  <p className="text-sm text-gray-500">
+                    {evento.lugar} - {evento.fecha} {evento.hora}
+                  </p>
+
+                </div>
+                <div className="flex space-x-2">
+                  <button
+                    onClick={() => setEditingEvento(evento)}
+                    className="text-blue-500 hover:bg-blue-100 p-2 rounded"
+                  >
+                    <Edit2 />
                   </button>
-                </span>
-              </h3>
-            </div>
-            <div className="flex-auto block py-8 pt-6 px-9">
-              <div className="overflow-x-auto">
-                <table className="w-full my-0 align-middle text-dark border-neutral-200">
-                  <thead className="align-bottom">
-                    <tr className="font-semibold text-[0.95rem] text-secondary-dark">
-                      <th className="pb-3 text-center min-w-[175px]">CÓDIGO</th>
-                      <th className="pb-3 text-center min-w-[200px]">
-                        NOMBRE DE EVENTO
-                      </th>
-                      <th className="pb-3 text-center min-w-[300px]">
-                        TIPO
-                      </th>
-                      <th className="pb-3 text-center min-w-[100px]">FECHA</th>
-                      <th className="pb-3 text-center min-w-[100px]">OPCIONES</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {data.length > 0 ? (
-                      data.map((item) => (
-                        <tr
-                          key={item.ID_CAM}
-                          className="border-b border-dashed last:border-b-0"
-                        >
-                          <td className="p-3 pl-0">{`SC-${item.ID_CAM.toString().padStart(
-                            3,
-                            "0"
-                          )}`}</td>
-                          <td className="p-3 pl-0">{item.NOM_SOL}</td>
-                          <td className="p-3 pl-0">
-                            {item.DES_CAM.length > 50
-                              ? `${item.DES_CAM.substring(0, 80)}...`
-                              : item.DES_CAM}
-                          </td>
-
-                          <td className="p-3 pl-0">
-                            <span
-                              className={`text-center align-baseline inline-flex px-4 py-3 mr-auto items-center font-semibold text-[.95rem] leading-none rounded-lg ${item.TIP_CAM === "Urgente"
-                                ? "text-orange-700 bg-orange-100"
-                                : item.ESTD_SOL === "Enviado"
-                                  ? "text-blue-700 bg-blue-100"
-                                  : item.ESTD_SOL === "Aprobado"
-                                    ? "text-green-700 bg-green-100"
-                                    : item.ESTD_SOL === "Rechazado"
-                                      ? "text-red-700 bg-red-100"
-                                      : "text-gray-500 bg-gray-200"
-                                }`}
-                            >
-                              {item.ESTD_SOL === "Enviado"
-                                ? "Pendiente"
-                                : item.ESTD_SOL || "Pendiente"}
-                            </span>
-                          </td>
-
-                          <td className="p-3 pl-0">{item.FEC_SOL}</td>
-                          <td className="p-3 pr-0 text-end">
-                            <button
-                              onClick={() => openModal(item.ID_CAM)} // Pasar ID_CAM al abrir el modal
-                              className="ml-10 relative text-secondary-dark bg-light-dark hover:text-primary flex items-center h-[25px] w-[25px] text-base font-medium leading-normal text-center align-middle cursor-pointer rounded-2xl transition-colors duration-200 ease-in-out shadow-none border-0 justify-center"
-                            >
-                              \uD83D\uDC41
-                            </button>
-                          </td>
-                        </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td
-                          colSpan="6"
-                          className="p-3 text-center text-gray-500"
-                        >
-                          No hay datos disponibles
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
+                  <button
+                    onClick={() => handleDeleteEvento(evento.id)}
+                    className="text-red-500 hover:bg-red-100 p-2 rounded"
+                  >
+                    <Trash2 />
+                  </button>
+                </div>
               </div>
-            </div>
-          </div>
+            ))
+          )}
         </div>
       </div>
-
-      {isModalOpen && (
-        <ModalNuevoEventos closeModal={closeModal} id={isModalOpen} />
-      )}
     </div>
-  </div>;
+  );
 }
 
 export default SeccionEventosAdm;
-
-
-
-
-
