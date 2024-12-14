@@ -38,7 +38,8 @@ class Eventos
                                 DATE_FORMAT(fecha, '%Y-%m-%d') AS fecha,
                                 TIME_FORMAT(fecha, '%H:%i') AS hora,
                                 urlImagen AS imagen,
-                                tipo AS tipo 
+                                tipo AS tipo ,
+                                visible AS visible
                             FROM eventos_noticias";
 
             // Ejecutar la consulta

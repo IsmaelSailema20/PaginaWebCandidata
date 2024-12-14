@@ -1,11 +1,9 @@
 import React from "react";
 import { X, Save } from "lucide-react";
 
-const modalNuevoEventos = ({
-    propuesta,
-    setPropuesta,
-    categorias,
-    availableIcons,
+const ModalEventos = ({
+    evento,
+    setEvento,
     onSave,
     onCancel,
     isEditing,
@@ -13,65 +11,76 @@ const modalNuevoEventos = ({
     return (
         <div className="bg-gray-100 p-4 rounded-lg mb-6">
             <h3 className="text-lg font-semibold mb-4">
-                {isEditing ? "Editar Propuesta" : "Nueva Propuesta"}
+                {isEditing ? "Editar Evento" : "Nuevo Evento"}
             </h3>
             <div className="grid grid-cols-2 gap-4">
                 <input
                     type="text"
-                    placeholder="Título de la Propuesta *"
-                    value={propuesta.titulo_propuesta}
+                    placeholder="Título del Evento *"
+                    value={evento.titulo}
                     onChange={(e) =>
-                        setPropuesta({ ...propuesta, titulo_propuesta: e.target.value })
+                        setEvento({ ...evento, titulo: e.target.value })
+                    }
+                    className="border p-2 rounded"
+                    required
+                />
+                <select
+                    value={evento.tipo}
+                    onChange={(e) =>
+                        setEvento({ ...evento, tipo: e.target.value })
+                    }
+                    className="border p-2 rounded"
+                    required
+                >
+                    <option value="">Seleccionar Tipo *</option>
+                    <option value="Evento">Evento</option>
+                    <option value="Noticia">Noticia</option>
+                </select>
+                <textarea
+                    placeholder="Descripción"
+                    value={evento.descripcion}
+                    onChange={(e) =>
+                        setEvento({ ...evento, descripcion: e.target.value })
+                    }
+                    className="border p-2 rounded col-span-2"
+                    rows="3"
+                />
+                <input
+                    type="text"
+                    placeholder="Lugar del Evento"
+                    value={evento.lugar}
+                    onChange={(e) =>
+                        setEvento({ ...evento, lugar: e.target.value })
+                    }
+                    className="border p-2 rounded"
+                />
+                <input
+                    type="date"
+                    value={evento.fecha}
+                    onChange={(e) =>
+                        setEvento({ ...evento, fecha: e.target.value })
                     }
                     className="border p-2 rounded"
                     required
                 />
                 <input
-                    type="text"
-                    placeholder="Subtítulo"
-                    value={propuesta.subtitle}
+                    type="time"
+                    value={evento.hora}
                     onChange={(e) =>
-                        setPropuesta({ ...propuesta, subtitle: e.target.value })
-                    }
-                    className="border p-2 rounded"
-                />
-                <textarea
-                    placeholder="Descripción"
-                    value={propuesta.descripcion_propuesta}
-                    onChange={(e) =>
-                        setPropuesta({ ...propuesta, descripcion_propuesta: e.target.value })
-                    }
-                    className="border p-2 rounded col-span-2"
-                    rows="3"
-                />
-                <select
-                    value={propuesta.categoria}
-                    onChange={(e) =>
-                        setPropuesta({ ...propuesta, categoria: e.target.value })
+                        setEvento({ ...evento, hora: e.target.value })
                     }
                     className="border p-2 rounded"
                     required
-                >
-                    <option value="">Seleccionar Categoría *</option>
-                    {categorias.map((cat) => (
-                        <option key={cat.id_cat_propuesta} value={cat.nombre_cat_propuesta}>
-                            {cat.nombre_cat_propuesta}
-                        </option>
-                    ))}
-                </select>
-                <select
-                    value={propuesta.icon}
-                    onChange={(e) => setPropuesta({ ...propuesta, icon: e.target.value })}
+                />
+                <input
+                    type="url"
+                    placeholder="URL de la Imagen"
+                    value={evento.imagen}
+                    onChange={(e) =>
+                        setEvento({ ...evento, imagen: e.target.value })
+                    }
                     className="border p-2 rounded"
-                    required
-                >
-                    <option value="">Seleccionar Ícono *</option>
-                    {availableIcons.map((icon) => (
-                        <option key={icon} value={icon}>
-                            {icon}
-                        </option>
-                    ))}
-                </select>
+                />
                 <div className="col-span-2 flex justify-end space-x-2">
                     <button
                         onClick={onCancel}
@@ -90,4 +99,5 @@ const modalNuevoEventos = ({
         </div>
     );
 };
-export default modalNuevoEventos;
+
+export default ModalEventos;

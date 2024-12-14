@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { PlusCircle, Edit2, Trash2 } from "lucide-react";
+import { PlusCircle, Edit2, Trash2, Eye, EyeOff } from "lucide-react";
 import ModalEventos from "../ModalNuevoEventos.jsx";
 
 function SeccionEventosAdm() {
@@ -35,11 +35,74 @@ function SeccionEventosAdm() {
   }, []);
 
   const handleAddEvento = async () => {
+    // Verificar si los campos obligatorios están completos
+    if (!newEvento.titulo || !newEvento.fecha || !newEvento.hora) {
+      alert("Por favor complete todos los campos obligatorios");
+      return;
+    }
 
+    try {
+      // Enviar los datos al servidor
+      const response = await fetch(
+        "http://localhost/ProyectoManejo/PaginaWebCandidata/models/agregar_evento.php", // Asegúrate de tener este endpoint en tu servidor
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            ...newEvento,
+            visible: true, // Puedes agregar otros parámetros que necesites
+          }),
+        }
+      );
+
+      if (response.ok) {
+        const result = await response.json();
+
+        // Actualizar el estado de eventos con el nuevo evento
+        setEventos([...eventos, result.evento]);
+
+        // Limpiar los campos del formulario
+        setNewEvento({
+          titulo: "",
+          subtitulo: "",
+          descripcion: "",
+          lugar: "",
+          fecha: "",
+          hora: "",
+          imagen: "",
+          visible: true,
+        });
+
+        // Cerrar el modal o restablecer el estado de "agregando evento"
+        setIsAddingNew(false);
+      }
+    } catch (error) {
+      console.error("Error adding event:", error);
+    }
   };
 
   const handleEditEvento = async () => {
 
+  };
+
+  const handleToggleVisibilidadEvento = async (id, currentVisibility) => {
+    try {
+      const response = await fetch("http://localhost/ProyectoManejo/PaginaWebCandidata/models/visibilidad_evento.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, visible: !currentVisibility }),
+      });
+
+      if (response.ok) {
+        // Actualiza el estado de los eventos para reflejar el cambio de visibilidad
+        const updatedEventos = eventos.map((evento) =>
+          evento.id === id ? { ...evento, visible: !currentVisibility } : evento
+        );
+        setEventos(updatedEventos);
+      }
+    } catch (error) {
+      console.error("Error cambiando visibilidad del evento:", error);
+    }
   };
 
   return (
@@ -104,7 +167,9 @@ function SeccionEventosAdm() {
                   <p className="text-sm text-gray-500">
                     {evento.lugar} - {evento.fecha} {evento.hora}
                   </p>
-
+                  <p className="text-sm text-blue-500">
+                    {evento.tipo}
+                  </p>
                 </div>
                 <div className="flex space-x-2">
                   <button
@@ -112,6 +177,20 @@ function SeccionEventosAdm() {
                     className="text-blue-500 hover:bg-blue-100 p-2 rounded"
                   >
                     <Edit2 />
+                  </button>
+                  <button
+                    onClick={() =>
+                      handleToggleVisibilidadEvento(
+                        evento.id,
+                        evento.visible
+                      )
+                    }
+                    className={`p-2 rounded ${evento.visible
+                      ? "text-yellow-500 hover:bg-yellow-100"
+                      : "text-green-500 hover:bg-green-100"
+                      }`}
+                  >
+                    {evento.visible ? <Eye /> : <EyeOff />}
                   </button>
                   <button
                     onClick={() => handleDeleteEvento(evento.id)}
