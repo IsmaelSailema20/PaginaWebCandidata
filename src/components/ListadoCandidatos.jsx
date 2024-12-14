@@ -17,7 +17,7 @@ export function ListWithAvatar() {
 
   const fetchMiembros = async () => {
     try {
-      const response = await fetch("http://localhost/Manejo/paginaWebCandidata/models/ConsultaMiembros.php");
+      const response = await fetch("http://localhost/ProyectoManejo/paginaWebCandidata/models/ConsultaMiembros.php");
       const data = await response.json();
       setMiembros(data);
     } catch (error) {
@@ -129,7 +129,7 @@ export function ListWithAvatar() {
           onClick={handleCreate}
           className="bg-blue-500 text-white p-4 rounded-md mb-4"
         >
-          Crear Nuevo Miembro
+          Crear Nuevo Candidato
         </button>
       </div>
 
@@ -157,6 +157,7 @@ export function ListWithAvatar() {
                   className="text-yellow-500 hover:text-yellow-700"
                 >
                   Editar
+
                 </button>
                 <button
                   onClick={() => handleDelete(miembro)}
@@ -168,11 +169,11 @@ export function ListWithAvatar() {
             </li>
           ))
         ) : (
-          <p>Cargando miembros...</p>
+          <p>Cargando Candidatos...</p>
         )}
       </ul>
 
-      <EditModal
+   <EditModal
         open={openModal}
         handleClose={() => setOpenModal(false)}
         miembroEditado={miembroEditado}
@@ -184,7 +185,7 @@ export function ListWithAvatar() {
       <Dialog open={openDialog} onClose={handleCloseDialog}>
         <DialogTitle>Confirmar Eliminación</DialogTitle>
         <DialogContent>
-          <p>¿Estás seguro de que deseas eliminar este miembro?</p>
+          <p>¿Estás seguro de que deseas eliminar este candidato?</p>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog} color="secondary">
