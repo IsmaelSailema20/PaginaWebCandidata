@@ -52,48 +52,7 @@ export function ListWithAvatar() {
     }));
   };
 
-  const handleSave = async () => {
-    const url =
-      modalMode === "edit"
-        ? "http://localhost/Manejo/paginaWebCandidata/models/editCandidato.php"
-        : "http://localhost/Manejo/paginaWebCandidata/models/createCandidato.php";
-
-    try {
-      const response = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(miembroEditado),
-      });
-
-      const result = await response.json();
-
-      if (result.success) {
-        if (modalMode === "edit") {
-          setMiembros((prevMiembros) =>
-            prevMiembros.map((miembro) =>
-              miembro.id_miembro === miembroEditado.id_miembro
-                ? miembroEditado
-                : miembro
-            )
-          );
-        } else if (modalMode === "create") {
-          setMiembros((prevMiembros) => [...prevMiembros, result.nuevoMiembro]);
-        }
-        setOpenModal(false);
-        console.log(
-          `Miembro ${modalMode === "edit" ? "editado" : "creado"} con éxito.`
-        );
-      } else {
-        console.error(
-          `Error al ${modalMode === "edit" ? "editar" : "crear"} el miembro.`
-        );
-      }
-    } catch (error) {
-      console.error("Error al enviar los datos:", error);
-    }
-  };
+  
 
   const handleDelete = (miembro) => {
     setMiembroAEliminar(miembro);
@@ -103,7 +62,7 @@ export function ListWithAvatar() {
   const handleConfirmDelete = async () => {
     try {
       const response = await fetch(
-        "http://localhost/manejo/paginaWebCandidata/models/deleteCandidato.php",
+        "http://localhost/Proyectomanejo/paginaWebCandidata/models/deleteCandidato.php",
         {
           method: "POST",
           headers: {
@@ -196,7 +155,10 @@ export function ListWithAvatar() {
         miembroEditado={miembroEditado}
         handleChange={handleChange}
         mode={modalMode}
-        handleSave={handleSave}
+        onSave={() => {
+          fetchMiembros(); // Recargar la lista
+          setOpenModal(false); // Asegurarse de cerrar el modal
+        }}
       />
 
       <Dialog open={openDialog} onClose={handleCloseDialog}>
@@ -212,7 +174,7 @@ export function ListWithAvatar() {
             <X className="mr-2 inline" /> Cancelar
           </button>
           <button
-            onClick={handleSave}
+            onClick={handleConfirmDelete}
             className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
           >
             <Trash2 className="mr-2 inline" /> Aceptar
