@@ -92,6 +92,21 @@ const ModalPropuestas = ({
           </option>
         ))}
       </select>
+      <select
+        value={propuesta.id_candidato}
+        onChange={(e) =>
+          setPropuesta({ ...propuesta, id_candidato: e.target.value })
+        }
+        className="border p-2 rounded"
+        required
+      >
+        <option value="">Seleccionar Candidato *</option>
+        {candidatos.map((candidato) => (
+          <option key={candidato.id_miembro} value={candidato.id_miembro}>
+            {candidato.nombre_miembro}
+          </option>
+        ))}
+      </select>
     </div>
   );
 };
