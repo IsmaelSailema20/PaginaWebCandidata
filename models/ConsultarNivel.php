@@ -24,7 +24,7 @@ try {
     $restricciones = [
         "Pais" => [
             "PRESIDENTE" => 1,
-            "Vicepresidente" => 1
+            "VICEPRESIDENTE" => 1
         ],
         "Provincia" => [
             "ALCALDE" => 1,
