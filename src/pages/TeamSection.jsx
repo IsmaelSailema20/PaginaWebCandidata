@@ -6,7 +6,7 @@ const TeamSection = () => {
 
   useEffect(() => {
     fetch(
-      "http://localhost/Manejo/paginaWebCandidata/models/ConsultaMiembros.php"
+      "http://localhost/ProyectoManejo/paginaWebCandidata/models/ConsultaMiembros.php"
     )
       .then((response) => {
         if (!response.ok) {
@@ -82,20 +82,14 @@ const TeamSection = () => {
         <div className="mb-12 text-center">
           <div className="bg-white bg-opacity-80 p-4 rounded-md inline-block">
             <h1 className="text-4xl font-bold text-center mb-5">
-              <span className="text-5xl text-pink-500 drop-shadow-[4px_2px_0px_#ded2d2]">
-                C
-              </span>
-              <span className="text-[#40b2e6] drop-shadow-[4px_2px_0px_#ded2d2]">
-                andidatos
-              </span>
+              <span className="font-bold">Candidatos</span>
             </h1>
 
             <p className="text-lg mt-4">
               Te invitamos a conocer a cada uno de nuestros candidatos, quienes
               aportan su experiencia, pasión y compromiso para representar los
-              intereses de todos los estudiantes. Juntos, podemos lograr que
-              nuestra universidad sea un lugar donde todos podamos crecer y
-              desarrollarnos, tanto académica como personalmente.
+              intereses de todos. Juntos, podemos lograr un futuro donde cada
+              persona tenga la oportunidad de crecer y desarrollarse.
             </p>
           </div>
         </div>
@@ -116,7 +110,9 @@ const TeamSection = () => {
                       <p className="text-xl font-bold mb-4 text-white">
                         {member.tipo_miembro}
                       </p>
-                      <p className="text-sm text-white">{member.descripcion_miembro}</p>
+                      <p className="text-sm text-white">
+                        {member.descripcion_miembro}
+                      </p>
                     </div>
                     {/* Botones de redes sociales con íconos */}
                     <div className="flex space-x-4">
