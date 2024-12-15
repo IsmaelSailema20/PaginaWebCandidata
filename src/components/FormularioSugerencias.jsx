@@ -7,7 +7,16 @@ import { useState } from "react";
 import { enviarCorreoConfirmacion } from "../logic/emailService";
 const FormElementInput = () => {
   const optionsGenero = ["Masculino", "Femenino", "Prefiero no decirlo"];
-  const optionsPersona = ["Estudiante", "Docente", "Personal Administrativo"];
+  const optionsPersona = [
+    "Simpatizante",
+    "Militante",
+    "Funcionario",
+    "Afiliado",
+    "Prensa",
+    "Líder comunitario",
+    "Ciudadano Independiente",
+    "Prefiero no decirlo",
+  ];
 
   // Estados para el valor seleccionado de cada ComboBox
   const [genero, setGenero] = useState("");
@@ -108,11 +117,6 @@ const FormElementInput = () => {
         />
       )}
       <div className="relative bg-slate-100 w-[580px] p-8 m-4 rounded-xl shadow-xl fade-in">
-        <img
-          className="absolute top-[-80px] left-[-80px] w-40 h-auto z-10"
-          src=""
-          alt="logo de la pagina"
-        />
         <form id="form-sugerencias" onSubmit={guardar}>
           <h1 className="text-4xl text-black font-bold text-center mb-5">
             Sugerencias
