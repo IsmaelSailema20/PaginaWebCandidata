@@ -13,7 +13,6 @@ function Votaciones() {
     }
 
     // Cargar las votaciones desde el backend
-    // Cargar las votaciones desde el backend
     const fetchVotaciones = async () => {
       try {
         const response = await fetch(
@@ -33,10 +32,31 @@ function Votaciones() {
     fetchVotaciones();
   }, []);
 
-  const handleVote = (candidate) => {
-    // Guardar el voto en localStorage y actualizar el estado
-    localStorage.setItem("voto_candidata", candidate);
-    setVotedCandidate(candidate);
+  const handleVote = async (candidate) => {
+    try {
+      // Guardar el voto en el backend
+      const response = await fetch(
+        "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/GuardarVotos.php",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id_votacion: candidate.id_votacion }),
+        }
+      );
+
+      const result = await response.json();
+
+      if (result.success) {
+        // Guardar el voto en localStorage y actualizar el estado
+        localStorage.setItem("voto_candidata", candidate.nombre_votacion);
+        setVotedCandidate(candidate.nombre_votacion);
+      } else {
+        alert(result.message || "Error al guardar el voto");
+      }
+    } catch (error) {
+      console.error("Error al guardar el voto:", error);
+      alert("Ocurrió un error al intentar guardar tu voto");
+    }
   };
 
   return (
@@ -109,7 +129,7 @@ function Votaciones() {
                   alt={`Imagen de ${votacion.nombre_votacion}`}
                   hasVoted={votedCandidate !== null}
                   votedFor={votedCandidate}
-                  onVote={() => handleVote(votacion.nombre_votacion)}
+                  onVote={() => handleVote(votacion)}
                   descripcion={votacion.descripcion}
                 />
               ))
