@@ -66,6 +66,42 @@ function SeccionPropuestasAdm() {
       fetchCandidatos();
     }, []);
 
+const handleAddPropuesta = async () => {
+  if (!newPropuesta.titulo_propuesta || !newPropuesta.categoria || !newPropuesta.icon || !newPropuesta.id_candidato || !newPropuesta.alcance_propuesta) {
+    alert("Por favor complete todos los campos obligatorios");
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      "http://localhost/models/agregar_propuesta.php",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...newPropuesta, visible: true }),
+      }
+    );
+
+    if (response.ok) {
+      const result = await response.json();
+      setPropuestas([...propuestas, result.propuesta]);
+      setNewPropuesta({
+        titulo_propuesta: "",
+        subtitle: "",
+        descripcion_propuesta: "",
+        categoria: "",
+        icon: "",
+        visible: true,
+        id_candidato: "",
+        alcance_propuesta: "",
+      });
+      setIsAddingNew(false);
+    }
+  } catch (error) {
+    console.error("Error adding proposal:", error);
+  }
+};
+
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <div className="bg-white shadow-md rounded-lg p-6">
