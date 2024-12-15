@@ -102,6 +102,34 @@ const handleAddPropuesta = async () => {
   }
 };
 
+const handleEditPropuesta = async (propuesta) => {
+  if (!propuesta.titulo_propuesta || !propuesta.categoria || !propuesta.icon || !propuesta.id_candidato || !propuesta.alcance_propuesta) {
+    alert("Por favor complete todos los campos obligatorios");
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      "http://localhost/models/editar_propuesta.php",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(propuesta),
+      }
+    );
+
+    if (response.ok) {
+      const updatedPropuestas = propuestas.map((p) =>
+        p.id_propuesta === propuesta.id_propuesta ? propuesta : p
+      );
+      setPropuestas(updatedPropuestas);
+      setEditingPropuesta(null);
+    }
+  } catch (error) {
+    console.error("Error editing proposal:", error);
+  }
+};
+
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <div className="bg-white shadow-md rounded-lg p-6">
