@@ -107,6 +107,20 @@ const ModalPropuestas = ({
           </option>
         ))}
       </select>
+      <select
+        value={alcancePropuesta}
+        onChange={(e) => {
+          setAlcancePropuesta(e.target.value);
+          setPropuesta({ ...propuesta, alcance_propuesta: e.target.value });
+        }}
+        className="border p-2 rounded"
+        required
+      >
+        <option value="">Seleccionar Alcance de la Propuesta *</option>
+        <option value="nacional">Nacional</option>
+        <option value="regional">Regional</option>
+        <option value="local">Local</option>
+      </select>
     </div>
   );
 };
