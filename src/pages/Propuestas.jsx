@@ -27,6 +27,14 @@ const Propuestas = () => {
   const [propuestas, setPropuestas] = useState([]);
   const [filteredPropuestas, setFilteredPropuestas] = useState([]);
   const [allCategories, setAllCategories] = useState([]);
+  const [selectedCandidato, setSelectedCandidato] = useState("");
+  const [selectedAlcance, setSelectedAlcance] = useState("");
+  const [allCandidatos, setAllCandidatos] = useState([]);
+  const [allAlcances, setAllAlcances] = useState(["nacional", "regional", "local"]);
+  const [currentCandidato, setCurrentCandidato] = useState({
+    nombre_miembro: "",
+    imgSrc: ""
+  });
 
   const iconMap = {
     ScrollText: ScrollText,
@@ -76,24 +84,42 @@ const Propuestas = () => {
   }, []);
 
   useEffect(() => {
-    if (selectedCategories.length === 0) {
-      const uniquePropuestas = Array.from(
-        new Map(
-          propuestas.map((item) => [item.titulo_propuesta, item])
-        ).values()
+    let filtered = propuestas.filter(propuesta => propuesta.visible);
+
+    if (selectedCategories.length > 0) {
+      filtered = filtered.filter((propuesta) =>
+        selectedCategories.includes(propuesta.categoria)
       );
-      setFilteredPropuestas(uniquePropuestas.filter(p => p.visible));
-    } else {
-      const filtered = propuestas.filter((propuesta) =>
-        selectedCategories.includes(propuesta.categoria) && propuesta.visible
-      );
-      const uniqueFiltered = Array.from(
-        new Map(filtered.map((item) => [item.titulo_propuesta, item])).values()
-      );
-      setFilteredPropuestas(uniqueFiltered);
     }
+
+    if (selectedCandidato) {
+      filtered = filtered.filter((propuesta) =>
+        propuesta.nombre_miembro === selectedCandidato
+      );
+    }
+
+    if (selectedAlcance) {
+      filtered = filtered.filter((propuesta) =>
+        propuesta.alcance_propuesta === selectedAlcance
+      );
+    }
+
+    const uniquePropuestas = Array.from(new Set(filtered.map(p => p.id_propuesta)))
+      .map(id => filtered.find(p => p.id_propuesta === id));
+
+    setFilteredPropuestas(uniquePropuestas);
     setCurrentIndex(0);
-  }, [selectedCategories, propuestas]);
+  }, [selectedCategories, selectedCandidato, selectedAlcance, propuestas]);
+
+  useEffect(() => {
+    if (filteredPropuestas.length > 0) {
+      const propuesta = filteredPropuestas[currentIndex];
+      setCurrentCandidato({
+        nombre_miembro: propuesta.nombre_miembro,
+        imgSrc: propuesta.imgSrc
+      });
+    }
+  }, [currentIndex, filteredPropuestas]);
 
   const handleCategoryClick = (category) =>
     setSelectedCategories((prev) =>
