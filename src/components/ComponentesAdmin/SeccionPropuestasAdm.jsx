@@ -80,6 +80,29 @@ function SeccionPropuestasAdm() {
             <PlusCircle className="mr-2" /> Agregar Propuesta
           </button>
         </div>
+        {isAddingNew && (
+          <ModalPropuestas
+            propuesta={newPropuesta}
+            setPropuesta={setNewPropuesta}
+            categorias={categorias}
+            availableIcons={availableIcons}
+            onSave={handleAddPropuesta}
+            onCancel={() => {
+              setIsAddingNew(false);
+              setNewPropuesta({
+                titulo_propuesta: "",
+                subtitle: "",
+                descripcion_propuesta: "",
+                categoria: "",
+                icon: "",
+                visible: true,
+                id_candidato: "",
+                alcance_propuesta: "",
+              });
+            }}
+            candidatos={candidatos}
+          />
+        )}
       </div>
     </div>
   );
