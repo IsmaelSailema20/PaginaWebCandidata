@@ -36,6 +36,7 @@ const ModalPropuestas = ({
       <h3 className="text-lg font-semibold mb-4">
         {propuesta.id_propuesta ? "Editar Propuesta" : "Nueva Propuesta"}
       </h3>
+      <div className="grid grid-cols-2 gap-4">
       <input
         type="text"
         placeholder="Título de la Propuesta *"
