@@ -145,6 +145,48 @@ const handleDeletePropuesta = async (id) => {
   }
 };
 
+const handleToggleVisibilidad = async (id, currentVisibility) => {
+  try {
+    const response = await fetch(
+      "http://localhost/models/visibilidad_propuesta.php",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, visible: !currentVisibility }),
+      }
+    );
+
+    if (response.ok) {
+      const updatedPropuestas = propuestas.map((p) =>
+        p.id_propuesta === id ? { ...p, visible: !currentVisibility } : p
+      );
+      setPropuestas(updatedPropuestas);
+    }
+  } catch (error) {
+    console.error("Error cambiando visibilidad:", error);
+  }
+};const handleToggleVisibilidad = async (id, currentVisibility) => {
+    try {
+      const response = await fetch(
+        "http://localhost/models/visibilidad_propuesta.php",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id, visible: !currentVisibility }),
+        }
+      );
+
+      if (response.ok) {
+        const updatedPropuestas = propuestas.map((p) =>
+          p.id_propuesta === id ? { ...p, visible: !currentVisibility } : p
+        );
+        setPropuestas(updatedPropuestas);
+      }
+    } catch (error) {
+      console.error("Error cambiando visibilidad:", error);
+  }
+};
+
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <div className="bg-white shadow-md rounded-lg p-6">
