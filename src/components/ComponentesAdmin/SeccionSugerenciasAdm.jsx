@@ -5,6 +5,7 @@ import { CirclePlus, Edit2, Eye, EyeOff, Trash2 } from "lucide-react";
 function SeccionSugerenciasAdm() {
   const [votaciones, setVotaciones] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingVotacion, setEditingVotacion] = useState(null); // Estado para la votación en edición
 
   // Función para cargar las votaciones desde la base de datos
   const fetchVotaciones = async () => {
@@ -69,14 +70,65 @@ function SeccionSugerenciasAdm() {
       console.error("Error al borrar la votacion:", error);
     }
   };
+  // Manejar guardar o actualizar votación
+  const handleSaveVotacion = async (votacionData) => {
+    if (editingVotacion) {
+      // Editar votación existente
+      try {
+        const response = await fetch(
+          `http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/EditarVotacion.php`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              id_votacion: editingVotacion.id_votacion,
+              ...votacionData,
+            }),
+          }
+        );
 
+        if (response.ok) {
+          fetchVotaciones(); // Recargar la lista de votaciones
+          closeModal();
+        }
+      } catch (error) {
+        console.error("Error al editar la votación:", error);
+      }
+    } else {
+      // Crear nueva votación
+      try {
+        const response = await fetch(
+          "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/CrearVotaciones.php",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(votacionData),
+          }
+        );
+
+        if (response.ok) {
+          fetchVotaciones(); // Recargar la lista de votaciones
+          closeModal();
+        }
+      } catch (error) {
+        console.error("Error al agregar votación:", error);
+      }
+    }
+  };
   // Llamar a fetchVotaciones cuando el componente se monta
   useEffect(() => {
     fetchVotaciones();
   }, []);
-  // Funciones para abrir y cerrar el modal
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+
+  const openModal = (votacion = null) => {
+    setEditingVotacion(votacion); // Configurar la votación a editar o null para agregar
+    setIsModalOpen(true);
+  };
+  // Función para cerrar el modal
+  const closeModal = () => {
+    setEditingVotacion(null);
+    setIsModalOpen(false);
+  };
   return (
     <div>
       <div className="flex flex-col gap-4">
@@ -85,7 +137,7 @@ function SeccionSugerenciasAdm() {
         </h2>
         <div className="flex justify-end items-center">
           <button
-            onClick={openModal} // Abrir el modal al hacer clic
+            onClick={() => openModal()} // Abrir el modal al hacer clic
             className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-400"
           >
             <CirclePlus className="mr-2 inline" />
@@ -104,7 +156,11 @@ function SeccionSugerenciasAdm() {
             >
               ✕
             </button>
-            <FormularioVotaciones /> {/* Formulario integrado */}
+            <FormularioVotaciones
+              initialData={editingVotacion}
+              onSave={handleSaveVotacion}
+            />{" "}
+            {/* Formulario integrado */}
           </div>
         </div>
       )}
@@ -136,7 +192,7 @@ function SeccionSugerenciasAdm() {
               </div>
               <div className="flex space-x-2">
                 <button
-                  onClick={() => console.log("Editar:", votacion)}
+                  onClick={() => openModal(votacion)}
                   className="text-blue-500 hover:bg-blue-100 p-2 rounded"
                 >
                   <Edit2 />
