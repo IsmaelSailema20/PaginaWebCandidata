@@ -121,6 +121,20 @@ const ModalPropuestas = ({
         <option value="regional">Regional</option>
         <option value="local">Local</option>
       </select>
+      <div className="col-span-2 flex justify-end space-x-2">
+        <button
+          onClick={onCancel}
+          className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+        >
+          <X className="mr-2 inline" /> Cancelar
+        </button>
+        <button
+          onClick={() => onSave(propuesta)}
+          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+        >
+          <Save className="mr-2 inline" /> Guardar
+        </button>
+      </div>
     </div>
   );
 };
