@@ -113,17 +113,26 @@ export default function EditModal({
       return;
     }
 
-    setError(""); 
-    const tipo = nuevoMiembro.tipo_miembro.toUpperCase();
-    nuevoMiembro.tipo_miembro=tipo;
+    setError("");
+    const tipo = nuevoMiembro.tipo_miembro.toUpperCase().trim();
+    nuevoMiembro.tipo_miembro = tipo;
     if (nivel === "Pais") {
       if (
-        (mode !== "edit" && conteos.PRESIDENTE >= 1) ||
-        (mode !== "edit" && conteos.VICEPRESIDENTE >= 1)
+        (mode !== "edit" && conteos.PRESIDENTE >= 1 && tipo === "PRESIDENTE") ||
+        (mode !== "edit" &&
+          conteos.VICEPRESIDENTE >= 1 &&
+          tipo === "VICEPRESIDENTE")
       ) {
+        setError(`No se puede añadir más ${tipo}s. Límite alcanzado.`);
+        return;
+      } else {
         if (
-          (tipo === "PRESIDENTE" && conteos.PRESIDENTE >= 1) ||
-          (tipo === "VICEPRESIDENTE" && conteos.VICEPRESIDENTE >= 1)
+          (mode == "edit" &&
+            conteos.PRESIDENTE >= 1 &&
+            tipo === "PRESIDENTE") ||
+          (mode == "edit" &&
+            conteos.VICEPRESIDENTE >= 1 &&
+            tipo === "VICEPRESIDENTE")
         ) {
           setError(`No se puede añadir más ${tipo}s. Límite alcanzado.`);
           return;
@@ -131,17 +140,24 @@ export default function EditModal({
       }
     } else if (nivel === "Provincia") {
       if (
-        (mode !== "edit" && conteos.ALCALDE >= 1 ) || // no se porque alterna el campo "alcalde" entre mayus y minus"
-        (mode !== "edit" && conteos.PREFECTO >= 1)
-      ) {
-      if (
-        (tipo === "ALCALDE" && conteos.ALCALDE>= 1 ) ||
-        (tipo === "PREFECTO" && conteos.PREFECTO >= 1)
+        (mode !== "edit" && conteos.ALCALDE >= 1 && tipo === "ALCALDE") || // no se porque alterna el campo "alcalde" entre mayus y minus"
+        (mode !== "edit" && conteos.PREFECTO >= 1 && tipo === "VICEPRESIDENTE") // no se
       ) {
         setError(`No se puede añadir más ${tipo}S. Límite alcanzado.`);
         return;
+      } else {
+        if (
+          (mode == "edit" &&
+            conteos.ALCALDE >= 1 &&
+            tipo === "ALCALDE") ||
+          (mode == "edit" &&
+            conteos.PREFECTO >= 1 &&
+            tipo === "PREFECTO")
+        ) {
+          setError(`No se puede añadir más ${tipo}S. Límite alcanzado.`);
+          return;
+        }
       }
-    }
     } else if (nivel === "Universidad") {
       if (conteos >= 4) {
         setError("No se puede añadir más candidatos. Límite alcanzado.");
