@@ -216,8 +216,8 @@ const Propuestas = () => {
         <div className="w-full md:w-5/12 p-8 flex flex-col justify-center items-center">
           <div className="relative mb-8">
             <img
-              src={maryImage}
-              alt="Candidato"
+              src={currentCandidato.imgSrc}
+              alt={currentCandidato.nombre_miembro}
               className="w-60 h-50 relative rounded-lg shadow-2xl transform transition-transform duration-500 hover:scale-105"
             />
             {showSparkle && (
@@ -228,7 +228,7 @@ const Propuestas = () => {
             )}
           </div>
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-4 font-montserrat">
-            Mary Cruz Lascano
+            {currentCandidato.nombre_miembro}
           </h2>
           <div className="flex items-center space-x-2">
             <Heart className="w-6 h-6 text-gray-900 animate-pulse" />
