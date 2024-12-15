@@ -12,9 +12,11 @@ import {
   Users,
   LogOut,
   MessageSquareShare,
+  ChartNoAxesColumn,
 } from "lucide-react";
 import SeccionVotacionesAdm from "../components/ComponentesAdmin/SeccionVotacionesAdm";
 import SeccionSugerenciasAdm from "../components/ComponentesAdmin/SeccionSugerenciasAdm";
+import SeccionEstadisticasVotos from "../components/ComponentesAdmin/SeccionEstadisticasVotos";
 
 function PanelAdministracion() {
   // Estado para la sección activa
@@ -98,6 +100,15 @@ function PanelAdministracion() {
               <MessageSquareShare />
               <span className="mx-4 font-medium">Sugerencias</span>
             </a>
+            <a
+              onClick={() => handleSectionClick("Estadisticas de Votaciones")}
+              className="flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 cursor-pointer"
+            >
+              <ChartNoAxesColumn />
+              <span className="mx-4 font-medium">
+                Estadisticas de Votaciones
+              </span>
+            </a>
           </nav>
 
           <a
@@ -124,6 +135,9 @@ function PanelAdministracion() {
         {activeSection === "propuestas" && <SeccionPropuestasAdm />}
         {activeSection === "votaciones" && <SeccionVotacionesAdm />}
         {activeSection === "sugerencias" && <SeccionSugerenciasAdm />}
+        {activeSection === "Estadisticas de Votaciones" && (
+          <SeccionEstadisticasVotos />
+        )}
       </div>
     </div>
   );
