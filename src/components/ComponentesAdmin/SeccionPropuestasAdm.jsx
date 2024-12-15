@@ -139,6 +139,71 @@ const handleAddPropuesta = async () => {
             candidatos={candidatos}
           />
         )}
+        <div className="space-y-4">
+          {propuestas.length === 0 ? (
+            <div className="text-center text-gray-500 py-4">
+              No se encontraron propuestas
+            </div>
+          ) : (
+            propuestas.map((propuesta) => (
+              <div key={propuesta.id_propuesta}>
+                <div
+                  className={`bg-white border rounded-lg p-4 flex justify-between items-center hover:shadow-md transition ${
+                    !propuesta.visible ? "opacity-50 bg-gray-100" : ""
+                  }`}
+                >
+                  <div className={`flex-grow ${!propuesta.visible ? "opacity-70" : ""}`}>
+                    <h3 className="font-bold text-lg flex items-center">
+                      {propuesta.titulo_propuesta}
+                      {!propuesta.visible && (
+                        <span className="text-xs text-yellow-600 ml-2">
+                          (Oculto)
+                        </span>
+                      )}
+                    </h3>
+                    <p className="text-gray-600">
+                      {propuesta.descripcion_propuesta}
+                    </p>
+                    <span className="text-sm text-blue-500">
+                      {propuesta.categoria}
+                    </span>
+                  </div>
+                  <div className="flex space-x-2">
+                    <button
+                      onClick={() => setEditingPropuesta(propuesta)}
+                      className="text-blue-500 hover:bg-blue-100 p-2 rounded"
+                    >
+                      <Edit2 />
+                    </button>
+                    <button
+                      onClick={() =>
+                        handleToggleVisibilidad(
+                          propuesta.id_propuesta,
+                          propuesta.visible
+                        )
+                      }
+                      className={`p-2 rounded ${
+                        propuesta.visible
+                          ? "text-yellow-500 hover:bg-yellow-100"
+                          : "text-green-500 hover:bg-green-100"
+                      }`}
+                    >
+                      {propuesta.visible ? <Eye /> : <EyeOff />}
+                    </button>
+                    <button
+                      onClick={() =>
+                        handleDeletePropuesta(propuesta.id_propuesta)
+                      }
+                      className="text-red-500 hover:bg-red-100 p-2 rounded"
+                    >
+                      <Trash2 />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
       </div>
     </div>
   );
