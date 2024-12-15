@@ -9,7 +9,7 @@ header('Content-Type: application/json');
 try {
     $objetoConexion = new Conexion();
     $conn = $objetoConexion->conectar();
-    $selectMiembros = "SELECT nombre_miembro, tipo_miembro, descripcion_miembro AS title, url_to_image_placeholder AS imgSrc, facebook_url, instagram_url FROM miembros";
+    $selectMiembros = "SELECT id_miembro, nombre_miembro, tipo_miembro, descripcion_miembro, url_to_image_placeholder AS imgSrc, facebook_url, instagram_url,visible,nivel_academico FROM miembros";
     
     $result = $conn->prepare($selectMiembros);
     $result->execute();
