@@ -41,6 +41,15 @@ const ModalPropuestas = ({
         }
         className="border p-2 rounded"
       />
+      <textarea
+        placeholder="Descripción"
+        value={propuesta.descripcion_propuesta}
+        onChange={(e) =>
+          setPropuesta({ ...propuesta, descripcion_propuesta: e.target.value })
+        }
+        className="border p-2 rounded col-span-2"
+        rows="3"
+      />
     </div>
   );
 };
