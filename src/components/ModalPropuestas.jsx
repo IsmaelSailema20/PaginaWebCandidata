@@ -1,6 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { X, Save } from "lucide-react";
 
+const ICON_NAMES = {
+  ScrollText: "Pergamino",
+  Building2: "Edificio Corporativo",
+  Briefcase: "Maletín",
+  GraduationCap: "Graduación",
+  Users: "Grupo de Personas",
+  Target: "Objetivo",
+  Lightbulb: "Bombilla",
+  Users2: "Red de Contactos",
+  DollarSign: "Finanzas",
+  Building: "Edificio",
+  UserCog: "Configuración de Usuario"
+};
+
 const ModalPropuestas = ({
   propuesta,
   setPropuesta,
@@ -62,6 +76,19 @@ const ModalPropuestas = ({
         {categorias.map((cat) => (
           <option key={cat.id_cat_propuesta} value={cat.nombre_cat_propuesta}>
             {cat.nombre_cat_propuesta}
+          </option>
+        ))}
+      </select>
+      <select
+        value={propuesta.icon}
+        onChange={(e) => setPropuesta({ ...propuesta, icon: e.target.value })}
+        className="border p-2 rounded"
+        required
+      >
+        <option value="">Seleccionar Ícono *</option>
+        {availableIcons.map((icon) => (
+          <option key={icon} value={icon}>
+            {ICON_NAMES[icon] || icon}
           </option>
         ))}
       </select>
