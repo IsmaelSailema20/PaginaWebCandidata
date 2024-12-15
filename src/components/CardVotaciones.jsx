@@ -1,6 +1,14 @@
 import React from "react";
 
-function CardVotaciones({ src, candidata, alt, hasVoted, votedFor, onVote }) {
+function CardVotaciones({
+  src,
+  candidata,
+  alt,
+  hasVoted,
+  votedFor,
+  onVote,
+  descripcion,
+}) {
   const handleVoteClick = () => {
     if (!hasVoted) {
       onVote(candidata);
@@ -18,7 +26,9 @@ function CardVotaciones({ src, candidata, alt, hasVoted, votedFor, onVote }) {
         <h5 className="text-2xl font-bold text-center my-4">
           <span className="text-black">{candidata}</span>
         </h5>
-
+        <h3 className="text-sm font-bold text-black text-center my-2">
+          <span className="text-gray-500">{descripcion}</span>
+        </h3>
         <div className="flex mt-4 md:mt-6">
           <button
             onClick={handleVoteClick}
@@ -40,7 +50,7 @@ function CardVotaciones({ src, candidata, alt, hasVoted, votedFor, onVote }) {
                 >
                   <path d="M20.285 2.292a1 1 0 00-1.414 0l-11.326 11.32-4.243-4.244a1 1 0 10-1.414 1.414l5 5a1 1 0 001.414 0l12-12a1 1 0 000-1.414z" />
                 </svg>
-                Apoyaste a esta candidata
+                Apoyaste a esta candidato
               </>
             ) : (
               <>
@@ -51,7 +61,7 @@ function CardVotaciones({ src, candidata, alt, hasVoted, votedFor, onVote }) {
                 >
                   <path d="M14 9V5a5 5 0 00-10 0v4h-.5a1.5 1.5 0 000 3h.5v6a5 5 0 005 5h4a5 5 0 005-5v-6h.5a1.5 1.5 0 000-3H14zm-6-4a3 3 0 016 0v4H8V5zm8 13a3 3 0 01-3 3h-4a3 3 0 01-3-3v-6h10v6z" />
                 </svg>
-                Apoyo a esta candidata
+                Apoyo a esta candidato
               </>
             )}
           </button>
