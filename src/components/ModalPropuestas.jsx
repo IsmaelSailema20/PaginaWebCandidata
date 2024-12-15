@@ -10,6 +10,13 @@ const ModalPropuestas = ({
   onCancel,
   candidatos,
 }) => {
+    const [alcancePropuesta, setAlcancePropuesta] = useState("");
+
+    useEffect(() => {
+      if (propuesta.alcance_propuesta) {
+        setAlcancePropuesta(propuesta.alcance_propuesta);
+      }
+    }, [propuesta]);
   return (
     <div className="bg-gray-100 p-4 rounded-lg mb-6">
       <h3 className="text-lg font-semibold mb-4">
