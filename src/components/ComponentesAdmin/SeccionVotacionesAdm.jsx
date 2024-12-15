@@ -4,6 +4,7 @@ import { CirclePlus, Edit2, Eye, EyeOff, Trash2 } from "lucide-react";
 
 function SeccionVotacionesAdm() {
   const [votaciones, setVotaciones] = useState([]);
+  const [votos, setVotos] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingVotacion, setEditingVotacion] = useState(null); // Estado para la votación en edición
 
@@ -15,6 +16,18 @@ function SeccionVotacionesAdm() {
       );
       const data = await response.json();
       setVotaciones(data); // Actualizar el estado con las votaciones obtenidas
+    } catch (error) {
+      console.error("Error al cargar votaciones:", error);
+    }
+  };
+
+  const fetchVotos = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/ObtenerVotos.php"
+      );
+      const data = await response.json();
+      setVotos(data); // Actualizar el estado con los votos obtenidas
     } catch (error) {
       console.error("Error al cargar votaciones:", error);
     }
@@ -118,6 +131,7 @@ function SeccionVotacionesAdm() {
   // Llamar a fetchVotaciones cuando el componente se monta
   useEffect(() => {
     fetchVotaciones();
+    fetchVotos();
   }, []);
 
   const openModal = (votacion = null) => {
@@ -139,11 +153,17 @@ function SeccionVotacionesAdm() {
           <button
             onClick={() => openModal()} // Abrir el modal al hacer clic
             className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-400 mb-6"
+            disabled={votos.length >= 1 ? true : false} // Deshabilitar el botón si ya hay 1 voto
           >
             <CirclePlus className="mr-2 inline" />
             Agregar Nueva Votación
           </button>
         </div>
+        <p className="text-red-400 font-semibold">
+          {votos.length >= 1
+            ? "Ya se han registrado votos no puede agregar mas candidatos"
+            : ""}
+        </p>
       </div>
 
       {/* Modal */}
