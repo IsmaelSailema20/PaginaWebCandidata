@@ -238,6 +238,44 @@ const Propuestas = () => {
           </div>
           <div className="mt-8 w-full">
             <div className="bg-gray-100 backdrop-blur-lg rounded-2xl p-4 shadow-xl">
+                <div className="mb-4">
+                  <h5 className="text-lg font-semibold text-gray-700">Filtrar por Alcance</h5>
+                  <br/>
+                  <div className="flex flex-wrap gap-2">
+                    {allAlcances.map((alcance) => (
+                      <button
+                        key={alcance}
+                        onClick={() => handleAlcanceClick(alcance)}
+                        className={`px-3 py-1 rounded-full text-sm font-medium transition-all duration-300 ${
+                          selectedAlcance === alcance
+                            ? "bg-[#42B9E5] text-white"
+                            : "bg-gray-300 text-gray-700 hover:bg-gray-400"
+                        }`}
+                      >
+                        {alcance}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="mb-4">
+                  <h5 className="text-lg font-semibold text-gray-700">Filtrar por Candidato</h5>
+                  <br/>
+                  <div className="flex flex-wrap gap-2">
+                    {allCandidatos.map((candidato) => (
+                      <button
+                        key={candidato}
+                        onClick={() => handleCandidatoClick(candidato)}
+                        className={`px-3 py-1 rounded-full text-sm font-medium transition-all duration-300 ${
+                          selectedCandidato === candidato
+                            ? "bg-[#42B9E5] text-white"
+                            : "bg-gray-300 text-gray-700 hover:bg-gray-400"
+                        }`}
+                      >
+                        {candidato}
+                      </button>
+                    ))}
+                  </div>
+                </div>
               <div className="flex items-center gap-2 mb-4">
                 <Search className="w-5 h-5 text-gray-600" />
                 <h4 className="text-lg font-semibold text-gray-700">
