@@ -28,14 +28,16 @@ class PropuestaManager {
             $this->conn->beginTransaction();
 
             $sqlPropuesta = "INSERT INTO propuestas
-                (titulo_propuesta, subtitle, descripcion_propuesta, icon)
-                VALUES (:titulo, :subtitle, :descripcion, :icon)";
+                (titulo_propuesta, subtitle, descripcion_propuesta, icon, id_candidato, alcance_propuesta)
+                VALUES (:titulo, :subtitle, :descripcion, :icon, :id_candidato, :alcance_propuesta)";
 
             $stmtPropuesta = $this->conn->prepare($sqlPropuesta);
             $stmtPropuesta->bindValue(':titulo', $datos['titulo_propuesta']);
             $stmtPropuesta->bindValue(':subtitle', $datos['subtitle']);
             $stmtPropuesta->bindValue(':descripcion', $datos['descripcion_propuesta']);
             $stmtPropuesta->bindValue(':icon', $datos['icon']);
+            $stmtPropuesta->bindValue(':id_candidato', $datos['id_candidato']);
+            $stmtPropuesta->bindValue(':alcance_propuesta', $datos['alcance_propuesta']);
             $stmtPropuesta->execute();
 
             $idPropuesta = $this->conn->lastInsertId();
@@ -66,7 +68,9 @@ class PropuestaManager {
                     'subtitle' => $datos['subtitle'],
                     'descripcion_propuesta' => $datos['descripcion_propuesta'],
                     'icon' => $datos['icon'],
-                    'categoria' => $datos['categoria']
+                    'categoria' => $datos['categoria'],
+                    'id_candidato' => $datos['id_candidato'],
+                    'alcance_propuesta' => $datos['alcance_propuesta']
                 ]
             ];
         } catch (PDOException $e) {
@@ -89,3 +93,4 @@ try {
     http_response_code(500);
     echo json_encode(['error' => $e->getMessage()]);
 }
+
