@@ -1,7 +1,6 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-
 header('Access-Control-Allow-Origin: http://localhost:5173');
 header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
@@ -13,23 +12,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
-include 'Conexion.php';
+include 'conexion.php';
 
-class Propuestas {
+class Propuestas
+{
     private $conn;
 
-    public function __construct() {
+    public function __construct()
+    {
         $conexion = new Conexion();
         $this->conn = $conexion->conectar();
     }
 
-    public function obtenerPropuestasYCategorias() {
+    public function obtenerPropuestasYCategorias()
+    {
         try {
-            $sqlPropuestas = "SELECT p.id_propuesta, p.titulo_propuesta, p.subtitle, p.descripcion_propuesta, p.icon,
-                                     c.nombre_cat_propuesta AS categoria
-                              FROM propuestas p
-                              LEFT JOIN propuestas_categorias pc ON p.id_propuesta = pc.id_propuesta
-                              LEFT JOIN categorias_propuestas c ON pc.id_categoria = c.id_cat_propuesta";
+            $sqlPropuestas = "SELECT
+                                p.id_propuesta,
+                                p.titulo_propuesta,
+                                p.subtitle,
+                                p.descripcion_propuesta,
+                                p.icon,
+                                p.visible,
+                                p.alcance_propuesta,
+                                m.id_miembro,
+                                m.nombre_miembro,
+                                m.url_to_image_placeholder AS imgSrc,
+                                c.nombre_cat_propuesta AS categoria
+                            FROM propuestas p
+                            LEFT JOIN miembros m ON p.id_candidato = m.id_miembro
+                            LEFT JOIN propuestas_categorias pc ON p.id_propuesta = pc.id_propuesta
+                            LEFT JOIN categorias_propuestas c ON pc.id_categoria = c.id_cat_propuesta";
 
             $sqlCategorias = "SELECT id_cat_propuesta, nombre_cat_propuesta FROM categorias_propuestas";
 
@@ -40,6 +53,12 @@ class Propuestas {
             $stmtCategorias = $this->conn->prepare($sqlCategorias);
             $stmtCategorias->execute();
             $categorias = $stmtCategorias->fetchAll(PDO::FETCH_ASSOC);
+
+            // Convert visible to boolean
+            $propuestas = array_map(function ($propuesta) {
+                $propuesta['visible'] = $propuesta['visible'] == 1;
+                return $propuesta;
+            }, $propuestas);
 
             return ['propuestas' => $propuestas, 'categorias' => $categorias];
         } catch (PDOException $e) {
