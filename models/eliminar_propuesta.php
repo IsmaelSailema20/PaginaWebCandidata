@@ -25,27 +25,22 @@ class PropuestaManager {
 
     public function eliminarPropuesta($id) {
         try {
-            // Begin transaction
             $this->conn->beginTransaction();
 
-            // Remove category links first
             $sqlRemoveLinks = "DELETE FROM propuestas_categorias WHERE id_propuesta = :id";
             $stmtRemoveLinks = $this->conn->prepare($sqlRemoveLinks);
             $stmtRemoveLinks->bindValue(':id', $id);
             $stmtRemoveLinks->execute();
 
-            // Then remove the proposal
             $sqlPropuesta = "DELETE FROM propuestas WHERE id_propuesta = :id";
             $stmtPropuesta = $this->conn->prepare($sqlPropuesta);
             $stmtPropuesta->bindValue(':id', $id);
             $stmtPropuesta->execute();
 
-            // Commit transaction
             $this->conn->commit();
 
             return ['success' => true];
         } catch (PDOException $e) {
-            // Rollback transaction in case of error
             $this->conn->rollBack();
             http_response_code(500);
             return ['error' => $e->getMessage()];
@@ -53,9 +48,7 @@ class PropuestaManager {
     }
 }
 
-// Handle the request
 try {
-    // Get the proposal ID from the query string
     $id = isset($_GET['id']) ? intval($_GET['id']) : null;
 
     if ($id === null) {
