@@ -2,7 +2,14 @@ import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
 import { X, Save } from "lucide-react";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Radio from "@mui/material/Radio";
+
+import { ButtonBase, ButtonGroup } from "@mui/material";
 const style = {
   position: "absolute",
   top: "50%",
@@ -23,10 +30,13 @@ export default function EditModal({
   handleClose,
   miembroEditado,
   handleChange,
-  mode = "edit",
+  mode,
   onSave,
 }) {
   const [error, setError] = useState("");
+  //const [restricciones, setRestricciones] = useState(null);
+  const [conteos, setConteos] = useState({});
+  const [nivel, setNivel] = useState("");
   const [nuevoMiembro, setNuevoMiembro] = useState({
     nombre_miembro: "",
     descripcion_miembro: "",
@@ -39,27 +49,56 @@ export default function EditModal({
   });
   const [imgError, setImgError] = useState(false);
   const handleModalClose = () => {
+    setNuevoMiembro({
+      nombre_miembro: "",
+      descripcion_miembro: "",
+      tipo_miembro: "",
+      nivel_academico: "",
+      imgSrc: "",
+      facebook_url: "",
+      instagram_url: "",
+      visible: "1",
+    });
     setError(""); // Limpiar el mensaje de error
     handleClose(); // Llamar al manejador proporcionado
   };
 
   useEffect(() => {
-    if (mode === "edit" && miembroEditado) {
-      setNuevoMiembro(miembroEditado);
-    } else if (mode === "create") {
-      setNuevoMiembro({
-        nombre_miembro: "",
-        descripcion_miembro: "",
-        tipo_miembro: "",
-        nivel_academico: "",
-        imgSrc: "",
-        facebook_url: "",
-        instagram_url: "",
-        visible: "1",
-      });
+    if (open) {
+      if (mode === "edit" && miembroEditado) {
+        setNuevoMiembro(miembroEditado);
+      } else if (mode === "create") {
+        // Reinicia el estado al abrir en modo "create"
+        setNuevoMiembro({
+          nombre_miembro: "",
+          descripcion_miembro: "",
+          tipo_miembro: "",
+          nivel_academico: "",
+          imgSrc: "",
+          facebook_url: "",
+          instagram_url: "",
+          visible: "1",
+        });
+      }
     }
-  }, [mode, miembroEditado]);
-
+  }, [open, mode, miembroEditado]);
+  useEffect(() => {
+    fetch(
+      "http://localhost/ProyectoManejo/paginaWebCandidata/models/ConsultarNivel.php"
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.error) {
+          setError(data.error);
+          console.log(data.error, "error en consulta de nivel");
+        } else {
+          console.log(data.nivel, "+ ", data.conteos);
+          setNivel(data.nivel);
+          setConteos(data.conteos);
+        }
+      })
+      .catch((err) => setError("Error al cargar datos del servidor."));
+  }, [open]);
   const handleSave = async () => {
     setError(""); // Limpiar errores antes de continuar
 
@@ -74,7 +113,41 @@ export default function EditModal({
       return;
     }
 
-    setError(""); // Limpiar errores antes de continuar
+    setError(""); 
+    const tipo = nuevoMiembro.tipo_miembro.toUpperCase();
+    nuevoMiembro.tipo_miembro=tipo;
+    if (nivel === "Pais") {
+      if (
+        (mode !== "edit" && conteos.PRESIDENTE >= 1) ||
+        (mode !== "edit" && conteos.VICEPRESIDENTE >= 1)
+      ) {
+        if (
+          (tipo === "PRESIDENTE" && conteos.PRESIDENTE >= 1) ||
+          (tipo === "VICEPRESIDENTE" && conteos.VICEPRESIDENTE >= 1)
+        ) {
+          setError(`No se puede añadir más ${tipo}s. Límite alcanzado.`);
+          return;
+        }
+      }
+    } else if (nivel === "Provincia") {
+      if (
+        (mode !== "edit" && conteos.ALCALDE >= 1 ) || // no se porque alterna el campo "alcalde" entre mayus y minus"
+        (mode !== "edit" && conteos.PREFECTO >= 1)
+      ) {
+      if (
+        (tipo === "ALCALDE" && conteos.ALCALDE>= 1 ) ||
+        (tipo === "PREFECTO" && conteos.PREFECTO >= 1)
+      ) {
+        setError(`No se puede añadir más ${tipo}S. Límite alcanzado.`);
+        return;
+      }
+    }
+    } else if (nivel === "Universidad") {
+      if (conteos >= 4) {
+        setError("No se puede añadir más candidatos. Límite alcanzado.");
+        return;
+      }
+    }
 
     const url =
       mode === "edit"
@@ -116,7 +189,6 @@ export default function EditModal({
     if (name === "descripcion_miembro" && value.length > 210) {
       return;
     }
-
     setNuevoMiembro((prev) => ({
       ...prev,
       [name]: value,
@@ -200,6 +272,15 @@ export default function EditModal({
               onChange={handleInputChange}
               className="border p-2 rounded"
             />
+            <RadioGroup
+              row
+              name="visible"
+              value={nuevoMiembro.visible || "1"}
+              onChange={handleInputChange}
+            >
+              <FormControlLabel value="1" control={<Radio />} label="Visible" />
+              <FormControlLabel value="0" control={<Radio />} label="Oculto" />
+            </RadioGroup>
 
             <div className="col-span-2 flex justify-end space-x-2">
               <button
