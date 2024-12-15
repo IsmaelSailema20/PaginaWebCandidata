@@ -50,6 +50,21 @@ const ModalPropuestas = ({
         className="border p-2 rounded col-span-2"
         rows="3"
       />
+      <select
+        value={propuesta.categoria}
+        onChange={(e) =>
+          setPropuesta({ ...propuesta, categoria: e.target.value })
+        }
+        className="border p-2 rounded"
+        required
+      >
+        <option value="">Seleccionar Categoría *</option>
+        {categorias.map((cat) => (
+          <option key={cat.id_cat_propuesta} value={cat.nombre_cat_propuesta}>
+            {cat.nombre_cat_propuesta}
+          </option>
+        ))}
+      </select>
     </div>
   );
 };
