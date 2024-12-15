@@ -130,6 +130,21 @@ const handleEditPropuesta = async (propuesta) => {
   }
 };
 
+const handleDeletePropuesta = async (id) => {
+  try {
+    const response = await fetch(
+      `http://localhost/models/eliminar_propuesta.php?id=${id}`,
+      { method: "DELETE" }
+    );
+
+    if (response.ok) {
+      setPropuestas(propuestas.filter((p) => p.id_propuesta !== id));
+    }
+  } catch (error) {
+    console.error("Error deleting proposal:", error);
+  }
+};
+
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <div className="bg-white shadow-md rounded-lg p-6">
