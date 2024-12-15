@@ -11,7 +11,7 @@ export function ListWithAvatar() {
   const [miembros, setMiembros] = useState([]);
   const [miembroEditado, setMiembroEditado] = useState(null);
   const [openModal, setOpenModal] = useState(false);
-  const [modalMode, setModalMode] = useState("edit");
+  const [modalMode, setModalMode] = useState(null);
 
   const [openDialog, setOpenDialog] = useState(false);
   const [miembroAEliminar, setMiembroAEliminar] = useState(null);
@@ -23,6 +23,7 @@ export function ListWithAvatar() {
       );
       const data = await response.json();
       setMiembros(data);
+      console.log(data);
     } catch (error) {
       console.error("Error al obtener los miembros:", error);
     }
@@ -39,6 +40,7 @@ export function ListWithAvatar() {
   };
 
   const handleCreate = () => {
+    console.log("createlist");
     setMiembroEditado(null);
     setModalMode("create");
     setOpenModal(true);
@@ -102,6 +104,7 @@ export function ListWithAvatar() {
           onClick={handleCreate}
           className="bg-blue-500 text-white p-4 rounded-md mb-4"
         >
+          
           Crear Nuevo Candidato
         </button>
       </div>
