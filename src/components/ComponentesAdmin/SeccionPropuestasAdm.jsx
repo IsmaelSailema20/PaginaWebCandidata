@@ -3,169 +3,149 @@ import { PlusCircle, Edit2, Trash2, Eye, EyeOff } from "lucide-react";
 import ModalPropuestas from '../ModalPropuestas';
 
 function SeccionPropuestasAdm() {
-    const [propuestas, setPropuestas] = useState([]);
-    const [categorias, setCategorias] = useState([]);
-    const [candidatos, setCandidatos] = useState([]);
-    const [editingPropuesta, setEditingPropuesta] = useState(null);
-    const [newPropuesta, setNewPropuesta] = useState({
-      titulo_propuesta: "",
-      subtitle: "",
-      descripcion_propuesta: "",
-      categoria: "",
-      icon: "",
-      visible: true,
-      id_candidato: "",
-      alcance_propuesta: "",
-    });
-    const [isAddingNew, setIsAddingNew] = useState(false);
+  const [propuestas, setPropuestas] = useState([]);
+  const [categorias, setCategorias] = useState([]);
+  const [candidatos, setCandidatos] = useState([]);
+  const [editingPropuesta, setEditingPropuesta] = useState(null);
+  const [newPropuesta, setNewPropuesta] = useState({
+    titulo_propuesta: "",
+    subtitle: "",
+    descripcion_propuesta: "",
+    categoria: "",
+    icon: "",
+    visible: true,
+    id_candidato: "",
+    alcance_propuesta: "",
+  });
+  const [isAddingNew, setIsAddingNew] = useState(false);
 
-    const availableIcons = [
-      "ScrollText",
-      "Building2",
-      "Briefcase",
-      "GraduationCap",
-      "Users",
-      "Target",
-      "Lightbulb",
-      "Users2",
-      "DollarSign",
-      "Building",
-      "UserCog",
-    ];
+  const availableIcons = [
+    "ScrollText",
+    "Building2",
+    "Briefcase",
+    "GraduationCap",
+    "Users",
+    "Target",
+    "Lightbulb",
+    "Users2",
+    "DollarSign",
+    "Building",
+    "UserCog",
+  ];
 
-    useEffect(() => {
-      const fetchPropuestas = async () => {
-        try {
-          const response = await fetch(
-            "http://localhost/models/get_propuestas.php"
-          );
-          const data = await response.json();
-          const uniquePropuestas = Array.from(
-            new Map(data.propuestas.map((p) => [p.id_propuesta, p])).values()
-          );
-          setPropuestas(uniquePropuestas);
-          setCategorias(data.categorias);
-        } catch (error) {
-          console.error("Error fetching proposals:", error);
+  useEffect(() => {
+    const fetchPropuestas = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost/models/get_propuestas.php"
+        );
+        const data = await response.json();
+        const uniquePropuestas = Array.from(
+          new Map(data.propuestas.map((p) => [p.id_propuesta, p])).values()
+        );
+        setPropuestas(uniquePropuestas);
+        setCategorias(data.categorias);
+      } catch (error) {
+        console.error("Error fetching proposals:", error);
+      }
+    };
+
+    const fetchCandidatos = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost/models/get_candidatos.php"
+        );
+        const data = await response.json();
+        setCandidatos(data);
+      } catch (error) {
+        console.error("Error fetching candidatos:", error);
+      }
+    };
+
+    fetchPropuestas();
+    fetchCandidatos();
+  }, []);
+
+  const handleAddPropuesta = async () => {
+    if (!newPropuesta.titulo_propuesta || !newPropuesta.categoria || !newPropuesta.icon || !newPropuesta.id_candidato || !newPropuesta.alcance_propuesta) {
+      alert("Por favor complete todos los campos obligatorios");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        "http://localhost/models/agregar_propuesta.php",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...newPropuesta, visible: true }),
         }
-      };
+      );
 
-      const fetchCandidatos = async () => {
-        try {
-          const response = await fetch(
-            "http://localhost/models/get_candidatos.php"
-          );
-          const data = await response.json();
-          setCandidatos(data);
-        } catch (error) {
-          console.error("Error fetching candidatos:", error);
+      if (response.ok) {
+        const result = await response.json();
+        setPropuestas([...propuestas, result.propuesta]);
+        setNewPropuesta({
+          titulo_propuesta: "",
+          subtitle: "",
+          descripcion_propuesta: "",
+          categoria: "",
+          icon: "",
+          visible: true,
+          id_candidato: "",
+          alcance_propuesta: "",
+        });
+        setIsAddingNew(false);
+      }
+    } catch (error) {
+      console.error("Error adding proposal:", error);
+    }
+  };
+
+  const handleEditPropuesta = async (propuesta) => {
+    if (!propuesta.titulo_propuesta || !propuesta.categoria || !propuesta.icon || !propuesta.id_candidato || !propuesta.alcance_propuesta) {
+      alert("Por favor complete todos los campos obligatorios");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        "http://localhost/models/editar_propuesta.php",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(propuesta),
         }
-      };
-
-      fetchPropuestas();
-      fetchCandidatos();
-    }, []);
-
-const handleAddPropuesta = async () => {
-  if (!newPropuesta.titulo_propuesta || !newPropuesta.categoria || !newPropuesta.icon || !newPropuesta.id_candidato || !newPropuesta.alcance_propuesta) {
-    alert("Por favor complete todos los campos obligatorios");
-    return;
-  }
-
-  try {
-    const response = await fetch(
-      "http://localhost/models/agregar_propuesta.php",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...newPropuesta, visible: true }),
-      }
-    );
-
-    if (response.ok) {
-      const result = await response.json();
-      setPropuestas([...propuestas, result.propuesta]);
-      setNewPropuesta({
-        titulo_propuesta: "",
-        subtitle: "",
-        descripcion_propuesta: "",
-        categoria: "",
-        icon: "",
-        visible: true,
-        id_candidato: "",
-        alcance_propuesta: "",
-      });
-      setIsAddingNew(false);
-    }
-  } catch (error) {
-    console.error("Error adding proposal:", error);
-  }
-};
-
-const handleEditPropuesta = async (propuesta) => {
-  if (!propuesta.titulo_propuesta || !propuesta.categoria || !propuesta.icon || !propuesta.id_candidato || !propuesta.alcance_propuesta) {
-    alert("Por favor complete todos los campos obligatorios");
-    return;
-  }
-
-  try {
-    const response = await fetch(
-      "http://localhost/models/editar_propuesta.php",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(propuesta),
-      }
-    );
-
-    if (response.ok) {
-      const updatedPropuestas = propuestas.map((p) =>
-        p.id_propuesta === propuesta.id_propuesta ? propuesta : p
       );
-      setPropuestas(updatedPropuestas);
-      setEditingPropuesta(null);
-    }
-  } catch (error) {
-    console.error("Error editing proposal:", error);
-  }
-};
 
-const handleDeletePropuesta = async (id) => {
-  try {
-    const response = await fetch(
-      `http://localhost/models/eliminar_propuesta.php?id=${id}`,
-      { method: "DELETE" }
-    );
-
-    if (response.ok) {
-      setPropuestas(propuestas.filter((p) => p.id_propuesta !== id));
-    }
-  } catch (error) {
-    console.error("Error deleting proposal:", error);
-  }
-};
-
-const handleToggleVisibilidad = async (id, currentVisibility) => {
-  try {
-    const response = await fetch(
-      "http://localhost/models/visibilidad_propuesta.php",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id, visible: !currentVisibility }),
+      if (response.ok) {
+        const updatedPropuestas = propuestas.map((p) =>
+          p.id_propuesta === propuesta.id_propuesta ? propuesta : p
+        );
+        setPropuestas(updatedPropuestas);
+        setEditingPropuesta(null);
       }
-    );
-
-    if (response.ok) {
-      const updatedPropuestas = propuestas.map((p) =>
-        p.id_propuesta === id ? { ...p, visible: !currentVisibility } : p
-      );
-      setPropuestas(updatedPropuestas);
+    } catch (error) {
+      console.error("Error editing proposal:", error);
     }
-  } catch (error) {
-    console.error("Error cambiando visibilidad:", error);
-  }
-};const handleToggleVisibilidad = async (id, currentVisibility) => {
+  };
+
+  const handleDeletePropuesta = async (id) => {
+    try {
+      const response = await fetch(
+        `http://localhost/models/eliminar_propuesta.php?id=${id}`,
+        { method: "DELETE" }
+      );
+
+      if (response.ok) {
+        setPropuestas(propuestas.filter((p) => p.id_propuesta !== id));
+      }
+    } catch (error) {
+      console.error("Error deleting proposal:", error);
+    }
+  };
+
+  const handleToggleVisibilidad = async (id, currentVisibility) => {
     try {
       const response = await fetch(
         "http://localhost/models/visibilidad_propuesta.php",
@@ -184,8 +164,8 @@ const handleToggleVisibilidad = async (id, currentVisibility) => {
       }
     } catch (error) {
       console.error("Error cambiando visibilidad:", error);
-  }
-};
+    }
+  };
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
@@ -201,6 +181,7 @@ const handleToggleVisibilidad = async (id, currentVisibility) => {
             <PlusCircle className="mr-2" /> Agregar Propuesta
           </button>
         </div>
+
         {isAddingNew && (
           <ModalPropuestas
             propuesta={newPropuesta}
@@ -224,6 +205,7 @@ const handleToggleVisibilidad = async (id, currentVisibility) => {
             candidatos={candidatos}
           />
         )}
+
         <div className="space-y-4">
           {propuestas.length === 0 ? (
             <div className="text-center text-gray-500 py-4">
@@ -285,6 +267,17 @@ const handleToggleVisibilidad = async (id, currentVisibility) => {
                     </button>
                   </div>
                 </div>
+                {editingPropuesta && editingPropuesta.id_propuesta === propuesta.id_propuesta && (
+                  <ModalPropuestas
+                    propuesta={editingPropuesta}
+                    setPropuesta={setEditingPropuesta}
+                    categorias={categorias}
+                    availableIcons={availableIcons}
+                    onSave={() => handleEditPropuesta(editingPropuesta)}
+                    onCancel={() => setEditingPropuesta(null)}
+                    candidatos={candidatos}
+                  />
+                )}
               </div>
             ))
           )}
@@ -295,5 +288,4 @@ const handleToggleVisibilidad = async (id, currentVisibility) => {
 }
 
 export default SeccionPropuestasAdm;
-
 
