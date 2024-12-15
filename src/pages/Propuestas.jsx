@@ -128,6 +128,12 @@ const Propuestas = () => {
         : [...prev, category]
     );
 
+  const handleCandidatoClick = (candidato) =>
+    setSelectedCandidato(prev => prev === candidato ? "" : candidato);
+
+  const handleAlcanceClick = (alcance) =>
+    setSelectedAlcance(prev => prev === alcance ? "" : alcance);
+
   const handleNavigation = (direction) => {
     if (isAnimating || filteredPropuestas.length === 0) return;
     setIsAnimating(true);
