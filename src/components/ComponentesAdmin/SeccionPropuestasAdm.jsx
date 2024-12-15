@@ -73,6 +73,12 @@ function SeccionPropuestasAdm() {
           <h2 className="text-2xl font-bold text-gray-800">
             Gestión de Propuestas
           </h2>
+          <button
+            onClick={() => setIsAddingNew(true)}
+            className="flex items-center bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
+          >
+            <PlusCircle className="mr-2" /> Agregar Propuesta
+          </button>
         </div>
       </div>
     </div>
