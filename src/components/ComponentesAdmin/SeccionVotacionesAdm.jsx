@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import FormularioVotaciones from "./FormularioVotaciones";
 import { CirclePlus, Edit2, Eye, EyeOff, Trash2 } from "lucide-react";
 
-function SeccionSugerenciasAdm() {
+function SeccionVotacionesAdm() {
   const [votaciones, setVotaciones] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingVotacion, setEditingVotacion] = useState(null); // Estado para la votación en edición
@@ -130,15 +130,15 @@ function SeccionSugerenciasAdm() {
     setIsModalOpen(false);
   };
   return (
-    <div>
+    <>
       <div className="flex flex-col gap-4">
-        <h2 className="font-semibold text-lg">
+        <h2 className="font-semibold text-3xl ">
           Gestión de candidatos para votaciones
         </h2>
         <div className="flex justify-end items-center">
           <button
             onClick={() => openModal()} // Abrir el modal al hacer clic
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-400"
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-400 mb-6"
           >
             <CirclePlus className="mr-2 inline" />
             Agregar Nueva Votación
@@ -166,7 +166,7 @@ function SeccionSugerenciasAdm() {
       )}
 
       {/* Lista de votaciones */}
-      <div className="space-y-4">
+      <div className="space-y-4 ">
         {votaciones.length === 0 ? (
           <div className="text-center text-gray-500 py-4">
             No se encontraron votaciones
@@ -223,7 +223,7 @@ function SeccionSugerenciasAdm() {
           ))
         )}
       </div>
-    </div>
+    </>
   );
 }
-export default SeccionSugerenciasAdm;
+export default SeccionVotacionesAdm;
