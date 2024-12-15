@@ -11,8 +11,10 @@ import {
   NotepadText,
   Users,
   LogOut,
+  MessageSquareShare,
 } from "lucide-react";
 import SeccionVotacionesAdm from "../components/ComponentesAdmin/SeccionVotacionesAdm";
+import SeccionSugerenciasAdm from "../components/ComponentesAdmin/SeccionSugerenciasAdm";
 
 function PanelAdministracion() {
   // Estado para la sección activa
@@ -25,7 +27,7 @@ function PanelAdministracion() {
 
   const handleLogout = () => {
     // Aquí puedes realizar cualquier acción adicional de cierre de sesión, como borrar tokens, etc.
-    window.location.href = "/login";  // Redirige a la página de login
+    window.location.href = "/login"; // Redirige a la página de login
   };
 
   return (
@@ -89,16 +91,21 @@ function PanelAdministracion() {
               <NotebookPen />
               <span className="mx-4 font-medium">Sección Votaciones</span>
             </a>
+            <a
+              onClick={() => handleSectionClick("sugerencias")}
+              className="flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 cursor-pointer"
+            >
+              <MessageSquareShare />
+              <span className="mx-4 font-medium">Sugerencias</span>
+            </a>
           </nav>
 
           <a
-            onClick={handleLogout}  // Cambiar la función al hacer clic
+            onClick={handleLogout} // Cambiar la función al hacer clic
             className="flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 cursor-pointer"
           >
             <LogOut className="mr-2" />
-            <span className="mx-4 font-medium">
-              Cerrar Sesión
-            </span>
+            <span className="mx-4 font-medium">Cerrar Sesión</span>
           </a>
         </div>
       </aside>
@@ -116,6 +123,7 @@ function PanelAdministracion() {
         {activeSection === "candidatos" && <SeccionCandidatosAdm />}
         {activeSection === "propuestas" && <SeccionPropuestasAdm />}
         {activeSection === "votaciones" && <SeccionVotacionesAdm />}
+        {activeSection === "sugerencias" && <SeccionSugerenciasAdm />}
       </div>
     </div>
   );
