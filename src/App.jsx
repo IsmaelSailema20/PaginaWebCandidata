@@ -11,6 +11,7 @@ import EventosNoticias from "./pages/EventosNoticias.jsx";
 import TeamSection from "./pages/TeamSection.jsx";
 import Navbar from "./components/NavBar.jsx";
 import Home from "./pages/home.jsx";
+import Votaciones from "./pages/Votaciones.jsx";
 import "./index.css";
 import PaginaSugerenciasVotos from "./pages/PaginaSugerenciasVotos.jsx";
 import PanelAdministracion from "./pages/PanelAdministracion.jsx";
@@ -45,6 +46,7 @@ function Main() {
         <Route path="/candidatos" element={<TeamSection />} />
         <Route path="/propuestas" element={<Propuestas />} />
         <Route path="/sugerencias" element={<PaginaSugerenciasVotos />} />
+        <Route path="/votaciones" element={<Votaciones />} />
         <Route path="/login" element={<Login />} />
         <Route path="/panelAdministracion" element={<PanelAdministracion />} />
       </Routes>

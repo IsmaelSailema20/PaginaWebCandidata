@@ -3,7 +3,6 @@ import SeccionInicioAdm from "../components/ComponentesAdmin/SeccionInicioAdm";
 import SeccionEventosAdm from "../components/ComponentesAdmin/SeccionEventosAdm";
 import SeccionCandidatosAdm from "../components/ComponentesAdmin/SeccionCandidatosAdm";
 import SeccionPropuestasAdm from "../components/ComponentesAdmin/SeccionPropuestasAdm";
-import SeccionSugerenciasAdm from "../components/ComponentesAdmin/SeccionSugerenciasAdm";
 import {
   CalendarCog,
   House,
@@ -11,7 +10,13 @@ import {
   NotebookPen,
   NotepadText,
   Users,
+  LogOut,
+  MessageSquareShare,
+  ChartNoAxesColumn,
 } from "lucide-react";
+import SeccionVotacionesAdm from "../components/ComponentesAdmin/SeccionVotacionesAdm";
+import SeccionSugerenciasAdm from "../components/ComponentesAdmin/SeccionSugerenciasAdm";
+import SeccionEstadisticasVotos from "../components/ComponentesAdmin/SeccionEstadisticasVotos";
 
 function PanelAdministracion() {
   // Estado para la sección activa
@@ -20,6 +25,11 @@ function PanelAdministracion() {
   // Función para cambiar la sección activa
   const handleSectionClick = (section) => {
     setActiveSection(section);
+  };
+
+  const handleLogout = () => {
+    // Aquí puedes realizar cualquier acción adicional de cierre de sesión, como borrar tokens, etc.
+    window.location.href = "/login"; // Redirige a la página de login
   };
 
   return (
@@ -77,24 +87,42 @@ function PanelAdministracion() {
             </a>
 
             <a
-              onClick={() => handleSectionClick("sugerencias")}
+              onClick={() => handleSectionClick("votaciones")}
               className="flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 cursor-pointer"
             >
               <NotebookPen />
-              <span className="mx-4 font-medium">Sección Sugerencias</span>
+              <span className="mx-4 font-medium">Sección Votaciones</span>
+            </a>
+            <a
+              onClick={() => handleSectionClick("sugerencias")}
+              className="flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 cursor-pointer"
+            >
+              <MessageSquareShare />
+              <span className="mx-4 font-medium">Sugerencias</span>
+            </a>
+            <a
+              onClick={() => handleSectionClick("Estadisticas de Votaciones")}
+              className="flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 cursor-pointer"
+            >
+              <ChartNoAxesColumn />
+              <span className="mx-4 font-medium">
+                Estadisticas de Votaciones
+              </span>
             </a>
           </nav>
 
-          <a href="#" className="flex items-center px-4 -mx-2">
-            <span className="mx-2 font-medium text-gray-800">
-              Cerrar Sesión
-            </span>
+          <a
+            onClick={handleLogout} // Cambiar la función al hacer clic
+            className="flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 cursor-pointer"
+          >
+            <LogOut className="mr-2" />
+            <span className="mx-4 font-medium">Cerrar Sesión</span>
           </a>
         </div>
       </aside>
 
       {/* Área de contenido que cambia dependiendo de la sección */}
-      <div className="flex-1 p-6">
+      <div className="flex-1 p-6 max-h-screen overflow-y-auto">
         {activeSection === "principal" && (
           <section>
             <h2>Sección Principal</h2>
@@ -105,7 +133,11 @@ function PanelAdministracion() {
         {activeSection === "eventos" && <SeccionEventosAdm />}
         {activeSection === "candidatos" && <SeccionCandidatosAdm />}
         {activeSection === "propuestas" && <SeccionPropuestasAdm />}
+        {activeSection === "votaciones" && <SeccionVotacionesAdm />}
         {activeSection === "sugerencias" && <SeccionSugerenciasAdm />}
+        {activeSection === "Estadisticas de Votaciones" && (
+          <SeccionEstadisticasVotos />
+        )}
       </div>
     </div>
   );

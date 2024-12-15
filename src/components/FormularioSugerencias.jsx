@@ -7,7 +7,16 @@ import { useState } from "react";
 import { enviarCorreoConfirmacion } from "../logic/emailService";
 const FormElementInput = () => {
   const optionsGenero = ["Masculino", "Femenino", "Prefiero no decirlo"];
-  const optionsPersona = ["Estudiante", "Docente", "Personal Administrativo"];
+  const optionsPersona = [
+    "Simpatizante",
+    "Militante",
+    "Funcionario",
+    "Afiliado",
+    "Prensa",
+    "Líder comunitario",
+    "Ciudadano Independiente",
+    "Prefiero no decirlo",
+  ];
 
   // Estados para el valor seleccionado de cada ComboBox
   const [genero, setGenero] = useState("");
@@ -108,19 +117,9 @@ const FormElementInput = () => {
         />
       )}
       <div className="relative bg-slate-100 w-[580px] p-8 m-4 rounded-xl shadow-xl fade-in">
-        <img
-          className="absolute top-[-80px] left-[-80px] w-40 h-auto z-10"
-          src="https://gitlab.com/alexjavier/img_mc/-/raw/main/unidos.PNG"
-          alt=""
-        />
         <form id="form-sugerencias" onSubmit={guardar}>
-          <h1 className="text-4xl font-bold text-center mb-5">
-            <span className=" text-5xl text-pink-500 drop-shadow-[4px_2px_0px_#ded2d2]">
-              S
-            </span>
-            <span className="text-[#40b2e6] drop-shadow-[4px_2px_0px_#ded2d2]">
-              ugerencias
-            </span>
+          <h1 className="text-4xl text-black font-bold text-center mb-5">
+            Sugerencias
           </h1>
           <div className="grid md:grid-cols-2 md:gap-4">
             <div className="relative z-0 w-full mb-5 group">
@@ -161,7 +160,7 @@ const FormElementInput = () => {
           <div className="w-full text-center">
             <button
               type="submit"
-              className="text-lg px-14 py-3 font-bold text-center rounded-lg  focus:ring-4 focus:outline-none bg-gradient-to-r from-[#FF8B9A] to-[#72D5FF] text-white p-3  shadow-lg hover:opacity-90 transition-all duration-300 transform hover:scale-110 disabled:opacity-50"
+              className="text-lg px-14 py-3 font-bold text-center rounded-lg  focus:ring-4 focus:outline-none bg-gradient-to-r bg-blue-600 text-white p-3  shadow-lg hover:opacity-90 transition-all duration-300 transform hover:scale-110 disabled:opacity-50"
             >
               Enviar
             </button>
