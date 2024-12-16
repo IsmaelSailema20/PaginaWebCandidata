@@ -84,7 +84,7 @@ export default function EditModal({
   }, [open, mode, miembroEditado]);
   useEffect(() => {
     fetch(
-      "http://localhost/ProyectoManejo/paginaWebCandidata/models/ConsultarNivel.php"
+      "http://localhost:8081/ProyectoManejo/paginaWebCandidata/models/ConsultarNivel.php"
     )
       .then((response) => response.json())
       .then((data) => {
@@ -117,49 +117,51 @@ export default function EditModal({
     const tipo = nuevoMiembro.tipo_miembro.toUpperCase().trim();
     nuevoMiembro.tipo_miembro = tipo;
     if (nivel === "Pais") {
-      if (
-        (mode !== "edit" && conteos.PRESIDENTE >= 1 && tipo === "PRESIDENTE") ||
-        (mode !== "edit" &&
-          conteos.VICEPRESIDENTE >= 1 &&
-          tipo === "VICEPRESIDENTE")
-      ) {
-        setError(`No se puede añadir más ${tipo}s. Límite alcanzado.`);
-        return;
-      } else {
+      if (mode !== "edit") {
         if (
-          (mode == "edit" &&
-            conteos.PRESIDENTE >= 1 &&
-            tipo === "PRESIDENTE") ||
-          (mode == "edit" &&
-            conteos.VICEPRESIDENTE >= 1 &&
-            tipo === "VICEPRESIDENTE")
-        ) {
-          setError(`No se puede añadir más ${tipo}s. Límite alcanzado.`);
-          return;
-        }
-      }
-    } else if (nivel === "Provincia") {
-      if (
-        (mode !== "edit" && conteos.ALCALDE >= 1 && tipo === "ALCALDE") || // no se porque alterna el campo "alcalde" entre mayus y minus"
-        (mode !== "edit" && conteos.PREFECTO >= 1 && tipo === "VICEPRESIDENTE") // no se
-      ) {
-        setError(`No se puede añadir más ${tipo}S. Límite alcanzado.`);
-        return;
-      } else {
-        if (
-          (mode == "edit" &&
-            conteos.ALCALDE >= 1 &&
-            tipo === "ALCALDE") ||
-          (mode == "edit" &&
-            conteos.PREFECTO >= 1 &&
-            tipo === "PREFECTO")
+          (tipo === "PRESIDENTE" && conteos.PRESIDENTE >= 1) ||
+          (tipo === "VICEPRESIDENTE" && conteos.VICEPRESIDENTE >= 1)
         ) {
           setError(`No se puede añadir más ${tipo}S. Límite alcanzado.`);
           return;
         }
+      } else {
+        if (
+          (tipo === "PRESIDENTE" &&
+            conteos.PRESIDENTE >= 1 &&
+            miembroEditado.tipo_miembro !== "PRESIDENTE") ||
+          (tipo === "VICEPRESIDENTE" &&
+            conteos.VICEPRESIDENTE >= 1 &&
+            miembroEditado.tipo_miembro !== "VICEPRESIDENTE")
+        ) {
+          setError(`No se puede asignar el rol de ${tipo}. Límite alcanzado.`);
+          return;
+        }
+      }
+    } else if (nivel === "Provincia") {
+      if (mode !== "edit") {
+        if (
+          (tipo === "ALCALDE" && conteos.ALCALDE >= 1) ||
+          (tipo === "PREFECTO" && conteos.PREFECTO >= 1)
+        ) {
+          setError(`No se puede añadir más ${tipo}s. Límite alcanzado.`);
+          return;
+        }
+      } else {
+        if (
+          (tipo === "ALCALDE" &&
+            conteos.ALCALDE >= 1 &&
+            miembroEditado.tipo_miembro !== "ALCALDE") ||
+          (tipo === "PREFECTO" &&
+            conteos.PREFECTO >= 1 &&
+            miembroEditado.tipo_miembro !== "PREFECTO")
+        ) {
+          setError(`No se puede asignar el rol de ${tipo}. Límite alcanzado.`);
+          return;
+        }
       }
     } else if (nivel === "Universidad") {
-      if (conteos >= 4) {
+      if (mode !== "edit" && conteos >= 4) {
         setError("No se puede añadir más candidatos. Límite alcanzado.");
         return;
       }
@@ -167,8 +169,8 @@ export default function EditModal({
 
     const url =
       mode === "edit"
-        ? "http://localhost/ProyectoManejo/paginaWebCandidata/models/editCandidato.php"
-        : "http://localhost/ProyectoManejo/paginaWebCandidata/models/createCandidato.php";
+        ? "http://localhost:8081/ProyectoManejo/paginaWebCandidata/models/editCandidato.php"
+        : "http://localhost:8081/ProyectoManejo/paginaWebCandidata/models/createCandidato.php";
 
     try {
       const response = await fetch(url, {
@@ -226,77 +228,165 @@ export default function EditModal({
             {mode === "edit" ? "Editar Candidato" : "Crear Candidato"}
           </h3>
           <div className="grid grid-cols-2 gap-4">
-            <input
-              type="text"
-              placeholder="Nombre del Miembro *"
-              name="nombre_miembro"
-              value={nuevoMiembro.nombre_miembro || ""}
-              onChange={handleInputChange}
-              className="border p-2 rounded"
-              required
-            />
-            <input
-              type="text"
-              placeholder="Tipo de Miembro *"
-              name="tipo_miembro"
-              value={nuevoMiembro.tipo_miembro || ""}
-              onChange={handleInputChange}
-              className="border p-2 rounded"
-              required
-            />
-            <textarea
-              placeholder="Descripción *"
-              name="descripcion_miembro"
-              value={nuevoMiembro.descripcion_miembro || ""}
-              onChange={handleInputChange}
-              className="border p-2 rounded col-span-2"
-              rows="3"
-              maxLength="210"
-            />
-            <input
-              type="text"
-              placeholder="Nivel Académico"
-              name="nivel_academico"
-              value={nuevoMiembro.nivel_academico || ""}
-              onChange={handleInputChange}
-              className="border p-2 rounded"
-            />
+            <div className="relative">
+              <label
+                htmlFor="nombre_miembro"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Nombre del Candidato
+              </label>
+              <input
+                id="nombre_miembro"
+                type="text"
+                placeholder="Nombre del Candidato "
+                name="nombre_miembro"
+                value={nuevoMiembro.nombre_miembro || ""}
+                onChange={handleInputChange}
+                className="border p-2 rounded w-full"
+                required
+                maxLength="100"
+              />
+            </div>
 
-            <input
-              type="text"
-              placeholder="URL de Imagen"
-              name="imgSrc"
-              value={nuevoMiembro.imgSrc || ""}
-              onChange={handleInputChange}
-              className="border p-2 rounded"
-              required
-            />
+            <div className="relative">
+              <label
+                htmlFor="tipo_miembro"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Tipo de Candidato
+              </label>
+              <input
+                id="tipo_miembro"
+                type="text"
+                placeholder="Tipo de Candidato"
+                name="tipo_miembro"
+                value={nuevoMiembro.tipo_miembro || ""}
+                onChange={handleInputChange}
+                className="border p-2 rounded w-full"
+                required
+                maxLength="50"
+              />
+            </div>
 
-            <input
-              type="text"
-              placeholder="URL de Facebook"
-              name="facebook_url"
-              value={nuevoMiembro.facebook_url || ""}
-              onChange={handleInputChange}
-              className="border p-2 rounded"
-            />
-            <input
-              type="text"
-              placeholder="URL de Instagram"
-              name="instagram_url"
-              value={nuevoMiembro.instagram_url || ""}
-              onChange={handleInputChange}
-              className="border p-2 rounded"
-            />
-            <RadioGroup
-              row
-              name="visible"
-              value={nuevoMiembro.visible || "1"}
-              onChange={handleInputChange}
-            >
-              <FormControlLabel value="1" control={<Radio />} label="Visible" />
-              <FormControlLabel value="0" control={<Radio />} label="Oculto" />
-            </RadioGroup>
+            <div className="relative col-span-2">
+              <label
+                htmlFor="descripcion_miembro"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Descripción
+              </label>
+              <textarea
+                id="descripcion_miembro"
+                placeholder="Descripción "
+                name="descripcion_miembro"
+                value={nuevoMiembro.descripcion_miembro || ""}
+                onChange={handleInputChange}
+                className="border p-2 rounded w-full"
+                rows="3"
+                maxLength="210"
+                required
+              />
+            </div>
+
+            <div className="relative">
+              <label
+                htmlFor="nivel_academico"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Nivel Académico
+              </label>
+              <input
+                id="nivel_academico"
+                type="text"
+                placeholder="Nivel Académico"
+                name="nivel_academico"
+                value={nuevoMiembro.nivel_academico || ""}
+                onChange={handleInputChange}
+                className="border p-2 rounded w-full"
+                maxLength="70"
+              />
+            </div>
+
+            <div className="relative">
+              <label
+                htmlFor="imgSrc"
+                className="block text-sm font-medium text-gray-700"
+              >
+                URL de Imagen
+              </label>
+              <input
+                id="imgSrc"
+                type="text"
+                placeholder="URL de Imagen"
+                name="imgSrc"
+                value={nuevoMiembro.imgSrc || ""}
+                onChange={handleInputChange}
+                className="border p-2 rounded w-full"
+                required
+                maxLength="500"
+              />
+            </div>
+
+            <div className="relative">
+              <label
+                htmlFor="facebook_url"
+                className="block text-sm font-medium text-gray-700"
+              >
+                URL de Facebook
+              </label>
+              <input
+                id="facebook_url"
+                type="text"
+                placeholder="URL de Facebook"
+                name="facebook_url"
+                value={nuevoMiembro.facebook_url || ""}
+                onChange={handleInputChange}
+                className="border p-2 rounded w-full"
+                maxLength="255"
+              />
+            </div>
+
+            <div className="relative">
+              <label
+                htmlFor="instagram_url"
+                className="block text-sm font-medium text-gray-700"
+              >
+                URL de Instagram
+              </label>
+              <input
+                id="instagram_url"
+                type="text"
+                placeholder="URL de Instagram"
+                name="instagram_url"
+                value={nuevoMiembro.instagram_url || ""}
+                onChange={handleInputChange}
+                className="border p-2 rounded w-full"
+                maxLength="255"
+              />
+            </div>
+
+            <div className="relative col-span-2">
+              <label className="block text-sm font-medium text-gray-700">
+                Visibilidad
+              </label>
+              <RadioGroup
+                row
+                name="visible"
+                value={nuevoMiembro.visible || "1"}
+                onChange={handleInputChange}
+              >
+                <FormControlLabel
+                  value="1"
+                  control={<Radio />}
+                  label="Visible"
+                />
+                <FormControlLabel
+                  value="0"
+                  control={<Radio />}
+                  label="Oculto"
+                />
+              </RadioGroup>
+            </div>
 
             <div className="col-span-2 flex justify-end space-x-2">
               <button

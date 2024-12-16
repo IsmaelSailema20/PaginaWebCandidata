@@ -9,7 +9,7 @@ try {
     $conn = $objetoConexion->conectar();
 
     // Consultar el nivel
-    $queryNivel = "SELECT nivel FROM nivel"; // Cambiar según cómo se obtiene el nivel
+    $queryNivel = "SELECT nivel FROM niveles"; // Cambiar según cómo se obtiene el nivel
     $stmtNivel = $conn->prepare($queryNivel);
     $stmtNivel->execute();
 
@@ -46,7 +46,7 @@ try {
         $stmtMiembros = $conn->prepare($queryMiembros);
         $stmtMiembros->execute();
         $resultado = $stmtMiembros->fetch(PDO::FETCH_ASSOC);
-        
+
         echo json_encode([
             "nivel" => $nivel,
             "conteos" => (int) $resultado['total_miembros']
