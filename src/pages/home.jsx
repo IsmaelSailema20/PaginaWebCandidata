@@ -6,62 +6,86 @@ function Home() {
   const [events, setEvents] = useState([]);
   const [leader, setLeader] = useState(null);
   const [members, setMembers] = useState([]);
-  const [proposals, setProposals] = useState([]); // Estado para almacenar las propuestas
+  const [proposals, setProposals] = useState([]);
+  const [sections, setSections] = useState([]); // Estado para almacenar las secciones
+
+  // Obtener secciones
+  useEffect(() => {
+    fetch("http://localhost/ProyectoManejo/PaginaWebCandidata/models/get_secciones_visibles.php")
+      .then((response) => response.json())
+      .then((data) => {
+        // Asegurarse de que data es un array antes de actualizar el estado
+        if (Array.isArray(data)) {
+          setSections(data);
+        } else {
+          console.error("La respuesta no es un arreglo válido");
+        }
+      })
+      .catch((error) => console.error("Error al obtener secciones:", error));
+  }, []);
 
   // Obtener noticias
   useEffect(() => {
     fetch("http://localhost/ProyectoManejo/PaginaWebCandidata/models/get_news.php")
-      .then(response => response.json())
-      .then(data => setNews(data))
-      .catch(error => console.error('Error al obtener noticias:', error));
+      .then((response) => response.json())
+      .then((data) => setNews(data))
+      .catch((error) => console.error("Error al obtener noticias:", error));
   }, []);
 
   // Obtener eventos (solo los 3 primeros)
   useEffect(() => {
     fetch("http://localhost/ProyectoManejo/PaginaWebCandidata/models/get_events.php")
-      .then(response => response.json())
-      .then(data => {
+      .then((response) => response.json())
+      .then((data) => {
         if (Array.isArray(data)) {
           setEvents(data.slice(0, 3));
         } else {
-          console.error('La respuesta no es un arreglo de eventos válido');
+          console.error("La respuesta no es un arreglo de eventos válido");
         }
       })
-      .catch(error => console.error('Error al obtener eventos:', error));
+      .catch((error) => console.error("Error al obtener eventos:", error));
   }, []);
 
   // Obtener información del líder
   useEffect(() => {
     fetch("http://localhost/ProyectoManejo/PaginaWebCandidata/models/get_leader.php")
-      .then(response => response.json())
-      .then(data => setLeader(data))
-      .catch(error => console.error('Error al obtener información del líder:', error));
+      .then((response) => response.json())
+      .then((data) => setLeader(data))
+      .catch((error) => console.error("Error al obtener información del líder:", error));
   }, []);
 
   // Obtener miembros (no el líder)
   useEffect(() => {
     fetch("http://localhost/ProyectoManejo/PaginaWebCandidata/models/get_members_no_leader.php")
-      .then(response => response.json())
-      .then(data => setMembers(data))
-      .catch(error => console.error('Error al obtener miembros:', error));
+      .then((response) => response.json())
+      .then((data) => setMembers(data))
+      .catch((error) => console.error("Error al obtener miembros:", error));
   }, []);
 
   // Obtener las primeras 3 propuestas
   useEffect(() => {
     fetch("http://localhost/ProyectoManejo/PaginaWebCandidata/models/get_proposals.php")
-      .then(response => response.json())
-      .then(data => {
+      .then((response) => response.json())
+      .then((data) => {
         if (Array.isArray(data)) {
-          setProposals(data.slice(0, 3)); // Solo las 3 primeras propuestas
+          setProposals(data.slice(0, 3));
         } else {
-          console.error('La respuesta no es un arreglo de propuestas válido');
+          console.error("La respuesta no es un arreglo de propuestas válido");
         }
       })
-      .catch(error => console.error('Error al obtener propuestas:', error));
+      .catch((error) => console.error("Error al obtener propuestas:", error));
   }, []);
 
   return (
     <>
+      {/* Título, imagen y descripción en la parte superior */}
+      <section className="top-section">
+        <div className="content">
+          <table style={{ width: "100%", borderCollapse: "collapse" }}></table>
+        </div>
+      </section>
+
+      {/* Sección de Líder */}
       {leader && (
         <section className="leader-section">
           <div className="content">
@@ -71,20 +95,33 @@ function Home() {
                 <div className="leader-name-photo">
                   <h3>{leader.nombre_miembro}</h3>
                   {leader.url_to_image_placeholder && (
-                    <img src={leader.url_to_image_placeholder} alt={leader.nombre_miembro} />
+                    <img
+                      src={leader.url_to_image_placeholder}
+                      alt={leader.nombre_miembro}
+                    />
                   )}
                 </div>
                 <div className="leader-description">
                   <p>{leader.descripcion_miembro}</p>
-                  <p><strong>Nivel Académico:</strong> {leader.nivel_academico}</p>
+                  <p>
+                    <strong>Nivel Académico:</strong> {leader.nivel_academico}
+                  </p>
                   <div className="social-links">
                     {leader.facebook_url && (
-                      <a href={leader.facebook_url} target="_blank" rel="noopener noreferrer">
+                      <a
+                        href={leader.facebook_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
                         <img src="iconosRedes/facebook.png" alt="Facebook" />
                       </a>
                     )}
                     {leader.instagram_url && (
-                      <a href={leader.instagram_url} target="_blank" rel="noopener noreferrer">
+                      <a
+                        href={leader.instagram_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
                         <img src="iconosRedes/instagram.png" alt="Instagram" />
                       </a>
                     )}
@@ -106,7 +143,10 @@ function Home() {
                 <div className="member-card" key={index}>
                   <div className="member-name-photo">
                     <h3>{member.nombre_miembro}</h3>
-                    <img src={member.url_to_image_placeholder} alt={member.nombre_miembro} />
+                    <img
+                      src={member.url_to_image_placeholder}
+                      alt={member.nombre_miembro}
+                    />
                   </div>
                   <div className="member-description">
                     <p>{member.descripcion_miembro}</p>
@@ -125,7 +165,7 @@ function Home() {
         <div className="content">
           <p className="subtitle">NOTICIAS</p>
           <h1>Últimas Actualizaciones y Noticias</h1>
-          <p>Mantente al día con las últimas noticias y desarrollos de nuestra campaña. Estamos comprometidos a mantenerte informado sobre los avances que estamos logrando juntos.</p>
+          <p>Mantente al día con las últimas noticias y desarrollos de nuestra campaña.</p>
         </div>
         <div className="news-items">
           {news.length > 0 ? (
@@ -152,11 +192,43 @@ function Home() {
                 <div className="news-item" key={index}>
                   <h3>{proposal.titulo_propuesta}</h3>
                   <p>{proposal.descripcion_propuesta}</p>
-                  <p><strong>Alcance:</strong> {proposal.alcance_propuesta}</p>
+                  <p>
+                    <strong>Alcance:</strong> {proposal.alcance_propuesta}
+                  </p>
                 </div>
               ))
             ) : (
               <p>Cargando propuestas...</p>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* Sección de Secciones Dinámicas */}
+      <section className="sections-section">
+        <div className="content">
+          <div className="sections-list">
+            {sections.length > 0 ? (
+              sections.map((section, index) => (
+                <div className="section-card" key={index}>
+                  <h3 className="subtitle">{section.nombre}</h3>
+                  <div className="section-row">
+                    <div className="section-title">
+                      
+                    </div>
+                    <div className="section-description">
+                      <p>{section.descripcion}</p>
+                    </div>
+                    <div className="section-image">
+                      {section.url_de_la_imagen && (
+                        <img src={section.url_de_la_imagen} alt={section.nombre} />
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p>Cargando secciones...</p>
             )}
           </div>
         </div>
