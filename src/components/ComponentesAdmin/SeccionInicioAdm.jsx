@@ -3,6 +3,18 @@ import FormularioSeccionInicio from "../FormularioSeccionInicio.jsx";
 
 function SeccionInicioAdm() {
   const [isAddingNew, setIsAddingNew] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const [isInvisible, setIsInvisible] = useState(false);
+
+  const handleVisibilityChange = (type) => {
+    if (type === "visible") {
+      setIsVisible(true);
+      setIsInvisible(false);
+    } else {
+      setIsVisible(false);
+      setIsInvisible(true);
+    }
+  };
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
@@ -18,14 +30,39 @@ function SeccionInicioAdm() {
         </div>
 
         {isAddingNew && (
-          <div className="mb-6 relative">
+          <div className="mb-6 bg-gray-100 p-4 rounded-lg shadow-lg relative">
             <button
               onClick={() => setIsAddingNew(false)}
-              className="absolute top-0 right-0 bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition"
+              className="absolute top-2 right-2 bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition"
             >
-              Cerrar
+              Cancelar
             </button>
+
             <FormularioSeccionInicio />
+
+            <div className="mt-4">
+              <div className="flex items-center mb-2">
+                <input
+                  type="checkbox"
+                  id="visible"
+                  checked={isVisible}
+                  onChange={() => handleVisibilityChange("visible")}
+                  className="mr-2"
+                />
+                <label htmlFor="visible" className="text-gray-700">Visible</label>
+              </div>
+
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="invisible"
+                  checked={isInvisible}
+                  onChange={() => handleVisibilityChange("invisible")}
+                  className="mr-2"
+                />
+                <label htmlFor="invisible" className="text-gray-700">Invisible</label>
+              </div>
+            </div>
           </div>
         )}
 
