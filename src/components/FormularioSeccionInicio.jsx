@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function FormularioSeccionInicio({ onCancel }) {
+function FormularioSeccionInicio({ onCancel, onSectionAdded }) {
   const [nombre, setNombre] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [imagenUrl, setImagenUrl] = useState("");
@@ -17,13 +17,39 @@ function FormularioSeccionInicio({ onCancel }) {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Nombre:", nombre);
-    console.log("Descripción:", descripcion);
-    console.log("URL de la imagen:", imagenUrl);
-    console.log("Visible:", isVisible);
-    console.log("Invisible:", isInvisible);
+
+    // Preparamos los datos que vamos a enviar al servidor
+    const sectionData = {
+      nombre,
+      descripcion,
+      url_de_la_imagen: imagenUrl,
+      visibilidad: isVisible ? 1 : 0, // Guardamos 1 para visible, 0 para invisible
+    };
+
+    try {
+      // Enviamos los datos al endpoint PHP
+      const response = await fetch("../agregar_seccion_inicio.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(sectionData),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        alert("Sección agregada exitosamente.");
+        onSectionAdded(); // Llamamos a la función para actualizar el listado
+      } else {
+        alert("Error al agregar la sección.");
+      }
+    } catch (error) {
+      console.error("Error al enviar la sección:", error);
+      alert("Hubo un problema al agregar la sección.");
+    }
   };
 
   return (
