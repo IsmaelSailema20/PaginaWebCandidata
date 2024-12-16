@@ -6,6 +6,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import { X, Save, Delete, DeleteIcon, Trash2 } from "lucide-react";
+import { PlusCircle, Edit2, Eye, EyeOff } from "lucide-react";
 
 export function ListWithAvatar() {
   const [miembros, setMiembros] = useState([]);
@@ -54,8 +55,6 @@ export function ListWithAvatar() {
     }));
   };
 
-  
-
   const handleDelete = (miembro) => {
     setMiembroAEliminar(miembro);
     setOpenDialog(true);
@@ -102,10 +101,9 @@ export function ListWithAvatar() {
       <div className="flex justify-end">
         <button
           onClick={handleCreate}
-          className="bg-blue-500 text-white p-4 rounded-md mb-4"
-        >
-          
-          Crear Nuevo Candidato
+          className="flex items-center bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
+          >
+         <PlusCircle className="mr-2" /> Crear Nuevo Candidato
         </button>
       </div>
 
@@ -134,16 +132,16 @@ export function ListWithAvatar() {
               <div className="flex space-x-2">
                 <button
                   onClick={() => handleEdit(miembro)}
-                  className="text-yellow-500 hover:text-yellow-700"
+                  className="text-blue-500 hover:bg-blue-100 p-2 rounded"
                 >
-                  Editar
+                  <Edit2 />
                 </button>
                 <button
                   onClick={() => handleDelete(miembro)}
-                  className="text-red-500 hover:text-red-700"
+                  className="text-red-500 hover:bg-red-100 p-2 rounded"
                 >
-                  Eliminar
-                </button>
+                  <Trash2 />
+                  </button>
               </div>
             </li>
           ))
