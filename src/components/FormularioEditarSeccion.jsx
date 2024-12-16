@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 function FormularioEditarSeccion({ seccion, onCancel, onSectionUpdated }) {
   const [nombre, setNombre] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [imagenUrl, setImagenUrl] = useState("");
   const [isVisible, setIsVisible] = useState(false);
-  const [error, setError] = useState(""); // Para manejar errores de validación
 
   // Llenar los campos con los datos de la sección cuando se recibe el prop 'seccion'
   useEffect(() => {
@@ -19,7 +18,7 @@ function FormularioEditarSeccion({ seccion, onCancel, onSectionUpdated }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     const sectionData = {
       id: seccion.id, // ID de la sección a editar
       nombre,
@@ -27,25 +26,27 @@ function FormularioEditarSeccion({ seccion, onCancel, onSectionUpdated }) {
       url_de_la_imagen: imagenUrl,
       visibilidad: isVisible,
     };
-
+  
     try {
-      const response = await fetch("http://localhost/ProyectoManejo/PaginaWebCandidata/models/editar_seccion.php", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(sectionData),
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        if (typeof onSectionUpdated === "function") {
-          onSectionUpdated();  // Llamamos a la función para actualizar las secciones
-        } else {
-          console.error("onSectionUpdated no es una función");
+      const response = await fetch(
+        "http://localhost/ProyectoManejo/PaginaWebCandidata/models/editar_seccion.php",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(sectionData),
         }
-        onCancel();  // Cerramos el modal
+      );
+  
+      const data = await response.json();
+  
+      if (data.success) {
+        // Recargar la lista de secciones antes de cerrar el modal
+        if (typeof onSectionUpdated === "function") {
+          await onSectionUpdated(); // Asegúrate de que la actualización se complete
+        }
+        onCancel(); // Cerrar el modal
       } else {
         alert("Error al editar la sección: " + data.message);
       }
@@ -54,13 +55,18 @@ function FormularioEditarSeccion({ seccion, onCancel, onSectionUpdated }) {
       alert("Hubo un problema al editar la sección.");
     }
   };
-
+  
   return (
     <div className="modal">
       <div className="modal-content">
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label htmlFor="nombre" className="block text-sm font-medium text-gray-700">Nombre</label>
+            <label
+              htmlFor="nombre"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Nombre
+            </label>
             <input
               type="text"
               id="nombre"
@@ -71,7 +77,12 @@ function FormularioEditarSeccion({ seccion, onCancel, onSectionUpdated }) {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="descripcion" className="block text-sm font-medium text-gray-700">Descripción</label>
+            <label
+              htmlFor="descripcion"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Descripción
+            </label>
             <textarea
               id="descripcion"
               value={descripcion}
@@ -81,7 +92,12 @@ function FormularioEditarSeccion({ seccion, onCancel, onSectionUpdated }) {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="imagenUrl" className="block text-sm font-medium text-gray-700">URL de la imagen</label>
+            <label
+              htmlFor="imagenUrl"
+              className="block text-sm font-medium text-gray-700"
+            >
+              URL de la imagen
+            </label>
             <input
               type="url"
               id="imagenUrl"
@@ -92,7 +108,12 @@ function FormularioEditarSeccion({ seccion, onCancel, onSectionUpdated }) {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="visibilidad" className="block text-sm font-medium text-gray-700">Visible</label>
+            <label
+              htmlFor="visibilidad"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Visible
+            </label>
             <input
               type="checkbox"
               id="visibilidad"

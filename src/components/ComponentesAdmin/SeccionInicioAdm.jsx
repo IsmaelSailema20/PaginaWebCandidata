@@ -7,6 +7,8 @@ function SeccionInicioAdm() {
   const [secciones, setSecciones] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editingSection, setEditingSection] = useState(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);  // Estado para el modal
+  const [sectionToDelete, setSectionToDelete] = useState(null);  // Estado para la sección a eliminar
 
   // Función para obtener las secciones desde el backend
   const fetchSecciones = async () => {
@@ -33,21 +35,33 @@ function SeccionInicioAdm() {
     setEditingSection(null); // Limpiar la sección en edición
   };
 
+  // Función para mostrar el modal de confirmación
+  const handleDeleteClick = (id) => {
+    setSectionToDelete(id);  // Guardamos el ID de la sección a eliminar
+    setIsModalVisible(true);  // Mostramos el modal
+  };
+
   // Función para eliminar una sección
-  const handleDelete = async (id) => {
-    const confirmed = window.confirm("¿Estás seguro de que quieres eliminar esta sección?");
-    if (confirmed) {
+  const handleDelete = async () => {
+    if (sectionToDelete) {
       try {
-        const response = await fetch(`http://localhost/ProyectoManejo/PaginaWebCandidata/models/eliminar_seccion.php?id=${id}`, {
+        const response = await fetch(`http://localhost/ProyectoManejo/PaginaWebCandidata/models/eliminar_seccion.php?id=${sectionToDelete}`, {
           method: "GET",
         });
         const data = await response.json();
-        alert(data.mensaje); // Mostrar mensaje del backend
+        
         fetchSecciones(); // Recargar las secciones después de eliminar
+        setIsModalVisible(false); // Ocultar el modal
       } catch (error) {
         console.error("Error al eliminar la sección:", error);
       }
     }
+  };
+
+  // Función para cancelar la eliminación
+  const handleCancelDelete = () => {
+    setIsModalVisible(false); // Ocultar el modal sin hacer nada
+    setSectionToDelete(null); // Limpiar el ID de la sección
   };
 
   // Función para iniciar la edición de una sección
@@ -83,7 +97,7 @@ function SeccionInicioAdm() {
                 <FormularioEditarSeccion
                   seccion={editingSection}
                   onCancel={() => setIsAddingNew(false)}
-                  onSectionAdded={handleSectionAddedOrUpdated}
+                  onSectionUpdated={handleSectionAddedOrUpdated}
                 />
               ) : (
                 <FormularioSeccionInicio
@@ -131,7 +145,7 @@ function SeccionInicioAdm() {
                       Editar
                     </button>
                     <button
-                      onClick={() => handleDelete(seccion.id)}
+                      onClick={() => handleDeleteClick(seccion.id)}
                       className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition"
                     >
                       Eliminar
@@ -142,6 +156,30 @@ function SeccionInicioAdm() {
             </div>
           )}
         </div>
+
+        {/* Modal de confirmación */}
+        {isModalVisible && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+            <div className="bg-white p-6 rounded-lg shadow-lg relative w-96">
+              <h3 className="text-lg font-semibold text-gray-800">Confirmación</h3>
+              <p className="text-gray-600 mt-4">¿Estás seguro de que quieres eliminar esta sección?</p>
+              <div className="mt-6 flex justify-end space-x-4">
+                <button
+                  onClick={handleCancelDelete}
+                  className="bg-gray-300 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-400"
+                >
+                  Cancelar
+                </button>
+                <button
+                  onClick={handleDelete}
+                  className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
+                >
+                  Confirmar
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
