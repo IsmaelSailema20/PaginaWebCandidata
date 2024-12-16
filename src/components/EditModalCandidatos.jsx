@@ -117,49 +117,51 @@ export default function EditModal({
     const tipo = nuevoMiembro.tipo_miembro.toUpperCase().trim();
     nuevoMiembro.tipo_miembro = tipo;
     if (nivel === "Pais") {
-      if (
-        (mode !== "edit" && conteos.PRESIDENTE >= 1 && tipo === "PRESIDENTE") ||
-        (mode !== "edit" &&
-          conteos.VICEPRESIDENTE >= 1 &&
-          tipo === "VICEPRESIDENTE")
-      ) {
-        setError(`No se puede añadir más ${tipo}s. Límite alcanzado.`);
-        return;
-      } else {
+      if (mode !== "edit") {
         if (
-          (mode == "edit" &&
-            conteos.PRESIDENTE >= 1 &&
-            tipo === "PRESIDENTE") ||
-          (mode == "edit" &&
-            conteos.VICEPRESIDENTE >= 1 &&
-            tipo === "VICEPRESIDENTE")
-        ) {
-          setError(`No se puede añadir más ${tipo}s. Límite alcanzado.`);
-          return;
-        }
-      }
-    } else if (nivel === "Provincia") {
-      if (
-        (mode !== "edit" && conteos.ALCALDE >= 1 && tipo === "ALCALDE") || // no se porque alterna el campo "alcalde" entre mayus y minus"
-        (mode !== "edit" && conteos.PREFECTO >= 1 && tipo === "VICEPRESIDENTE") // no se
-      ) {
-        setError(`No se puede añadir más ${tipo}S. Límite alcanzado.`);
-        return;
-      } else {
-        if (
-          (mode == "edit" &&
-            conteos.ALCALDE >= 1 &&
-            tipo === "ALCALDE") ||
-          (mode == "edit" &&
-            conteos.PREFECTO >= 1 &&
-            tipo === "PREFECTO")
+          (tipo === "PRESIDENTE" && conteos.PRESIDENTE >= 1) ||
+          (tipo === "VICEPRESIDENTE" && conteos.VICEPRESIDENTE >= 1)
         ) {
           setError(`No se puede añadir más ${tipo}S. Límite alcanzado.`);
           return;
         }
+      } else {
+        if (
+          (tipo === "PRESIDENTE" &&
+            conteos.PRESIDENTE >= 1 &&
+            miembroEditado.tipo_miembro !== "PRESIDENTE") ||
+          (tipo === "VICEPRESIDENTE" &&
+            conteos.VICEPRESIDENTE >= 1 &&
+            miembroEditado.tipo_miembro !== "VICEPRESIDENTE")
+        ) {
+          setError(`No se puede asignar el rol de ${tipo}. Límite alcanzado.`);
+          return;
+        }
+      }
+    } else if (nivel === "Provincia") {
+      if (mode !== "edit") {
+        if (
+          (tipo === "ALCALDE" && conteos.ALCALDE >= 1) ||
+          (tipo === "PREFECTO" && conteos.PREFECTO >= 1)
+        ) {
+          setError(`No se puede añadir más ${tipo}s. Límite alcanzado.`);
+          return;
+        }
+      } else {
+        if (
+          (tipo === "ALCALDE" &&
+            conteos.ALCALDE >= 1 &&
+            miembroEditado.tipo_miembro !== "ALCALDE") ||
+          (tipo === "PREFECTO" &&
+            conteos.PREFECTO >= 1 &&
+            miembroEditado.tipo_miembro !== "PREFECTO")
+        ) {
+          setError(`No se puede asignar el rol de ${tipo}. Límite alcanzado.`);
+          return;
+        }
       }
     } else if (nivel === "Universidad") {
-      if (conteos >= 4) {
+      if (mode !== "edit" && conteos >= 4) {
         setError("No se puede añadir más candidatos. Límite alcanzado.");
         return;
       }
