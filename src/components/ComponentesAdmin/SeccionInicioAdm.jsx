@@ -30,6 +30,7 @@ function SeccionInicioAdm() {
   const handleSectionAddedOrUpdated = () => {
     fetchSecciones();  // Recargamos las secciones
     setIsAddingNew(false);  // Cerrar el formulario después de agregar o editar
+    setEditingSection(null); // Limpiar la sección en edición
   };
 
   // Función para eliminar una sección
