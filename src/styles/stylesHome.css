@@ -1,0 +1,179 @@
+/* Importar fuentes desde Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Poppins:wght@400;600;700&display=swap');
+
+/* Establecer la fuente predeterminada para todo el sitio */
+body {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+/* Hero Section */
+.hero-section {
+  background-color: #f0f4ff; /* Fondo suave */
+  color: #333;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 20px;
+}
+
+.hero-section .content {
+  width: 60%;
+}
+
+.hero-section .content h1 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 3rem;
+  font-weight: 600;
+  color: #6c4fe5; /* Un color suave de transición */
+  line-height: 1.2;
+}
+
+.hero-section .content p {
+  font-size: 1.2rem;
+  color: #777;
+  line-height: 1.6;
+  margin-top: 20px;
+}
+
+/* Misión y Visión */
+.mission-section, .vision-section {
+  background-color: white;
+  color: #333;
+  padding: 60px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mission-section .content, .vision-section .content {
+  width: 100%;
+  text-align: center;
+}
+
+.mission-section .content h1, .vision-section .content h1 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #6c4fe5; /* Color similar al título principal */
+  line-height: 1.4;
+}
+
+.mission-section .content p, .vision-section .content p {
+  font-size: 1.2rem;
+  line-height: 1.5;
+  color: #555;
+  margin-top: 20px;
+}
+
+/* Sección de Eventos */
+.events-section {
+  background-color: #f4f4f4;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.events-items {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.event-item {
+  width: 32%;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.event-item img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.event-item h3 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.event-item p {
+  font-size: 1.1rem;
+  color: #555;
+}
+
+/* Sección de Noticias */
+.news-section {
+  background-color: #f4f4f4;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.news-items {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.news-item {
+  width: 32%;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.news-item img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.news-item h3 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.news-item p {
+  font-size: 1.1rem;
+  color: #555;
+}
+
+/* Estilos generales */
+.subtitle {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  color: #6c4fe5;
+}
+
+h1, h2, h3 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+}
+
+p {
+  font-family: 'Roboto', sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #333;
+}
