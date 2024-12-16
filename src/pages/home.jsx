@@ -4,6 +4,7 @@ import "../styles/stylesHome.css";
 function Home() {
   const [news, setNews] = useState([]);
   const [events, setEvents] = useState([]);
+  const [leader, setLeader] = useState(null); // Estado para el líder
 
   // Obtener noticias
   useEffect(() => {
@@ -17,12 +18,46 @@ function Home() {
   useEffect(() => {
     fetch("http://localhost/ProyectoManejo/PaginaWebCandidata/models/get_events.php")
       .then(response => response.json())
-      .then(data => setEvents(data.slice(0, 3))) // Filtrar solo los primeros 3 eventos
+      .then(data => {
+        console.log('Datos recibidos de eventos:', data);
+        
+        // Filtramos solo los primeros 3 eventos
+        if (Array.isArray(data)) {
+          setEvents(data.slice(0, 3)); // Solo los 3 primeros eventos
+        } else {
+          console.error('La respuesta no es un arreglo de eventos válido');
+        }
+      })
       .catch(error => console.error('Error al obtener eventos:', error));
+  }, []);
+
+  // Obtener información del líder
+  useEffect(() => {
+    fetch("http://localhost/ProyectoManejo/PaginaWebCandidata/models/get_leader.php")
+      .then(response => response.json())
+      .then(data => setLeader(data))
+      .catch(error => console.error('Error al obtener los datos del líder:', error));
   }, []);
 
   return (
     <>
+      {/* Sección de Líder */}
+      <section className="leader-section">
+        {leader ? (
+          <div className="content">
+            <h1>{leader.nombre_miembro}</h1>
+            <p>{leader.descripcion_miembro}</p>
+            <img src={leader.url_to_image_placeholder} alt={leader.nombre_miembro} />
+            <div>
+              <a href={leader.facebook_url} target="_blank" rel="noopener noreferrer">Facebook</a>
+              <a href={leader.instagram_url} target="_blank" rel="noopener noreferrer">Instagram</a>
+            </div>
+          </div>
+        ) : (
+          <p>Cargando información del líder...</p>
+        )}
+      </section>
+
       <section className="hero-section">
         <div className="content">
           <p className="subtitle">TE ESPERAMOS</p>
@@ -74,28 +109,6 @@ function Home() {
             ))
           ) : (
             <p>Cargando noticias...</p>
-          )}
-        </div>
-      </section>
-
-      {/* Sección de Eventos */}
-      <section className="events-section">
-        <div className="content">
-          <p className="subtitle">EVENTOS</p>
-          <h1>Únete a Nuestros Próximos Eventos</h1>
-          <p>Estamos organizando varios eventos para interactuar con la comunidad. ¡No te pierdas la oportunidad de ser parte del movimiento!</p>
-        </div>
-        <div className="events-items">
-          {events.length > 0 ? (
-            events.map((item, index) => (
-              <div className="event-item" key={index}>
-                <h3>{item.titulo}</h3>
-                <img src={item.urlImagen} alt={item.titulo} />
-                <p>{item.descripcion}</p>
-              </div>
-            ))
-          ) : (
-            <p>Cargando eventos...</p>
           )}
         </div>
       </section>
