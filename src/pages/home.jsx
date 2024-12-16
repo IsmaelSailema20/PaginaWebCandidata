@@ -4,7 +4,9 @@ import "../styles/stylesHome.css";
 function Home() {
   const [news, setNews] = useState([]);
   const [events, setEvents] = useState([]);
-  const [leader, setLeader] = useState(null); // Estado para el líder
+  const [leader, setLeader] = useState(null);
+  const [members, setMembers] = useState([]);
+  const [proposals, setProposals] = useState([]); // Estado para almacenar las propuestas
 
   // Obtener noticias
   useEffect(() => {
@@ -19,11 +21,8 @@ function Home() {
     fetch("http://localhost/ProyectoManejo/PaginaWebCandidata/models/get_events.php")
       .then(response => response.json())
       .then(data => {
-        console.log('Datos recibidos de eventos:', data);
-        
-        // Filtramos solo los primeros 3 eventos
         if (Array.isArray(data)) {
-          setEvents(data.slice(0, 3)); // Solo los 3 primeros eventos
+          setEvents(data.slice(0, 3));
         } else {
           console.error('La respuesta no es un arreglo de eventos válido');
         }
@@ -36,58 +35,88 @@ function Home() {
     fetch("http://localhost/ProyectoManejo/PaginaWebCandidata/models/get_leader.php")
       .then(response => response.json())
       .then(data => setLeader(data))
-      .catch(error => console.error('Error al obtener los datos del líder:', error));
+      .catch(error => console.error('Error al obtener información del líder:', error));
+  }, []);
+
+  // Obtener miembros (no el líder)
+  useEffect(() => {
+    fetch("http://localhost/ProyectoManejo/PaginaWebCandidata/models/get_members_no_leader.php")
+      .then(response => response.json())
+      .then(data => setMembers(data))
+      .catch(error => console.error('Error al obtener miembros:', error));
+  }, []);
+
+  // Obtener las primeras 3 propuestas
+  useEffect(() => {
+    fetch("http://localhost/ProyectoManejo/PaginaWebCandidata/models/get_proposals.php")
+      .then(response => response.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          setProposals(data.slice(0, 3)); // Solo las 3 primeras propuestas
+        } else {
+          console.error('La respuesta no es un arreglo de propuestas válido');
+        }
+      })
+      .catch(error => console.error('Error al obtener propuestas:', error));
   }, []);
 
   return (
     <>
-      {/* Sección de Líder */}
-      <section className="leader-section">
-        {leader ? (
+      {leader && (
+        <section className="leader-section">
           <div className="content">
-            <h1>{leader.nombre_miembro}</h1>
-            <p>{leader.descripcion_miembro}</p>
-            <img src={leader.url_to_image_placeholder} alt={leader.nombre_miembro} />
-            <div>
-              <a href={leader.facebook_url} target="_blank" rel="noopener noreferrer">Facebook</a>
-              <a href={leader.instagram_url} target="_blank" rel="noopener noreferrer">Instagram</a>
+            <div className="leader-info">
+              <h2>Líder del partido</h2>
+              <div className="leader-card">
+                <div className="leader-name-photo">
+                  <h3>{leader.nombre_miembro}</h3>
+                  {leader.url_to_image_placeholder && (
+                    <img src={leader.url_to_image_placeholder} alt={leader.nombre_miembro} />
+                  )}
+                </div>
+                <div className="leader-description">
+                  <p>{leader.descripcion_miembro}</p>
+                  <p><strong>Nivel Académico:</strong> {leader.nivel_academico}</p>
+                  <div className="social-links">
+                    {leader.facebook_url && (
+                      <a href={leader.facebook_url} target="_blank" rel="noopener noreferrer">
+                        <img src="iconosRedes/facebook.png" alt="Facebook" />
+                      </a>
+                    )}
+                    {leader.instagram_url && (
+                      <a href={leader.instagram_url} target="_blank" rel="noopener noreferrer">
+                        <img src="iconosRedes/instagram.png" alt="Instagram" />
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        ) : (
-          <p>Cargando información del líder...</p>
-        )}
-      </section>
+        </section>
+      )}
 
-      <section className="hero-section">
+      {/* Sección de Miembros (no el líder) */}
+      <section className="news-section">
         <div className="content">
-          <p className="subtitle">TE ESPERAMOS</p>
-          <h1>Hagamos del Mundo un Lugar Mejor</h1>
-          <p>Podemos comenzar dando pequeños pasos y realizando cambios que tengan un gran impacto en el mundo.</p>
-        </div>
-        <div className="hero-image">
-          <img src="hero-image.png" alt="Político hablando" />
-        </div>
-      </section>
-
-      <section className="mission-section">
-        <div className="content">
-          <p className="subtitle">MISIÓN</p>
-          <h1>Estamos Comprometidos con Empoderar a la Comunidad</h1>
-          <p>Nuestra misión es empoderar a las personas a través de la educación, la salud y el apoyo social, asegurando un mejor mañana. Al crear iniciativas y programas que fomenten un sentido de responsabilidad, estamos sentando las bases para una comunidad más fuerte y conectada.</p>
-        </div>
-        <div className="image">
-          <img src="mission-image.png" alt="Misión" />
-        </div>
-      </section>
-
-      <section className="vision-section">
-        <div className="content">
-          <p className="subtitle">VISIÓN</p>
-          <h1>Construyendo un Futuro Sostenible Juntos</h1>
-          <p>Imaginamos un futuro donde cada persona tenga acceso a las herramientas necesarias para prosperar. Nuestra visión es una sociedad donde las oportunidades de crecimiento y éxito sean abundantes, y cada voz sea escuchada, llevando a un mundo más justo, más verde y más equitativo para todos.</p>
-        </div>
-        <div className="image">
-          <img src="vision-image.png" alt="Visión" />
+          <p className="subtitle">MIEMBROS DESTACADOS</p>
+          <div className="members-list">
+            {members.length > 0 ? (
+              members.map((member, index) => (
+                <div className="member-card" key={index}>
+                  <div className="member-name-photo">
+                    <h3>{member.nombre_miembro}</h3>
+                    <img src={member.url_to_image_placeholder} alt={member.nombre_miembro} />
+                  </div>
+                  <div className="member-description">
+                    <p>{member.descripcion_miembro}</p>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p>Cargando miembros...</p>
+            )}
+          </div>
         </div>
       </section>
 
@@ -110,6 +139,26 @@ function Home() {
           ) : (
             <p>Cargando noticias...</p>
           )}
+        </div>
+      </section>
+
+      {/* Sección de Propuestas */}
+      <section className="news-section">
+        <div className="content">
+          <p className="subtitle">PROPUETAS DESTACADAS</p>
+          <div className="news-items">
+            {proposals.length > 0 ? (
+              proposals.map((proposal, index) => (
+                <div className="news-item" key={index}>
+                  <h3>{proposal.titulo_propuesta}</h3>
+                  <p>{proposal.descripcion_propuesta}</p>
+                  <p><strong>Alcance:</strong> {proposal.alcance_propuesta}</p>
+                </div>
+              ))
+            ) : (
+              <p>Cargando propuestas...</p>
+            )}
+          </div>
         </div>
       </section>
     </>
