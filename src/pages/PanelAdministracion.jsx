@@ -3,6 +3,8 @@ import SeccionInicioAdm from "../components/ComponentesAdmin/SeccionInicioAdm";
 import SeccionEventosAdm from "../components/ComponentesAdmin/SeccionEventosAdm";
 import SeccionCandidatosAdm from "../components/ComponentesAdmin/SeccionCandidatosAdm";
 import SeccionPropuestasAdm from "../components/ComponentesAdmin/SeccionPropuestasAdm";
+import DiagonalBackground from '../components/EscojerNivel';
+
 import {
   CalendarCog,
   House,
@@ -13,6 +15,7 @@ import {
   LogOut,
   MessageSquareShare,
   ChartNoAxesColumn,
+  Menu ,
 } from "lucide-react";
 import SeccionVotacionesAdm from "../components/ComponentesAdmin/SeccionVotacionesAdm";
 import SeccionSugerenciasAdm from "../components/ComponentesAdmin/SeccionSugerenciasAdm";
@@ -21,6 +24,7 @@ import SeccionEstadisticasVotos from "../components/ComponentesAdmin/SeccionEsta
 function PanelAdministracion() {
   // Estado para la sección activa
   const [activeSection, setActiveSection] = useState("principal");
+  const [sidebarVisible, setSidebarVisible] = useState(true);
 
   // Función para cambiar la sección activa
   const handleSectionClick = (section) => {
@@ -125,9 +129,8 @@ function PanelAdministracion() {
       <div className="flex-1 p-6 max-h-screen overflow-y-auto">
         {activeSection === "principal" && (
           <section>
-            <h2>Sección Principal</h2>
-            <p>Contenido de la sección principal.</p>
-          </section>
+          <DiagonalBackground />
+        </section>
         )}
         {activeSection === "inicio" && <SeccionInicioAdm />}
         {activeSection === "eventos" && <SeccionEventosAdm />}

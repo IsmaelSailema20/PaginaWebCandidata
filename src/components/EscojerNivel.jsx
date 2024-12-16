@@ -3,7 +3,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { X, Trash2 } from "react-feather"; // Asegúrate de tener estos iconos o usa los que prefieras
+import { X, Save } from "lucide-react"; // Usamos los íconos de lucide-react
 
 const DiagonalBackground = () => {
   const [showSelect, setShowSelect] = useState(false);
@@ -12,7 +12,9 @@ const DiagonalBackground = () => {
 
   // Usamos useEffect para hacer el fetch cuando el componente se monte
   useEffect(() => {
-    fetch("http://localhost/ProyectoManejo/paginaWebCandidata/models/ConsultarNivel.php")
+    fetch(
+      "http://localhost/ProyectoManejo/paginaWebCandidata/models/ConsultarNivel.php"
+    )
       .then((response) => response.json())
       .then((data) => {
         if (data.error === "No se pudo determinar el nivel") {
@@ -27,24 +29,47 @@ const DiagonalBackground = () => {
       });
   }, []);
 
-  // Función para manejar la selección del nivel
   const handleSelectChange = (event) => {
     setSelectedOption(event.target.value);
   };
 
-  // Función para abrir el diálogo de confirmación
   const handleOpenDialog = () => {
     setOpenDialog(true);
   };
 
-  // Función para cerrar el diálogo
   const handleCloseDialog = () => {
     setOpenDialog(false);
   };
 
-  // Función para manejar la confirmación de selección
   const handleConfirmSelection = () => {
-    alert(`Nivel seleccionado: ${selectedOption}`);
+    fetch(
+      "http://localhost/ProyectoManejo/paginaWebCandidata/models/crearNivel.php",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+          nivel: selectedOption,
+        }),
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (data === 'Se inserto correctamente') {
+          //alert("Nivel insertado correctamente");
+        //  console.log("Nivel insertado, recargando la página..."); // Verifica que este log aparezca
+          window.location.reload(); // Recargar la página si la inserción fue exitosa
+        } else {
+            console.log(data);
+          alert("Error al insertar el nivel");
+        }
+      })
+      .catch((error) => {
+        console.error("Error al enviar la solicitud:", error);
+        alert("Hubo un error al intentar insertar el nivel");
+      });
+
     handleCloseDialog(); // Cerrar el diálogo
   };
 
@@ -55,55 +80,57 @@ const DiagonalBackground = () => {
         <p className="text-gray-800 text-lg leading-relaxed font-medium mb-6">
           En este panel podrás configurar todas las necesidades para
           <br /> tu partido político, desde la creación y gestión de propuestas
-          <br /> hasta la actualización y seguimiento de la información <br /> de
-          tus candidatos.
+          <br /> hasta la actualización y seguimiento de la información <br />{" "}
+          de tus candidatos.
         </p>
+        <div className="flex flex-col space-y-2">
+          {showSelect && (
+            <select
+              className="px-6 py-3 bg-gray-900 text-white font-semibold rounded-lg shadow-md hover:bg-gray-900 focus:outline-none w-auto mx-auto"
+              value={selectedOption}
+              onChange={handleSelectChange}
+            >
+              <option value="" disabled>
+                Seleccione el nivel de campaña
+              </option>
+              <option value="Pais">Pais</option>
+              <option value="Provincia">Provincia</option>
+              <option value="Universidad">Universidad</option>
+            </select>
+          )}
 
-        {/* Condicionalmente renderizamos el ComboBox */}
-        {showSelect && (
-          <select
-            className="px-6 py-3 bg-gray-900 text-white font-semibold rounded-lg shadow-md hover:bg-gray-900 focus:outline-none"
-            value={selectedOption}
-            onChange={handleSelectChange}
-          >
-            <option value="" disabled>
-              Seleccione el nivel de campaña
-            </option>
-            <option value="opcion1">Pais</option>
-            <option value="opcion2">Provincia</option>
-            <option value="opcion3">Universidad</option>
-          </select>
-        )}
-
-        {/* Mostrar el botón "Aceptar" solo si se ha seleccionado una opción */}
-        {selectedOption && (
-          <button
-            onClick={handleOpenDialog}
-            className="mt-4 bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600"
-          >
-            Aceptar
-          </button>
-        )}
+          {/* Mostrar el botón "Aceptar" debajo del ComboBox solo si se ha seleccionado una opción */}
+          {selectedOption && (
+            <button
+              onClick={handleOpenDialog}
+              className="bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-900 w-auto mx-auto"
+            >
+              Aceptar
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Diálogo de confirmación */}
       <Dialog open={openDialog} onClose={handleCloseDialog}>
         <DialogTitle>Confirmar Selección</DialogTitle>
         <DialogContent>
-          <p>¿Estás seguro de que deseas seleccionar el nivel "{selectedOption}"?</p>
+          <p>
+            ¿Estás seguro de que deseas seleccionar el nivel "{selectedOption}"?
+          </p>
         </DialogContent>
         <DialogActions>
           <button
             onClick={handleCloseDialog}
-            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+            className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-teal-900"
           >
             <X className="mr-2 inline" /> Cancelar
           </button>
           <button
             onClick={handleConfirmSelection}
-            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+            className="bg-gray-900 text-white px-4 py-2 rounded hover:bg-teal-900"
           >
-            <Trash2 className="mr-2 inline" /> Aceptar
+            <Save className="mr-2 inline" /> Aceptar
           </button>
         </DialogActions>
       </Dialog>
