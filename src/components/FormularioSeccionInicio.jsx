@@ -28,7 +28,7 @@ function FormularioSeccionInicio({ onCancel, onSectionAdded }) {
       const data = await response.json();
 
       if (data.success) {
-        alert("Sección agregada exitosamente.");
+       
         onSectionAdded();  // Llamamos a la función para actualizar las secciones en SeccionInicioAdm
         onCancel();  // Cerramos el modal
       } else {

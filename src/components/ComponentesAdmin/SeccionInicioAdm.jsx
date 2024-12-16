@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
 import FormularioSeccionInicio from "../FormularioSeccionInicio.jsx";
+import FormularioEditarSeccion from "../FormularioEditarSeccion.jsx"; // Renombrado
 
 function SeccionInicioAdm() {
   const [isAddingNew, setIsAddingNew] = useState(false);
   const [secciones, setSecciones] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [editingSection, setEditingSection] = useState(null);
 
   // Función para obtener las secciones desde el backend
   const fetchSecciones = async () => {
     try {
-      const response = await fetch("http://localhost/ProyectoManejo/PaginaWebCandidata/models/get_secciones_incio.php");
+      const response = await fetch("http://localhost/ProyectoManejo/PaginaWebCandidata/models/get_secciones_inicio.php");
       const data = await response.json();
 
       if (data.mensaje) {
@@ -24,14 +26,38 @@ function SeccionInicioAdm() {
     }
   };
 
+  // Función que se llama cuando se agrega o edita una nueva sección
+  const handleSectionAddedOrUpdated = () => {
+    fetchSecciones();  // Recargamos las secciones
+    setIsAddingNew(false);  // Cerrar el formulario después de agregar o editar
+  };
+
+  // Función para eliminar una sección
+  const handleDelete = async (id) => {
+    const confirmed = window.confirm("¿Estás seguro de que quieres eliminar esta sección?");
+    if (confirmed) {
+      try {
+        const response = await fetch(`http://localhost/ProyectoManejo/PaginaWebCandidata/models/eliminar_seccion.php?id=${id}`, {
+          method: "GET",
+        });
+        const data = await response.json();
+        alert(data.mensaje); // Mostrar mensaje del backend
+        fetchSecciones(); // Recargar las secciones después de eliminar
+      } catch (error) {
+        console.error("Error al eliminar la sección:", error);
+      }
+    }
+  };
+
+  // Función para iniciar la edición de una sección
+  const handleEdit = (seccion) => {
+    setEditingSection(seccion); // Poner la sección en estado de edición
+    setIsAddingNew(true); // Mostrar el formulario para editar
+  };
+
   useEffect(() => {
     fetchSecciones();  // Se ejecuta una vez al montar el componente
   }, []);
-
-  // Función que se llama cuando se agrega una nueva sección
-  const handleSectionAdded = () => {
-    fetchSecciones();  // Recargamos las secciones
-  };
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
@@ -39,7 +65,10 @@ function SeccionInicioAdm() {
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold text-gray-800">Gestión de Secciones de Inicio</h2>
           <button
-            onClick={() => setIsAddingNew(true)}
+            onClick={() => {
+              setIsAddingNew(true);
+              setEditingSection(null); // No hay sección para editar cuando agregamos nueva
+            }}
             className="flex items-center bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
           >
             Agregar sección en el inicio
@@ -49,7 +78,18 @@ function SeccionInicioAdm() {
         {isAddingNew && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
             <div className="bg-white p-6 rounded-lg shadow-lg relative w-96">
-              <FormularioSeccionInicio onCancel={() => setIsAddingNew(false)} onSectionAdded={handleSectionAdded} />
+              {editingSection ? (
+                <FormularioEditarSeccion
+                  seccion={editingSection}
+                  onCancel={() => setIsAddingNew(false)}
+                  onSectionAdded={handleSectionAddedOrUpdated}
+                />
+              ) : (
+                <FormularioSeccionInicio
+                  onCancel={() => setIsAddingNew(false)}
+                  onSectionAdded={handleSectionAddedOrUpdated}
+                />
+              )}
             </div>
           </div>
         )}
@@ -84,14 +124,14 @@ function SeccionInicioAdm() {
                   {/* Columna para los botones */}
                   <div className="col-span-1 flex justify-center">
                     <button
+                      onClick={() => handleEdit(seccion)}
                       className="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 transition mr-2"
-                      // Aquí iría la lógica para editar
                     >
                       Editar
                     </button>
                     <button
+                      onClick={() => handleDelete(seccion.id)}
                       className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition"
-                      // Aquí iría la lógica para eliminar
                     >
                       Eliminar
                     </button>
