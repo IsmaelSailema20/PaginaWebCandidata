@@ -10,7 +10,7 @@ function SeccionInicioAdm() {
     // Función para obtener las secciones desde el endpoint PHP
     const fetchSecciones = async () => {
       try {
-        const response = await fetch("../../../models/get_secciones_inicio.php"); // Actualiza con la ruta correcta
+        const response = await fetch("http://localhost/ProyectoManejo/PaginaWebCandidata/models/get_secciones_incio.php"); // Actualiza con la ruta correcta
         const data = await response.json();
 
         if (data.mensaje) {

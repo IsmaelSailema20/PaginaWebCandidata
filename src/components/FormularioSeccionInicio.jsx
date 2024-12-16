@@ -5,18 +5,13 @@ function FormularioSeccionInicio({ onCancel, onSectionAdded }) {
   const [descripcion, setDescripcion] = useState("");
   const [imagenUrl, setImagenUrl] = useState("");
   const [isVisible, setIsVisible] = useState(false);
-  const [isInvisible, setIsInvisible] = useState(false);
 
-  const handleVisibilityChange = (type) => {
-    if (type === "visible") {
-      setIsVisible(true);
-      setIsInvisible(false);
-    } else {
-      setIsVisible(false);
-      setIsInvisible(true);
-    }
+  // Maneja el cambio de visibilidad
+  const handleVisibilityChange = (e) => {
+    setIsVisible(e.target.checked);
   };
 
+  // Envía los datos del formulario al servidor
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -25,12 +20,12 @@ function FormularioSeccionInicio({ onCancel, onSectionAdded }) {
       nombre,
       descripcion,
       url_de_la_imagen: imagenUrl,
-      visibilidad: isVisible ? 1 : 0, // Guardamos 1 para visible, 0 para invisible
+      visibilidad: isVisible, // Enviamos el valor booleano directamente
     };
 
     try {
       // Enviamos los datos al endpoint PHP
-      const response = await fetch("../agregar_seccion_inicio.php", {
+      const response = await fetch("http://localhost/ProyectoManejo/PaginaWebCandidata/models/agregar_seccion_inicio.php", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -44,7 +39,7 @@ function FormularioSeccionInicio({ onCancel, onSectionAdded }) {
         alert("Sección agregada exitosamente.");
         onSectionAdded(); // Llamamos a la función para actualizar el listado
       } else {
-        alert("Error al agregar la sección.");
+        alert("Error al agregar la sección: " + data.message);
       }
     } catch (error) {
       console.error("Error al enviar la sección:", error);
@@ -58,11 +53,9 @@ function FormularioSeccionInicio({ onCancel, onSectionAdded }) {
         Formulario de Inicio
       </h2>
       <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Campo Nombre */}
         <div>
-          <label
-            htmlFor="nombre"
-            className="block text-sm font-bold text-gray-700"
-          >
+          <label htmlFor="nombre" className="block text-sm font-bold text-gray-700">
             Nombre
           </label>
           <input
@@ -74,11 +67,10 @@ function FormularioSeccionInicio({ onCancel, onSectionAdded }) {
             required
           />
         </div>
+
+        {/* Campo Descripción */}
         <div>
-          <label
-            htmlFor="descripcion"
-            className="block text-sm font-bold text-gray-700"
-          >
+          <label htmlFor="descripcion" className="block text-sm font-bold text-gray-700">
             Descripción
           </label>
           <textarea
@@ -90,11 +82,10 @@ function FormularioSeccionInicio({ onCancel, onSectionAdded }) {
             required
           ></textarea>
         </div>
+
+        {/* Campo URL de la Imagen */}
         <div>
-          <label
-            htmlFor="imagenUrl"
-            className="block text-sm font-bold text-gray-700"
-          >
+          <label htmlFor="imagenUrl" className="block text-sm font-bold text-gray-700">
             URL de la Imagen
           </label>
           <input
@@ -106,28 +97,22 @@ function FormularioSeccionInicio({ onCancel, onSectionAdded }) {
             required
           />
         </div>
-        <div className="flex flex-col gap-2 mt-4">
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              id="visible"
-              checked={isVisible}
-              onChange={() => handleVisibilityChange("visible")}
-              className="mr-2"
-            />
-            <label htmlFor="visible" className="text-gray-700">Visible</label>
-          </div>
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              id="invisible"
-              checked={isInvisible}
-              onChange={() => handleVisibilityChange("invisible")}
-              className="mr-2"
-            />
-            <label htmlFor="invisible" className="text-gray-700">Invisible</label>
-          </div>
+
+        {/* Campo Visibilidad */}
+        <div className="flex items-center mt-4">
+          <input
+            type="checkbox"
+            id="visible"
+            checked={isVisible}
+            onChange={handleVisibilityChange}
+            className="mr-2"
+          />
+          <label htmlFor="visible" className="text-gray-700">
+            Visible para el usuario
+          </label>
         </div>
+
+        {/* Botones de Enviar y Cancelar */}
         <div className="flex justify-between mt-4">
           <button
             type="submit"
