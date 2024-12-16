@@ -114,7 +114,7 @@ function SeccionInicioAdm() {
     <div className="p-6 bg-gray-50 min-h-screen">
       <div className="bg-white shadow-md rounded-lg p-6">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-gray-800">Gestión de Eventos</h2>
+          <h2 className="text-2xl font-bold text-gray-800">Gestion de secciones de Inicio</h2>
           <button
             onClick={() => setIsAddingNew(true)}
             className="flex items-center bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
