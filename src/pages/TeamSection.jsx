@@ -96,7 +96,7 @@ const TeamSection = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {teamMembers
-            .filter((member) => member.visible === "1") // Filtra solo los miembros visibles
+            .filter((member) => member.visible == "1") // Filtra solo los miembros visibles
             .map((member, index) => (
               <div key={index} className="relative group">
                 <div className="overflow-hidden rounded-lg shadow-2xl hover:shadow-[0_10px_25px_rgba(0,0,0,0.3)] transition-shadow duration-300 h-96 transform transition-transform duration-500 group-hover:scale-95">
@@ -118,7 +118,7 @@ const TeamSection = () => {
                     <div className="flex space-x-4">
                       <a
                         href={member.facebook_url || "#"}
-                        className="bg-gradient-to-r from-[#FF8B9A] to-[#72D5FF] text-white p-3 rounded-full shadow-lg hover:opacity-90 transition-all duration-300 transform hover:scale-110 disabled:opacity-50"
+                        className="bg-gradient-to-r from-[#8bb9ff] to-[#72D5FF] text-white p-3 rounded-full shadow-lg hover:opacity-90 transition-all duration-300 transform hover:scale-110 disabled:opacity-50"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -126,7 +126,7 @@ const TeamSection = () => {
                       </a>
                       <a
                         href={member.instagram_url || "#"}
-                        className="bg-gradient-to-r from-[#FF8B9A] to-[#72D5FF] text-white p-3 rounded-full shadow-lg hover:opacity-90 transition-all duration-300 transform hover:scale-110 disabled:opacity-50"
+                        className="bg-gradient-to-r from-[#8bb9ff] to-[#72D5FF] text-white p-3 rounded-full shadow-lg hover:opacity-90 transition-all duration-300 transform hover:scale-110 disabled:opacity-50"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
