@@ -35,6 +35,7 @@ class Propuestas
                                 p.icon,
                                 p.visible,
                                 p.alcance_propuesta,
+                                p.id_candidato,
                                 m.id_miembro,
                                 m.nombre_miembro,
                                 m.url_to_image_placeholder AS imgSrc,
