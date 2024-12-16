@@ -109,7 +109,7 @@ const DiagonalBackground = () => {
         <DialogContent>
           <p>
             {selectedOption
-              ? `¿Estás seguro de que deseas cambiar el nivel a "${pendingOption}"? Toda la información actual se actualizará.`
+              ? `¿Estás seguro de que deseas cambiar el nivel a "${pendingOption}"? Toda la información actual de propuestas y de candidatos se eliminara.`
               : `¿Estás seguro de que deseas seleccionar el nivel "${pendingOption}"? Si despues decides cambiar de nivel, toda la información actual se actualizará.`}
           </p>
         </DialogContent>

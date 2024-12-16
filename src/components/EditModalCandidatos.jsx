@@ -84,7 +84,7 @@ export default function EditModal({
   }, [open, mode, miembroEditado]);
   useEffect(() => {
     fetch(
-      "http://localhost/ProyectoManejo/paginaWebCandidata/models/ConsultarNivel.php"
+      "http://localhost:8081/ProyectoManejo/paginaWebCandidata/models/ConsultarNivel.php"
     )
       .then((response) => response.json())
       .then((data) => {
@@ -169,8 +169,8 @@ export default function EditModal({
 
     const url =
       mode === "edit"
-        ? "http://localhost/ProyectoManejo/paginaWebCandidata/models/editCandidato.php"
-        : "http://localhost/ProyectoManejo/paginaWebCandidata/models/createCandidato.php";
+        ? "http://localhost:8081/ProyectoManejo/paginaWebCandidata/models/editCandidato.php"
+        : "http://localhost:8081/ProyectoManejo/paginaWebCandidata/models/createCandidato.php";
 
     try {
       const response = await fetch(url, {
@@ -245,17 +245,15 @@ export default function EditModal({
                 className="border p-2 rounded w-full"
                 required
                 maxLength="100"
-
               />
             </div>
 
             <div className="relative">
-              
               <label
                 htmlFor="tipo_miembro"
                 className="block text-sm font-medium text-gray-700 mb-2"
               >
-                Tipo de Candidato 
+                Tipo de Candidato
               </label>
               <input
                 id="tipo_miembro"
@@ -267,7 +265,6 @@ export default function EditModal({
                 className="border p-2 rounded w-full"
                 required
                 maxLength="50"
-
               />
             </div>
 
@@ -276,7 +273,7 @@ export default function EditModal({
                 htmlFor="descripcion_miembro"
                 className="block text-sm font-medium text-gray-700 mb-2"
               >
-                Descripción 
+                Descripción
               </label>
               <textarea
                 id="descripcion_miembro"
@@ -307,7 +304,6 @@ export default function EditModal({
                 onChange={handleInputChange}
                 className="border p-2 rounded w-full"
                 maxLength="70"
-
               />
             </div>
 
@@ -316,7 +312,7 @@ export default function EditModal({
                 htmlFor="imgSrc"
                 className="block text-sm font-medium text-gray-700"
               >
-                URL de Imagen 
+                URL de Imagen
               </label>
               <input
                 id="imgSrc"
@@ -328,7 +324,6 @@ export default function EditModal({
                 className="border p-2 rounded w-full"
                 required
                 maxLength="500"
-
               />
             </div>
 
@@ -348,7 +343,6 @@ export default function EditModal({
                 onChange={handleInputChange}
                 className="border p-2 rounded w-full"
                 maxLength="255"
-
               />
             </div>
 
@@ -368,7 +362,6 @@ export default function EditModal({
                 onChange={handleInputChange}
                 className="border p-2 rounded w-full"
                 maxLength="255"
-
               />
             </div>
 

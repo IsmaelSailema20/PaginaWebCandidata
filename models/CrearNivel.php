@@ -17,22 +17,30 @@ try {
 
     $conn = (new Conexion())->conectar();
 
-    // Comprobar si ya existe un registro en la base de datos
-    $queryCheck = "SELECT COUNT(*) as count FROM niveles"; // Ajusta el nombre de la tabla si es necesario
+    // Iniciar una transacción
+    $conn->beginTransaction();
+
+    // Eliminar datos de las tablas relevantes
+    $tablesToDelete = ['propuestas_categorias', 'propuestas', 'miembros']; // Reemplaza con los nombres de tus tablas
+    foreach ($tablesToDelete as $table) {
+        $queryDelete = "DELETE FROM $table";
+        $conn->exec($queryDelete);
+    }
+
+    // Verificar si ya existe un registro en la tabla niveles
+    $queryCheck = "SELECT COUNT(*) as count FROM niveles";
     $stmtCheck = $conn->prepare($queryCheck);
     $stmtCheck->execute();
     $result = $stmtCheck->fetch(PDO::FETCH_ASSOC);
 
     if ($result['count'] > 0) {
         // Si ya existe, actualizar el nivel
-        $queryUpdate = "UPDATE niveles SET nivel = :nivel WHERE id = 1"; // Ajusta 'id = 1' si usas otra clave primaria
+        $queryUpdate = "UPDATE niveles SET nivel = :nivel WHERE id = 1"; // Ajusta 'id = 1' según tu clave primaria
         $stmtUpdate = $conn->prepare($queryUpdate);
         $stmtUpdate->bindParam(':nivel', $nivel, PDO::PARAM_STR);
 
-        if ($stmtUpdate->execute()) {
-            echo json_encode(['success' => true, 'message' => 'Nivel actualizado correctamente']);
-        } else {
-            echo json_encode(['success' => false, 'message' => 'Error al actualizar el nivel']);
+        if (!$stmtUpdate->execute()) {
+            throw new Exception('Error al actualizar el nivel');
         }
     } else {
         // Si no existe, insertar un nuevo nivel
@@ -40,12 +48,17 @@ try {
         $stmtInsert = $conn->prepare($queryInsert);
         $stmtInsert->bindParam(':nivel', $nivel, PDO::PARAM_STR);
 
-        if ($stmtInsert->execute()) {
-            echo json_encode(['success' => true, 'message' => 'Nivel creado correctamente']);
-        } else {
-            echo json_encode(['success' => false, 'message' => 'Error al crear el nivel']);
+        if (!$stmtInsert->execute()) {
+            throw new Exception('Error al crear el nivel');
         }
     }
+
+    // Confirmar la transacción
+    $conn->commit();
+
+    echo json_encode(['success' => true, 'message' => 'Nivel cambiado correctamente y datos eliminados']);
 } catch (Exception $e) {
+    // Revertir la transacción en caso de error
+    $conn->rollBack();
     echo json_encode(['success' => false, 'message' => $e->getMessage()]);
 }

@@ -20,7 +20,7 @@ export function ListWithAvatar() {
   const fetchMiembros = async () => {
     try {
       const response = await fetch(
-        "http://localhost/ProyectoManejo/paginaWebCandidata/models/ConsultaMiembros.php"
+        "http://localhost:8081/ProyectoManejo/paginaWebCandidata/models/ConsultaMiembros.php"
       );
       const data = await response.json();
       setMiembros(data);
@@ -63,7 +63,7 @@ export function ListWithAvatar() {
   const handleConfirmDelete = async () => {
     try {
       const response = await fetch(
-        "http://localhost/Proyectomanejo/paginaWebCandidata/models/deleteCandidato.php",
+        "http://localhost:8081/Proyectomanejo/paginaWebCandidata/models/deleteCandidato.php",
         {
           method: "POST",
           headers: {
@@ -102,8 +102,8 @@ export function ListWithAvatar() {
         <button
           onClick={handleCreate}
           className="flex items-center bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
-          >
-         <PlusCircle className="mr-2" /> Crear Nuevo Candidato
+        >
+          <PlusCircle className="mr-2" /> Crear Nuevo Candidato
         </button>
       </div>
 
@@ -141,12 +141,12 @@ export function ListWithAvatar() {
                   className="text-red-500 hover:bg-red-100 p-2 rounded"
                 >
                   <Trash2 />
-                  </button>
+                </button>
               </div>
             </li>
           ))
         ) : (
-          <p>Cargando Candidatos...</p>
+          <p>No Existen Candidatos Registrados.</p>
         )}
       </ul>
 
