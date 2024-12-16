@@ -18,7 +18,13 @@ function SeccionInicioAdm() {
         </div>
 
         {isAddingNew && (
-          <div className="mb-6">
+          <div className="mb-6 relative">
+            <button
+              onClick={() => setIsAddingNew(false)}
+              className="absolute top-0 right-0 bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition"
+            >
+              Cerrar
+            </button>
             <FormularioSeccionInicio />
           </div>
         )}
