@@ -26,7 +26,6 @@ const EventosNoticias = () => {
 
   // Cambiar automáticamente cada 3 segundos
 
-
   // Función para manejar el cambio de slide y activar la animación
   const handleNextSlide = () => {
     setTransitionClass("animate-slide"); // Activa la animación
@@ -53,8 +52,6 @@ const EventosNoticias = () => {
     currentSlide === 0 ? slides.length - 1 : currentSlide - 1;
   const getNextSlide = () =>
     currentSlide === slides.length - 1 ? 0 : currentSlide + 1;
-
-
 
   const [eventos, setEventos] = useState([]);
   useEffect(() => {
@@ -95,16 +92,8 @@ const EventosNoticias = () => {
 
   return (
     <div className="general overflow-x-hidden p-10 relative w-full min-h-screen overflow-hidden bg-white">
-      <h1 className="text-center mt-2 mb-10 text-5xl font-bold">
-        <span className="text-5x1 text-[#40b2e6] drop-shadow-[4px_2px_0px_#ded2d2]">
-          EVENTOS
-        </span>
-        <span className="text-5x1 text-pink-500 drop-shadow-[4px_2px_0px_#ded2d2]">
-          &
-        </span>
-        <span className="text-5x1 text-[#40b2e6] drop-shadow-[4px_2px_0px_#ded2d2]">
-          NOTICIAS
-        </span>
+      <h1 className="text-center mt-2 mb-10 text-4xl font-bold text-black">
+        Eventos Y Noticias
       </h1>
       {slides.length > 0 ? (
         <div className="relative p-10 bg-slate-100 rounded-md border-dotted shadow-lg">
@@ -119,7 +108,6 @@ const EventosNoticias = () => {
           </button>
 
           <div className="carrusel flex items-center justify-center space-x-4 max-w-screen-md mx-auto relative">
-
             {/* Imagen izquierda - sin animación */}
             <img
               src={slides[getPrevSlide()]}
@@ -156,39 +144,27 @@ const EventosNoticias = () => {
         <div className="text-center text-gray-500 py-4">
           No existen Eventos ni Noticias
         </div>
-      )
-      }
+      )}
 
       {/* Estilos para la animación */}
       <style jsx>{`
-    @keyframes slideRight {
-      0% {
-        transform: translateX(0);
-      }
-      100% {
-        transform: translateX(100%);
-      }
-    }
-  
-    .animate-slide {
-      animation: slideRight 0.2s ease-in-out forwards;
-    }
-  `}</style>
+        @keyframes slideRight {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(100%);
+          }
+        }
 
-
-
+        .animate-slide {
+          animation: slideRight 0.2s ease-in-out forwards;
+        }
+      `}</style>
 
       <div className="noticias mt-10 mb10 text-5xl">
-        <h1 className="text-center mt-2 mb-10 text-5xl font-bold">
-          <span className="text-5x1 text-[#40b2e6] drop-shadow-[4px_2px_0px_#ded2d2]">
-            NO
-          </span>
-          <span className="text-5x1 text-pink-500 drop-shadow-[4px_2px_0px_#ded2d2]">
-            TICI
-          </span>
-          <span className="text-5x1 text-[#40b2e6] drop-shadow-[4px_2px_0px_#ded2d2]">
-            AS
-          </span>
+        <h1 className="text-black text-center mt-2 mb-10 text-4xl font-bold">
+          Noticias
         </h1>
         <div className="contenedorNoticias grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-20  mt-14">
           {noticias.map((noticia) => (
@@ -200,7 +176,7 @@ const EventosNoticias = () => {
                 <img src={noticia.imagen} alt={noticia.titulo} />
               </div>
               <div className="p-6">
-                <h5 className="text-pink-500 mb-2 block font-sans text-xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
+                <h5 className="text-black mb-2 block font-sans text-xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
                   {noticia.titulo}
                 </h5>
                 <p className="block font-sans text-base font-light leading-relaxed text-inherit antialiased">
@@ -208,7 +184,7 @@ const EventosNoticias = () => {
                 </p>
               </div>
               <div className="p-6 pt-0">
-                <p className="text-[#40b2e6] text-xl absolute bottom-5">
+                <p className="text-[#3662e6] text-xl absolute bottom-5">
                   {noticia.lugar}, {noticia.fecha}
                 </p>
               </div>
@@ -217,24 +193,22 @@ const EventosNoticias = () => {
         </div>
       </div>
       <div className="contenedorEventos mt-10">
-        <h1 className="text-center mt-2 mb-10 text-5xl font-bold">
-          <span className="text-5x1 text-[#40b2e6] drop-shadow-[4px_2px_0px_#ded2d2]">
-            EV
-          </span>
-          <span className="text-5x1 text-pink-500 drop-shadow-[4px_2px_0px_#ded2d2]">
-            ENT
-          </span>
-          <span className="text-5x1 text-[#40b2e6] drop-shadow-[4px_2px_0px_#ded2d2]">
-            OS
-          </span>
-        </h1>
+        <h1 className="text-center mt-2 mb-10 text-4xl font-bold">Eventos</h1>
         <div className="eventos flex flex-col gap-8 w-full max-w-screen-lg mx-auto">
           {eventos.map((evento, index) => (
             <div
               key={evento.id}
-              className={`flex w-full ${index % 2 === 0 ? "flex-row" : "flex-row-reverse"} mt-10`}
+              className={`flex w-full ${
+                index % 2 === 0 ? "flex-row" : "flex-row-reverse"
+              } mt-10`}
             >
-              <div className={`contenido${index % 2 === 0 ? "Izquierda" : "Derecha"} hover:scale-105 rounded-md shadow-lg bg-slate-50 border w-1/2 p-4 flex ${index % 2 === 0 ? "justify-start" : "justify-end"}`}>
+              <div
+                className={`contenido${
+                  index % 2 === 0 ? "Izquierda" : "Derecha"
+                } hover:scale-105 rounded-md shadow-lg bg-slate-50 border w-1/2 p-4 flex ${
+                  index % 2 === 0 ? "justify-start" : "justify-end"
+                }`}
+              >
                 {index % 2 === 0 && (
                   <p className="mb-4 mr-10 text-justify">
                     <h1 className={`text-xl font-bold mb-2`}>
@@ -248,23 +222,30 @@ const EventosNoticias = () => {
                   <span className=""> {evento.fecha}</span>
                   <span className="z-10 flex items-center text-4xl text-white [text-shadow:_2px_2px_#231917,_1px_2px_#231917]">
                     {evento.hora.split(":")[0]}
-                    <span class="text-xl font-bold text-gray-50 [text-shadow:none]">:</span>
+                    <span class="text-xl font-bold text-gray-50 [text-shadow:none]">
+                      :
+                    </span>
                     {evento.hora.split(":")[1]}
                   </span>
-                  <div className="text-gray-50 w-48 flex flex-row justify-evenly">
-                  </div>
+                  <div className="text-gray-50 w-48 flex flex-row justify-evenly"></div>
                 </div>
                 {index % 2 !== 0 && (
                   <div className="text-right">
                     <h1 className={`mr-5 text-xl font-bold mb-2`}>
                       {evento.titulo}
                     </h1>
-                    <p className="mb-4 text-justify w-[85%] ml-10">{evento.descripcion}</p>
+                    <p className="mb-4 text-justify w-[85%] ml-10">
+                      {evento.descripcion}
+                    </p>
                     <p className="mt-5">{evento.lugar}</p>
                   </div>
                 )}
               </div>
-              <div className={`flex gap-4 ${index % 2 === 0 ? "ml-32" : "mr-32"} self-center relative w-64 h-64`}>
+              <div
+                className={`flex gap-4 ${
+                  index % 2 === 0 ? "ml-32" : "mr-32"
+                } self-center relative w-64 h-64`}
+              >
                 <img
                   src={evento.imagen}
                   alt={evento.titulo}
