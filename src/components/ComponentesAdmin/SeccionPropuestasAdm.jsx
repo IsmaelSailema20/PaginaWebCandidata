@@ -53,7 +53,7 @@ function SeccionPropuestasAdm() {
     const fetchCandidatos = async () => {
       try {
         const response = await fetch(
-          "http://localhost/models/get_candidatos.php"
+          "http://localhost/models/ConsultaMiembros.php"
         );
         const data = await response.json();
         setCandidatos(data);
