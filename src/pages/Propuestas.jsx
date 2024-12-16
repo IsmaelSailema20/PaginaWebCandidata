@@ -17,16 +17,23 @@ import {
   Building,
   UserCog,
 } from "lucide-react";
-import maryImage from "/images/Mary.jpg";
 
 const Propuestas = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [showSparkle, setShowSparkle] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedCandidato, setSelectedCandidato] = useState("");
+  const [selectedAlcance, setSelectedAlcance] = useState("");
   const [propuestas, setPropuestas] = useState([]);
   const [filteredPropuestas, setFilteredPropuestas] = useState([]);
   const [allCategories, setAllCategories] = useState([]);
+  const [allCandidatos, setAllCandidatos] = useState([]);
+  const [allAlcances, setAllAlcances] = useState(["nacional", "regional", "local"]);
+  const [currentCandidato, setCurrentCandidato] = useState({
+    nombre_miembro: "",
+    imgSrc: ""
+  });
 
   const iconMap = {
     ScrollText: ScrollText,
@@ -46,23 +53,22 @@ const Propuestas = () => {
     const fetchPropuestas = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8081/ProyectoManejo/paginaWebCandidata/models/get_propuestas.php"
+          "http://localhost/models/get_propuestas.php"
         );
         if (!response.ok)
           throw new Error(`Error en la solicitud: ${response.status}`);
 
         const data = await response.json();
-        const uniquePropuestas = Array.from(
-          new Map(
-            data.propuestas.map((item) => [item.titulo_propuesta, item])
-          ).values()
-        );
-
         setPropuestas(data.propuestas);
-        setFilteredPropuestas(uniquePropuestas);
+        setFilteredPropuestas(data.propuestas.filter(p => p.visible));
         setAllCategories(
           Array.from(
             new Set(data.categorias.map((cat) => cat.nombre_cat_propuesta))
+          )
+        );
+        setAllCandidatos(
+          Array.from(
+            new Set(data.propuestas.map((prop) => prop.nombre_miembro))
           )
         );
       } catch (error) {
@@ -70,30 +76,48 @@ const Propuestas = () => {
         setPropuestas([]);
         setFilteredPropuestas([]);
         setAllCategories([]);
+        setAllCandidatos([]);
       }
     };
     fetchPropuestas();
   }, []);
 
   useEffect(() => {
-    if (selectedCategories.length === 0) {
-      const uniquePropuestas = Array.from(
-        new Map(
-          propuestas.map((item) => [item.titulo_propuesta, item])
-        ).values()
-      );
-      setFilteredPropuestas(uniquePropuestas);
-    } else {
-      const filtered = propuestas.filter((propuesta) =>
+    let filtered = propuestas.filter(propuesta => propuesta.visible);
+
+    if (selectedCategories.length > 0) {
+      filtered = filtered.filter((propuesta) =>
         selectedCategories.includes(propuesta.categoria)
       );
-      const uniqueFiltered = Array.from(
-        new Map(filtered.map((item) => [item.titulo_propuesta, item])).values()
-      );
-      setFilteredPropuestas(uniqueFiltered);
     }
+
+    if (selectedCandidato) {
+      filtered = filtered.filter((propuesta) =>
+        propuesta.nombre_miembro === selectedCandidato
+      );
+    }
+
+    if (selectedAlcance) {
+      filtered = filtered.filter((propuesta) =>
+        propuesta.alcance_propuesta === selectedAlcance
+      );
+    }
+    const uniquePropuestas = Array.from(new Set(filtered.map(p => p.id_propuesta)))
+      .map(id => filtered.find(p => p.id_propuesta === id));
+
+    setFilteredPropuestas(uniquePropuestas);
     setCurrentIndex(0);
-  }, [selectedCategories, propuestas]);
+  }, [selectedCategories, selectedCandidato, selectedAlcance, propuestas]);
+
+  useEffect(() => {
+    if (filteredPropuestas.length > 0) {
+      const propuesta = filteredPropuestas[currentIndex];
+      setCurrentCandidato({
+        nombre_miembro: propuesta.nombre_miembro,
+        imgSrc: propuesta.imgSrc
+      });
+    }
+  }, [currentIndex, filteredPropuestas]);
 
   const handleCategoryClick = (category) =>
     setSelectedCategories((prev) =>
@@ -101,6 +125,12 @@ const Propuestas = () => {
         ? prev.filter((c) => c !== category)
         : [...prev, category]
     );
+
+  const handleCandidatoClick = (candidato) =>
+    setSelectedCandidato(prev => prev === candidato ? "" : candidato);
+
+  const handleAlcanceClick = (alcance) =>
+    setSelectedAlcance(prev => prev === alcance ? "" : alcance);
 
   const handleNavigation = (direction) => {
     if (isAnimating || filteredPropuestas.length === 0) return;
@@ -184,8 +214,8 @@ const Propuestas = () => {
         <div className="w-full md:w-5/12 p-8 flex flex-col justify-center items-center">
           <div className="relative mb-8">
             <img
-              src={maryImage}
-              alt="Candidato"
+              src={currentCandidato.imgSrc}
+              alt={currentCandidato.nombre_miembro}
               className="w-60 h-50 relative rounded-lg shadow-2xl transform transition-transform duration-500 hover:scale-105"
             />
             {showSparkle && (
@@ -196,36 +226,66 @@ const Propuestas = () => {
             )}
           </div>
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-4 font-montserrat">
-            Mary Cruz Lascano
+            {currentCandidato.nombre_miembro}
           </h2>
-          <div className="flex items-center space-x-2">
-            <Heart className="w-6 h-6 text-gray-900 animate-pulse" />
-            <span className="text-gray-900 font-montserrat">
-              Unidos lo haremos posible
-            </span>
-          </div>
           <div className="mt-8 w-full">
             <div className="bg-gray-100 backdrop-blur-lg rounded-2xl p-4 shadow-xl">
-              <div className="flex items-center gap-2 mb-4">
-                <Search className="w-5 h-5 text-gray-600" />
-                <h4 className="text-lg font-semibold text-gray-700">
-                  Filtrar por temas
-                </h4>
+              <div className="mb-4">
+                <h5 className="text-lg font-semibold text-gray-700">Filtrar por Categoría</h5>
+                <br/>
+                <div className="flex flex-wrap gap-2">
+                  {allCategories.map((category) => (
+                    <button
+                      key={category}
+                      onClick={() => handleCategoryClick(category)}
+                      className={`px-3 py-1 rounded-full text-sm font-medium transition-all duration-300 ${
+                        selectedCategories.includes(category)
+                          ? "bg-[#42B9E5] text-white"
+                          : "bg-gray-300 text-gray-700 hover:bg-gray-400"
+                      }`}
+                    >
+                      {category}
+                    </button>
+                  ))}
+                </div>
               </div>
-              <div className="flex flex-wrap gap-2">
-                {allCategories.map((category) => (
-                  <button
-                    key={category}
-                    onClick={() => handleCategoryClick(category)}
-                    className={`px-3 py-1 rounded-full text-sm font-medium transition-all duration-300 ${
-                      selectedCategories.includes(category)
-                        ? "bg-[#42B9E5] text-white"
-                        : "bg-gray-300 text-gray-700 hover:bg-gray-400"
-                    }`}
-                  >
-                    {category}
-                  </button>
-                ))}
+              <div className="mb-4">
+                <h5 className="text-lg font-semibold text-gray-700">Filtrar por Alcance</h5>
+                <br/>
+                <div className="flex flex-wrap gap-2">
+                  {allAlcances.map((alcance) => (
+                    <button
+                      key={alcance}
+                      onClick={() => handleAlcanceClick(alcance)}
+                      className={`px-3 py-1 rounded-full text-sm font-medium transition-all duration-300 ${
+                        selectedAlcance === alcance
+                          ? "bg-[#42B9E5] text-white"
+                          : "bg-gray-300 text-gray-700 hover:bg-gray-400"
+                      }`}
+                    >
+                      {alcance}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="mb-4">
+                <h5 className="text-lg font-semibold text-gray-700">Filtrar por Candidato</h5>
+                <br/>
+                <div className="flex flex-wrap gap-2">
+                  {allCandidatos.map((candidato) => (
+                    <button
+                      key={candidato}
+                      onClick={() => handleCandidatoClick(candidato)}
+                      className={`px-3 py-1 rounded-full text-sm font-medium transition-all duration-300 ${
+                        selectedCandidato === candidato
+                          ? "bg-[#42B9E5] text-white"
+                          : "bg-gray-300 text-gray-700 hover:bg-gray-400"
+                      }`}
+                    >
+                      {candidato}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -234,7 +294,7 @@ const Propuestas = () => {
         <div className="w-full md:w-7/12 p-8 flex flex-col justify-center">
           <div className="flex flex-col items-center">
             <div className="text-center mb-20">
-              <h3 className="text-5xl font-bold bg-gradient-to-r from-[#42B9E5] to-[#FF5B8E] text-transparent bg-clip-text animate-gradient font-montserrat">
+              <h3 className="text-5xl font-bold text-grey-900 bg-clip-text animate-gradient font-montserrat">
                 Nuestras Propuestas
               </h3>
             </div>
@@ -246,7 +306,7 @@ const Propuestas = () => {
                     const isActive = index === currentIndex;
                     return (
                       <div
-                        key={propuesta.id || index}
+                        key={propuesta.id_propuesta}
                         className={`absolute inset-0 w-full transition-all duration-500 ease-out ${
                           isActive
                             ? "opacity-100 translate-x-0 scale-100"
@@ -262,10 +322,10 @@ const Propuestas = () => {
                             </div>
                           </div>
                           <div className="text-center mb-4">
-                            <h3 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#FF8B9A] to-[#72D5FF] font-montserrat">
+                            <h3 className="text-2xl font-bold bg-clip-text text-grey-900  font-montserrat">
                               {propuesta.titulo_propuesta}
                             </h3>
-                            <h4 className="text-lg font-semibold text-[#72D5FF] font-montserrat">
+                            <h4 className="text-lg font-semibold text-grey-900 font-montserrat">
                               {propuesta.subtitle}
                             </h4>
                           </div>
@@ -278,7 +338,7 @@ const Propuestas = () => {
                   })
                 ) : (
                   <p className="text-center text-gray-500">
-                    No hay propuestas que coincidan con los tags seleccionados.
+                    No hay propuestas que coincidan con los criterios de búsqueda.
                   </p>
                 )}
               </div>
@@ -322,3 +382,4 @@ const Propuestas = () => {
 };
 
 export default Propuestas;
+
