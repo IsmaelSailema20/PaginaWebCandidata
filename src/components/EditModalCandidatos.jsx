@@ -228,77 +228,172 @@ export default function EditModal({
             {mode === "edit" ? "Editar Candidato" : "Crear Candidato"}
           </h3>
           <div className="grid grid-cols-2 gap-4">
-            <input
-              type="text"
-              placeholder="Nombre del Miembro *"
-              name="nombre_miembro"
-              value={nuevoMiembro.nombre_miembro || ""}
-              onChange={handleInputChange}
-              className="border p-2 rounded"
-              required
-            />
-            <input
-              type="text"
-              placeholder="Tipo de Miembro *"
-              name="tipo_miembro"
-              value={nuevoMiembro.tipo_miembro || ""}
-              onChange={handleInputChange}
-              className="border p-2 rounded"
-              required
-            />
-            <textarea
-              placeholder="Descripción *"
-              name="descripcion_miembro"
-              value={nuevoMiembro.descripcion_miembro || ""}
-              onChange={handleInputChange}
-              className="border p-2 rounded col-span-2"
-              rows="3"
-              maxLength="210"
-            />
-            <input
-              type="text"
-              placeholder="Nivel Académico"
-              name="nivel_academico"
-              value={nuevoMiembro.nivel_academico || ""}
-              onChange={handleInputChange}
-              className="border p-2 rounded"
-            />
+            <div className="relative">
+              <label
+                htmlFor="nombre_miembro"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Nombre del Candidato
+              </label>
+              <input
+                id="nombre_miembro"
+                type="text"
+                placeholder="Nombre del Candidato "
+                name="nombre_miembro"
+                value={nuevoMiembro.nombre_miembro || ""}
+                onChange={handleInputChange}
+                className="border p-2 rounded w-full"
+                required
+                maxLength="100"
 
-            <input
-              type="text"
-              placeholder="URL de Imagen"
-              name="imgSrc"
-              value={nuevoMiembro.imgSrc || ""}
-              onChange={handleInputChange}
-              className="border p-2 rounded"
-              required
-            />
+              />
+            </div>
 
-            <input
-              type="text"
-              placeholder="URL de Facebook"
-              name="facebook_url"
-              value={nuevoMiembro.facebook_url || ""}
-              onChange={handleInputChange}
-              className="border p-2 rounded"
-            />
-            <input
-              type="text"
-              placeholder="URL de Instagram"
-              name="instagram_url"
-              value={nuevoMiembro.instagram_url || ""}
-              onChange={handleInputChange}
-              className="border p-2 rounded"
-            />
-            <RadioGroup
-              row
-              name="visible"
-              value={nuevoMiembro.visible || "1"}
-              onChange={handleInputChange}
-            >
-              <FormControlLabel value="1" control={<Radio />} label="Visible" />
-              <FormControlLabel value="0" control={<Radio />} label="Oculto" />
-            </RadioGroup>
+            <div className="relative">
+              
+              <label
+                htmlFor="tipo_miembro"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Tipo de Candidato 
+              </label>
+              <input
+                id="tipo_miembro"
+                type="text"
+                placeholder="Tipo de Candidato"
+                name="tipo_miembro"
+                value={nuevoMiembro.tipo_miembro || ""}
+                onChange={handleInputChange}
+                className="border p-2 rounded w-full"
+                required
+                maxLength="50"
+
+              />
+            </div>
+
+            <div className="relative col-span-2">
+              <label
+                htmlFor="descripcion_miembro"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Descripción 
+              </label>
+              <textarea
+                id="descripcion_miembro"
+                placeholder="Descripción "
+                name="descripcion_miembro"
+                value={nuevoMiembro.descripcion_miembro || ""}
+                onChange={handleInputChange}
+                className="border p-2 rounded w-full"
+                rows="3"
+                maxLength="210"
+                required
+              />
+            </div>
+
+            <div className="relative">
+              <label
+                htmlFor="nivel_academico"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Nivel Académico
+              </label>
+              <input
+                id="nivel_academico"
+                type="text"
+                placeholder="Nivel Académico"
+                name="nivel_academico"
+                value={nuevoMiembro.nivel_academico || ""}
+                onChange={handleInputChange}
+                className="border p-2 rounded w-full"
+                maxLength="70"
+
+              />
+            </div>
+
+            <div className="relative">
+              <label
+                htmlFor="imgSrc"
+                className="block text-sm font-medium text-gray-700"
+              >
+                URL de Imagen 
+              </label>
+              <input
+                id="imgSrc"
+                type="text"
+                placeholder="URL de Imagen"
+                name="imgSrc"
+                value={nuevoMiembro.imgSrc || ""}
+                onChange={handleInputChange}
+                className="border p-2 rounded w-full"
+                required
+                maxLength="500"
+
+              />
+            </div>
+
+            <div className="relative">
+              <label
+                htmlFor="facebook_url"
+                className="block text-sm font-medium text-gray-700"
+              >
+                URL de Facebook
+              </label>
+              <input
+                id="facebook_url"
+                type="text"
+                placeholder="URL de Facebook"
+                name="facebook_url"
+                value={nuevoMiembro.facebook_url || ""}
+                onChange={handleInputChange}
+                className="border p-2 rounded w-full"
+                maxLength="255"
+
+              />
+            </div>
+
+            <div className="relative">
+              <label
+                htmlFor="instagram_url"
+                className="block text-sm font-medium text-gray-700"
+              >
+                URL de Instagram
+              </label>
+              <input
+                id="instagram_url"
+                type="text"
+                placeholder="URL de Instagram"
+                name="instagram_url"
+                value={nuevoMiembro.instagram_url || ""}
+                onChange={handleInputChange}
+                className="border p-2 rounded w-full"
+                maxLength="255"
+
+              />
+            </div>
+
+            <div className="relative col-span-2">
+              <label className="block text-sm font-medium text-gray-700">
+                Visibilidad
+              </label>
+              <RadioGroup
+                row
+                name="visible"
+                value={nuevoMiembro.visible || "1"}
+                onChange={handleInputChange}
+              >
+                <FormControlLabel
+                  value="1"
+                  control={<Radio />}
+                  label="Visible"
+                />
+                <FormControlLabel
+                  value="0"
+                  control={<Radio />}
+                  label="Oculto"
+                />
+              </RadioGroup>
+            </div>
 
             <div className="col-span-2 flex justify-end space-x-2">
               <button
