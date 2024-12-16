@@ -62,13 +62,40 @@ function SeccionInicioAdm() {
           ) : (
             <div>
               {secciones.map((seccion) => (
-                <div key={seccion.id} className="border-b py-4">
-                  <h3 className="text-lg font-semibold text-gray-800">{seccion.nombre}</h3>
-                  <p className="text-gray-600">{seccion.descripcion}</p>
-                  <img src={seccion.url_de_la_imagen} alt={seccion.nombre} className="w-32 h-32 object-cover mt-2" />
-                  <p className={`mt-2 ${seccion.visibilidad ? 'text-green-500' : 'text-red-500'}`}>
-                    {seccion.visibilidad ? 'Visible' : 'No visible'}
-                  </p>
+                <div key={seccion.id} className="grid grid-cols-3 gap-4 items-center border-b py-4">
+                  {/* Columna para la imagen */}
+                  <div className="col-span-1">
+                    <img
+                      src={seccion.url_de_la_imagen}
+                      alt={seccion.nombre}
+                      className="w-32 h-32 object-cover"
+                    />
+                  </div>
+
+                  {/* Columna para el texto */}
+                  <div className="col-span-1">
+                    <h3 className="text-lg font-semibold text-gray-800">{seccion.nombre}</h3>
+                    <p className="text-gray-600">{seccion.descripcion}</p>
+                    <p className={`mt-2 ${seccion.visibilidad ? 'text-green-500' : 'text-red-500'}`}>
+                      {seccion.visibilidad ? 'Visible' : 'No visible'}
+                    </p>
+                  </div>
+
+                  {/* Columna para los botones */}
+                  <div className="col-span-1 flex justify-center">
+                    <button
+                      className="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 transition mr-2"
+                      // Aquí iría la lógica para editar
+                    >
+                      Editar
+                    </button>
+                    <button
+                      className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition"
+                      // Aquí iría la lógica para eliminar
+                    >
+                      Eliminar
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
