@@ -3,18 +3,6 @@ import FormularioSeccionInicio from "../FormularioSeccionInicio.jsx";
 
 function SeccionInicioAdm() {
   const [isAddingNew, setIsAddingNew] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
-  const [isInvisible, setIsInvisible] = useState(false);
-
-  const handleVisibilityChange = (type) => {
-    if (type === "visible") {
-      setIsVisible(true);
-      setIsInvisible(false);
-    } else {
-      setIsVisible(false);
-      setIsInvisible(true);
-    }
-  };
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
@@ -22,46 +10,17 @@ function SeccionInicioAdm() {
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold text-gray-800">Gestión de Secciones de Inicio</h2>
           <button
-            onClick={() => setIsAddingNew(!isAddingNew)}
+            onClick={() => setIsAddingNew(true)}
             className="flex items-center bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
           >
-            {isAddingNew ? "Cerrar Formulario" : "Agregar sección en el inicio"}
+            Agregar sección en el inicio
           </button>
         </div>
 
         {isAddingNew && (
-          <div className="mb-6 bg-gray-100 p-4 rounded-lg shadow-lg relative">
-            <button
-              onClick={() => setIsAddingNew(false)}
-              className="absolute top-2 right-2 bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition"
-            >
-              Cancelar
-            </button>
-
-            <FormularioSeccionInicio />
-
-            <div className="mt-4">
-              <div className="flex items-center mb-2">
-                <input
-                  type="checkbox"
-                  id="visible"
-                  checked={isVisible}
-                  onChange={() => handleVisibilityChange("visible")}
-                  className="mr-2"
-                />
-                <label htmlFor="visible" className="text-gray-700">Visible</label>
-              </div>
-
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  id="invisible"
-                  checked={isInvisible}
-                  onChange={() => handleVisibilityChange("invisible")}
-                  className="mr-2"
-                />
-                <label htmlFor="invisible" className="text-gray-700">Invisible</label>
-              </div>
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+            <div className="bg-white p-6 rounded-lg shadow-lg relative w-96">
+              <FormularioSeccionInicio onCancel={() => setIsAddingNew(false)} />
             </div>
           </div>
         )}
