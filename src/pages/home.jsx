@@ -1,208 +1,81 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import "../styles/styles.css";
 
 function Home() {
-  const [message, setMessage] = useState("Unión y Futuro Universitario");
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const sections = [
-    {
-      title: "Eventos",
-      description: "Conoce los próximos eventos del partido.",
-      path: "/eventos",
-    },
-    {
-      title: "Candidatos",
-      description: "Descubre quiénes representan al partido.",
-      path: "/candidatos",
-    },
-    {
-      title: "Propuestas",
-      description: "Consulta las propuestas que tenemos para la universidad.",
-      path: "/propuestas",
-    },
-    {
-      title: "Sugerencias",
-      description: "Compártenos tus ideas y opiniones.",
-      path: "/sugerencias",
-    },
-  ];
-  const prevSlide = () => {
-    setCurrentSlide((prev) =>
-      prev === 0 ? sections.length - 1 : prev - 1
-    );
-  };
-
-  const nextSlide = () => {
-    setCurrentSlide((prev) =>
-      prev === sections.length - 1 ? 0 : prev + 1
-    );
-  };
-
-  useEffect(() => {
-    fetch("/api/message")
-      .then((response) => response.json())
-      .then((data) =>
-        setMessage(data.message || "Unión y Futuro Universitario")
-      );
-  }, []);
-
-  const scrollToBottom = () => {
-    window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
-  };
-
-
-
   return (
-    <div className="min-h-screen bg-white text-gray-900 flex flex-col">
+    <>
+      <section className="hero-section">
+        <div className="content">
+          <p className="subtitle">WE ARE WAITING FOR YOU</p>
+          <h1>Let's Make The World Great Again</h1>
+          <p>We can start by taking small steps and making small changes that can have a big impact on the world.</p>
+        </div>
+        <div className="hero-image">
+          <img src="hero-image.png" alt="Politician speaking" />
+        </div>
+      </section>
 
+      <section className="mission-section">
+        <div className="content">
+          <p className="subtitle">MISSION</p>
+          <h1>We Are Committed to Empowering the Community</h1>
+          <p>Our mission is to empower individuals through education, healthcare, and social support, ensuring a better tomorrow. By creating initiatives and programs that foster a sense of responsibility, we are laying the foundation for a stronger, more connected community.</p>
+        </div>
+        <div className="image">
+          <img src="mission-image.png" alt="Mission" />
+        </div>
+      </section>
 
-      <div className="flex flex-1">
-        <div className="flex flex-col w-4/5 p-4 h-300">
-          <div className="relative h-[500px] w-full bg-white rounded-lg shadow-md dark:bg-neutral-800">
-            <div className="relative h-full overflow-hidden flex items-center justify-center">
-              <div
-                className="flex transition-transform duration-700 h-full"
-                style={{
-                  transform: `translateX(position-${(currentSlide / sections.length) * 100+(currentSlide==0?(-50):-25)}%)`,
-                }}
-              >
-                {sections.map((slide, index) => {
-                  const isCenter = index === currentSlide;
-                  const isLeft = index === (currentSlide - 1 + sections.length) % sections.length;
-                  const isRight = index === (currentSlide + 1) % sections.length;
+      <section className="vision-section">
+        <div className="content">
+          <p className="subtitle">VISION</p>
+          <h1>Building a Sustainable Future Together</h1>
+          <p>We envision a future where every individual has access to the tools they need to thrive. Our vision is a society where opportunities for growth and success are abundant, and every voice is heard, leading to a world that is fairer, greener, and more equitable for all.</p>
+        </div>
+        <div className="image">
+          <img src="vision-image.png" alt="Vision" />
+        </div>
+      </section>
 
-                  return (
-                    <div
-                      key={index}
-                      className={`flex-shrink-0 h-full flex justify-center items-center transition-all duration-500`}
-                      style={{
-                        transform: isCenter ? "scale(1)" : isLeft || isRight ? "scale(0.8)" : "scale(0.7)",
-                        opacity: isCenter ? 1 : 0.6,
-                        width: isCenter ? "50%" : isLeft || isRight ? "25%" : "20%",
-                      }}
-                    >
-                      <div className="relative w-full h-full flex flex-col items-center">
-                        <img
-                          src={`/seccionesMenuIm/${slide.title}.png`}
-                          alt={slide.title}
-                          className="h-full object-contain"
-                        />
-                        {isCenter && (
-                          <span className="absolute bottom-4 text-lg font-bold text-gray-800 dark:text-white text-center px-4">
-                            {slide.description}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Botón Anterior */}
-            <button
-              onClick={prevSlide}
-              className="z-10 absolute inset-y-0 left-0 flex justify-center items-center w-[46px] bg-gray-300 hover:bg-gray-400 rounded-l-lg"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="shrink-0"
-              >
-                <path d="M15 18L9 12l6-6"></path>
-              </svg>
-            </button>
-
-            {/* Botón Siguiente */}
-            <button
-              onClick={nextSlide}
-              className="z-10 absolute inset-y-0 right-0 flex justify-center items-center w-[46px] bg-gray-300 hover:bg-gray-400 rounded-r-lg"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="shrink-0"
-              >
-                <path d="M9 18l6-6-6-6"></path>
-              </svg>
-            </button>
-
-            {/* Indicadores */}
-            <div className="flex justify-center space-x-2 absolute bottom-3 left-0 right-0">
-              {sections.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentSlide(index)}
-                  className={`w-3 h-3 border rounded-full ${index === currentSlide
-                      ? "bg-blue-700 border-blue-700"
-                      : "bg-gray-400 border-gray-400"
-                    }`}
-                ></button>
-              ))}
-            </div>
+      {/* News Section */}
+      <section className="news-section">
+        <div className="content">
+          <p className="subtitle">NEWS</p>
+          <h1>Latest Updates and News</h1>
+          <p>Stay updated with the latest news and developments from our campaign. We're committed to keeping you informed about the progress we're making together.</p>
+        </div>
+        <div className="news-items">
+          <div className="news-item">
+            <h3>Exciting New Policy Announced</h3>
+            <p>Details on our new policy that aims to bring better education to underprivileged communities.</p>
           </div>
-
-
-
-          <footer className="mt-auto p-4 text-center">
-            <h4 className="text-lg font-semibold">
-              Síguenos en redes sociales
-            </h4>
-            <div className="flex justify-center items-center gap-8 mt-2">
-              <img
-                src="/iconosRedes/facebook.png"
-                alt="Facebook"
-                className="w-12 h-12 cursor-pointer rounded-full"
-              />
-              <img
-                src="/iconosRedes/instagram.png"
-                alt="Instagram"
-                className="w-9 h-9   cursor-pointer rounded-full"
-              />
-              <img
-                src="/iconosRedes/tiktok.png"
-                alt="TikTok"
-                className="w-8 h-8 cursor-pointer rounded-full"
-              />
-            </div>
-          </footer>
+          <div className="news-item">
+            <h3>Community Outreach Program</h3>
+            <p>We launched a community outreach program to connect with people and understand their needs better.</p>
+          </div>
         </div>
+      </section>
 
-        <div className="w-1/4 p-4 flex flex-col h-full">
-          <Link to="/sugerencias" className="flex-grow">
-            <div className="bg-purple-500 text-white p-4 rounded-lg cursor-pointer">
-              <h2 className="text-lg font-bold">Dinos por quién vas a votar</h2>
-              <img
-                src="/seccionesMenuIm/Encuesta.png"
-                alt="Encuesta"
-                className="mt-2 transition-transform duration-300 transform hover:scale-105"
-              />
-            </div>
-          </Link>
+      {/* Events Section */}
+      <section className="events-section">
+        <div className="content">
+          <p className="subtitle">EVENTS</p>
+          <h1>Join Us at Our Upcoming Events</h1>
+          <p>We are organizing several events to engage with the community. Don't miss the chance to be a part of the movement!</p>
         </div>
-      </div>
-
-      <div className="flex justify-center mb-4">
-        <button
-          onClick={scrollToBottom}
-          className="bg-red-600 text-white rounded-full p-3 shadow-md absolute bottom-10 w-12 h-12 flex items-center justify-center"
-        >
-          ↓
-        </button>
-      </div>
-    </div>
+        <div className="events-items">
+          <div className="event-item">
+            <h3>Community Meet-Up</h3>
+            <p>Join us for a community meet-up this weekend to discuss our goals and plans.</p>
+          </div>
+          <div className="event-item">
+            <h3>Fundraising Gala</h3>
+            <p>Our annual fundraising gala will be held next month. Come and support our cause!</p>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }
 
