@@ -7,8 +7,8 @@ function SeccionInicioAdm() {
   const [secciones, setSecciones] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editingSection, setEditingSection] = useState(null);
-  const [isModalVisible, setIsModalVisible] = useState(false);  // Estado para el modal
-  const [sectionToDelete, setSectionToDelete] = useState(null);  // Estado para la sección a eliminar
+  const [isModalVisible, setIsModalVisible] = useState(false);  
+  const [sectionToDelete, setSectionToDelete] = useState(null);  
 
   // Función para obtener las secciones desde el backend
   const fetchSecciones = async () => {

@@ -20,7 +20,7 @@ function FormularioEditarSeccion({ seccion, onCancel, onSectionUpdated }) {
     e.preventDefault();
   
     const sectionData = {
-      id: seccion.id, // ID de la sección a editar
+      id: seccion.id,
       nombre,
       descripcion,
       url_de_la_imagen: imagenUrl,
@@ -117,7 +117,7 @@ function FormularioEditarSeccion({ seccion, onCancel, onSectionUpdated }) {
             <input
               type="checkbox"
               id="visibilidad"
-              checked={isVisible}
+              checked={isVisible==1}
               onChange={() => setIsVisible(!isVisible)}
               className="mt-1"
             />
