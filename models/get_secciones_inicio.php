@@ -3,7 +3,8 @@
 // Incluye la clase de conexión
 include_once 'conexion.php';
 
-// Creamos la consulta para obtener todos los registros de la tabla
+header("Access-Control-Allow-Origin: *");
+header("Content-Type: application/json; charset=UTF-8");
 $query = "SELECT id, nombre, descripcion, url_de_la_imagen, visibilidad FROM secciones_inicio";
 
 // Ejecutamos la consulta
