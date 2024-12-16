@@ -6,29 +6,32 @@ function SeccionInicioAdm() {
   const [secciones, setSecciones] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    // Función para obtener las secciones desde el endpoint PHP
-    const fetchSecciones = async () => {
-      try {
-        const response = await fetch("http://localhost/ProyectoManejo/PaginaWebCandidata/models/get_secciones_incio.php"); // Actualiza con la ruta correcta
-        const data = await response.json();
+  // Función para obtener las secciones desde el backend
+  const fetchSecciones = async () => {
+    try {
+      const response = await fetch("http://localhost/ProyectoManejo/PaginaWebCandidata/models/get_secciones_incio.php");
+      const data = await response.json();
 
-        if (data.mensaje) {
-          // Si no hay secciones, se muestra el mensaje
-          setSecciones([]);
-        } else {
-          // Si hay secciones, se almacenan en el estado
-          setSecciones(data);
-        }
-      } catch (error) {
-        console.error("Error al obtener las secciones:", error);
-      } finally {
-        setLoading(false);
+      if (data.mensaje) {
+        setSecciones([]);
+      } else {
+        setSecciones(data);
       }
-    };
+    } catch (error) {
+      console.error("Error al obtener las secciones:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchSecciones();
-  }, []); // Se ejecuta solo una vez al montar el componente
+  useEffect(() => {
+    fetchSecciones();  // Se ejecuta una vez al montar el componente
+  }, []);
+
+  // Función que se llama cuando se agrega una nueva sección
+  const handleSectionAdded = () => {
+    fetchSecciones();  // Recargamos las secciones
+  };
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
@@ -46,7 +49,7 @@ function SeccionInicioAdm() {
         {isAddingNew && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
             <div className="bg-white p-6 rounded-lg shadow-lg relative w-96">
-              <FormularioSeccionInicio onCancel={() => setIsAddingNew(false)} />
+              <FormularioSeccionInicio onCancel={() => setIsAddingNew(false)} onSectionAdded={handleSectionAdded} />
             </div>
           </div>
         )}

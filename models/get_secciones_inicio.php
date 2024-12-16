@@ -2,9 +2,11 @@
 
 // Incluye la clase de conexión
 include_once 'conexion.php';
-
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type");
+
 $query = "SELECT id, nombre, descripcion, url_de_la_imagen, visibilidad FROM secciones_inicio";
 
 // Ejecutamos la consulta
