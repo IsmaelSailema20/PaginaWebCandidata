@@ -1,0 +1,399 @@
+/* Importar fuentes desde Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Poppins:wght@400;600;700&display=swap');
+
+/* Establecer la fuente predeterminada para todo el sitio */
+body {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+/* Hero Section */
+.hero-section {
+  background-color: #f0f4ff; /* Fondo suave */
+  color: #333;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 20px;
+}
+
+.hero-section .content {
+  width: 60%;
+}
+
+.hero-section .content h1 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 3rem;
+  font-weight: 600;
+  color: #6c4fe5; /* Un color suave de transición */
+  line-height: 1.2;
+}
+
+.hero-section .content p {
+  font-size: 1.2rem;
+  color: #777;
+  line-height: 1.6;
+  margin-top: 20px;
+}
+
+/* Misión y Visión */
+.mission-section, .vision-section {
+  background-color: white;
+  color: #333;
+  padding: 60px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mission-section .content, .vision-section .content {
+  width: 100%;
+  text-align: center;
+}
+
+.mission-section .content h1, .vision-section .content h1 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #6c4fe5; /* Color similar al título principal */
+  line-height: 1.4;
+}
+
+.mission-section .content p, .vision-section .content p {
+  font-size: 1.2rem;
+  line-height: 1.5;
+  color: #555;
+  margin-top: 20px;
+}
+
+/* Sección de Eventos */
+.events-section {
+  background-color: #f4f4f4;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.events-items {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.event-item {
+  width: 32%;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.event-item img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.event-item h3 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.event-item p {
+  font-size: 1.1rem;
+  color: #555;
+}
+
+/* Sección de Noticias */
+.news-section {
+  background-color: #f4f4f4;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.news-items {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.news-item {
+  width: 32%;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.news-item img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.news-item h3 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.news-item p {
+  font-size: 1.1rem;
+  color: #555;
+}
+
+/* Estilos generales */
+.subtitle {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  color: #6c4fe5;
+}
+
+h1, h2, h3 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+}
+
+p {
+  font-family: 'Roboto', sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* Sección del líder */
+.leader-section {
+    background-color: #ffffff;
+    padding: 40px 20px;
+    text-align: center;
+    margin-top: 40px; /* Asegúrate de que no se sobreponga con otros elementos */
+  }
+  
+  .leader-section .content {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .leader-section h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #6c4fe5; /* Color para el nombre del líder */
+  }
+  
+  .leader-section p {
+    font-size: 1.1rem;
+    line-height: 1.5;
+    color: #555;
+    margin-top: 10px;
+  }
+  
+  .leader-section .social-links {
+    margin-top: 20px;
+  }
+  
+  .leader-section .social-links a {
+    margin-right: 15px;
+  }
+  
+  .leader-section .social-links img {
+    width: 30px; /* Ajusta el tamaño de los iconos sociales */
+    height: 30px;
+    transition: transform 0.3s ease;
+  }
+  
+  .leader-section .social-links img:hover {
+    transform: scale(1.1);
+  }
+  
+  /* Sección del líder */
+.leader-section {
+    background-color: #ffffff;
+    padding: 40px 20px;
+    text-align: center;
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .leader-section .content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .leader-info {
+    max-width: 50%;
+    text-align: left;
+  }
+  
+  .leader-info h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #6c4fe5; /* Color para el nombre del líder */
+  }
+  
+  .leader-info p {
+    font-size: 1.1rem;
+    line-height: 1.5;
+    color: #555;
+    margin-top: 10px;
+  }
+  
+  .social-links {
+    margin-top: 20px;
+  }
+  
+  .social-links a {
+    margin-right: 15px;
+  }
+  
+  .social-links img {
+    width: 30px;
+    height: 30px;
+    transition: transform 0.3s ease;
+  }
+  
+  .social-links img:hover {
+    transform: scale(1.1);
+  }
+  
+  .leader-photo {
+    max-width: 40%;
+  }
+  
+  .leader-photo img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+  /* Sección del líder */
+.leader-section {
+    background-color: #ffffff;
+    padding: 40px 20px;
+    text-align: center;
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .leader-section .content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .leader-info {
+    max-width: 50%;
+    text-align: left;
+  }
+  
+  .leader-info h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #6c4fe5; /* Color para el nombre del líder */
+  }
+  
+  .leader-info p {
+    font-size: 1.1rem;
+    line-height: 1.5;
+    color: #555;
+    margin-top: 10px;
+  }
+  
+  .social-links {
+    margin-top: 20px;
+    display: flex; /* Cambiar a flex para alinearlos horizontalmente */
+    justify-content: center; /* Centra los íconos */
+    gap: 15px; /* Espacio entre los íconos */
+  }
+  
+  .social-links a {
+    display: inline-block; /* Asegura que los enlaces estén en línea */
+  }
+  
+  .social-links img {
+    width: 30px;
+    height: 30px;
+    transition: transform 0.3s ease;
+  }
+  
+  .social-links img:hover {
+    transform: scale(1.1);
+  }
+  
+  .leader-photo {
+    max-width: 40%;
+  }
+  
+  .leader-photo img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+  
+  
+  .leader-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  /* Nombre y foto del líder */
+  .leader-name-photo {
+    margin-right: 20px;
+    text-align: center;
+  }
+  
+  /* Descripción del líder */
+  .leader-description {
+    flex: 1;
+  }
+  
+  /* Miembros en fila */
+  .members-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 20px;
+  }
+  
+  /* Estilo individual de cada miembro */
+  .member-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 200px;
+  }
+  
+  .member-name-photo {
+    margin-bottom: 10px;
+  }
+  
+  .member-description {
+    text-align: center;
+  }

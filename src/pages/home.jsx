@@ -1,158 +1,167 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import "../styles/stylesHome.css";
 
 function Home() {
-  const [message, setMessage] = useState("Unión y Futuro Universitario");
-  const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
+  const [news, setNews] = useState([]);
+  const [events, setEvents] = useState([]);
+  const [leader, setLeader] = useState(null);
+  const [members, setMembers] = useState([]);
+  const [proposals, setProposals] = useState([]); // Estado para almacenar las propuestas
 
-  const sections = [
-    {
-      title: "Eventos",
-      description: "Conoce los próximos eventos del partido.",
-      path: "/eventos",
-    },
-    {
-      title: "Candidatos",
-      description: "Descubre quiénes representan al partido.",
-      path: "/candidatos",
-    },
-    {
-      title: "Propuestas",
-      description: "Consulta las propuestas que tenemos para la universidad.",
-      path: "/propuestas",
-    },
-    {
-      title: "Sugerencias",
-      description: "Compártenos tus ideas y opiniones.",
-      path: "/sugerencias",
-    },
-  ];
-
+  // Obtener noticias
   useEffect(() => {
-    fetch("/api/message")
-      .then((response) => response.json())
-      .then((data) =>
-        setMessage(data.message || "Unión y Futuro Universitario")
-      );
+    fetch("http://localhost/ProyectoManejo/PaginaWebCandidata/models/get_news.php")
+      .then(response => response.json())
+      .then(data => setNews(data))
+      .catch(error => console.error('Error al obtener noticias:', error));
   }, []);
 
-  const scrollToBottom = () => {
-    window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
-  };
+  // Obtener eventos (solo los 3 primeros)
+  useEffect(() => {
+    fetch("http://localhost/ProyectoManejo/PaginaWebCandidata/models/get_events.php")
+      .then(response => response.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          setEvents(data.slice(0, 3));
+        } else {
+          console.error('La respuesta no es un arreglo de eventos válido');
+        }
+      })
+      .catch(error => console.error('Error al obtener eventos:', error));
+  }, []);
 
-  const nextSection = () => {
-    if (currentSectionIndex >= sections.length - 3) {
-      setCurrentSectionIndex(0);
-    } else {
-      setCurrentSectionIndex(currentSectionIndex + 1);
-    }
-  };
+  // Obtener información del líder
+  useEffect(() => {
+    fetch("http://localhost/ProyectoManejo/PaginaWebCandidata/models/get_leader.php")
+      .then(response => response.json())
+      .then(data => setLeader(data))
+      .catch(error => console.error('Error al obtener información del líder:', error));
+  }, []);
 
-  const prevSection = () => {
-    if (currentSectionIndex > 0) {
-      setCurrentSectionIndex(currentSectionIndex - 1);
-    }
-  };
+  // Obtener miembros (no el líder)
+  useEffect(() => {
+    fetch("http://localhost/ProyectoManejo/PaginaWebCandidata/models/get_members_no_leader.php")
+      .then(response => response.json())
+      .then(data => setMembers(data))
+      .catch(error => console.error('Error al obtener miembros:', error));
+  }, []);
+
+  // Obtener las primeras 3 propuestas
+  useEffect(() => {
+    fetch("http://localhost/ProyectoManejo/PaginaWebCandidata/models/get_proposals.php")
+      .then(response => response.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          setProposals(data.slice(0, 3)); // Solo las 3 primeras propuestas
+        } else {
+          console.error('La respuesta no es un arreglo de propuestas válido');
+        }
+      })
+      .catch(error => console.error('Error al obtener propuestas:', error));
+  }, []);
 
   return (
-    <div className="min-h-screen bg-white text-gray-900 flex flex-col">
-      <div className="relative flex-1">
-        <img
-          src="/imagenInicio/inicio.png"
-          alt="Inicio"
-          className="w-full h-[90vh] object-cover"
-        />
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50">
-          <h1 className="text-4xl font-bold text-white">{message}</h1>
-        </div>
-      </div>
-
-      <div className="flex flex-1">
-        <div className="flex flex-col w-3/4 p-4">
-          <div className="flex items-center mb-4">
-            <button
-              onClick={prevSection}
-              disabled={currentSectionIndex === 0}
-              className="bg-gray-300 p-2 rounded-l-md"
-            >
-              ←
-            </button>
-            <div className="flex overflow-hidden">
-              {sections
-                .slice(currentSectionIndex, currentSectionIndex + 3)
-                .map((section, index) => (
-                  <Link to={section.path} key={index} className="flex-1">
-                    <div className="bg-red-100 text-center rounded-lg shadow-md flex flex-col mx-2 h-[500px] transition-all duration-300 transform hover:scale-105 cursor-pointer">
-                      <h3 className="text-2xl font-semibold mb-2 p-4">
-                        {section.title}
-                      </h3>
-                      <p className="text-sm mb-2 px-4">{section.description}</p>
-                      <div className="flex-grow flex items-center justify-center h-20">
-                        <img
-                          src={`/seccionesMenuIm/${section.title}.png`}
-                          alt={section.title}
-                          className="h-full object-contain"
-                        />
-                      </div>
-                    </div>
-                  </Link>
-                ))}
+    <>
+      {leader && (
+        <section className="leader-section">
+          <div className="content">
+            <div className="leader-info">
+              <h2>Líder del partido</h2>
+              <div className="leader-card">
+                <div className="leader-name-photo">
+                  <h3>{leader.nombre_miembro}</h3>
+                  {leader.url_to_image_placeholder && (
+                    <img src={leader.url_to_image_placeholder} alt={leader.nombre_miembro} />
+                  )}
+                </div>
+                <div className="leader-description">
+                  <p>{leader.descripcion_miembro}</p>
+                  <p><strong>Nivel Académico:</strong> {leader.nivel_academico}</p>
+                  <div className="social-links">
+                    {leader.facebook_url && (
+                      <a href={leader.facebook_url} target="_blank" rel="noopener noreferrer">
+                        <img src="iconosRedes/facebook.png" alt="Facebook" />
+                      </a>
+                    )}
+                    {leader.instagram_url && (
+                      <a href={leader.instagram_url} target="_blank" rel="noopener noreferrer">
+                        <img src="iconosRedes/instagram.png" alt="Instagram" />
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </div>
             </div>
-            <button
-              onClick={nextSection}
-              className="bg-gray-300 p-2 rounded-r-md"
-            >
-              →
-            </button>
           </div>
+        </section>
+      )}
 
-          <footer className="mt-auto p-4 text-center">
-            <h4 className="text-lg font-semibold">
-              Síguenos en redes sociales
-            </h4>
-            <div className="flex justify-center items-center gap-8 mt-2">
-              <img
-                src="/iconosRedes/facebook.png"
-                alt="Facebook"
-                className="w-12 h-12 cursor-pointer rounded-full"
-              />
-              <img
-                src="/iconosRedes/instagram.png"
-                alt="Instagram"
-                className="w-9 h-9   cursor-pointer rounded-full"
-              />
-              <img
-                src="/iconosRedes/tiktok.png"
-                alt="TikTok"
-                className="w-8 h-8 cursor-pointer rounded-full"
-              />
-            </div>
-          </footer>
+      {/* Sección de Miembros (no el líder) */}
+      <section className="news-section">
+        <div className="content">
+          <p className="subtitle">MIEMBROS DESTACADOS</p>
+          <div className="members-list">
+            {members.length > 0 ? (
+              members.map((member, index) => (
+                <div className="member-card" key={index}>
+                  <div className="member-name-photo">
+                    <h3>{member.nombre_miembro}</h3>
+                    <img src={member.url_to_image_placeholder} alt={member.nombre_miembro} />
+                  </div>
+                  <div className="member-description">
+                    <p>{member.descripcion_miembro}</p>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p>Cargando miembros...</p>
+            )}
+          </div>
         </div>
+      </section>
 
-        <div className="w-1/4 p-4 flex flex-col h-full">
-          <Link to="/sugerencias" className="flex-grow">
-            <div className="bg-purple-500 text-white p-4 rounded-lg cursor-pointer">
-              <h2 className="text-lg font-bold">Dinos por quién vas a votar</h2>
-              <img
-                src="/seccionesMenuIm/Encuesta.png"
-                alt="Encuesta"
-                className="mt-2 transition-transform duration-300 transform hover:scale-105"
-              />
-            </div>
-          </Link>
+      {/* Sección de Noticias */}
+      <section className="news-section">
+        <div className="content">
+          <p className="subtitle">NOTICIAS</p>
+          <h1>Últimas Actualizaciones y Noticias</h1>
+          <p>Mantente al día con las últimas noticias y desarrollos de nuestra campaña. Estamos comprometidos a mantenerte informado sobre los avances que estamos logrando juntos.</p>
         </div>
-      </div>
+        <div className="news-items">
+          {news.length > 0 ? (
+            news.map((item, index) => (
+              <div className="news-item" key={index}>
+                <img src={item.urlImagen} alt={item.titulo} />
+                <h3>{item.titulo}</h3>
+                <p>{item.descripcion}</p>
+              </div>
+            ))
+          ) : (
+            <p>Cargando noticias...</p>
+          )}
+        </div>
+      </section>
 
-      <div className="flex justify-center mb-4">
-        <button
-          onClick={scrollToBottom}
-          className="bg-red-600 text-white rounded-full p-3 shadow-md absolute bottom-10 w-12 h-12 flex items-center justify-center"
-        >
-          ↓
-        </button>
-      </div>
-    </div>
+      {/* Sección de Propuestas */}
+      <section className="news-section">
+        <div className="content">
+          <p className="subtitle">PROPUETAS DESTACADAS</p>
+          <div className="news-items">
+            {proposals.length > 0 ? (
+              proposals.map((proposal, index) => (
+                <div className="news-item" key={index}>
+                  <h3>{proposal.titulo_propuesta}</h3>
+                  <p>{proposal.descripcion_propuesta}</p>
+                  <p><strong>Alcance:</strong> {proposal.alcance_propuesta}</p>
+                </div>
+              ))
+            ) : (
+              <p>Cargando propuestas...</p>
+            )}
+          </div>
+        </div>
+      </section>
+    </>
   );
 }
 
