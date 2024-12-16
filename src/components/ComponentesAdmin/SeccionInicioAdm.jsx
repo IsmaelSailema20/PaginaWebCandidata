@@ -131,8 +131,8 @@ function SeccionInicioAdm() {
                   <div className="col-span-1">
                     <h3 className="text-lg font-semibold text-gray-800">{seccion.nombre}</h3>
                     <p className="text-gray-600">{seccion.descripcion}</p>
-                    <p className={`mt-2 ${seccion.visibilidad ? 'text-green-500' : 'text-red-500'}`}>
-                      {seccion.visibilidad ? 'Visible' : 'No visible'}
+                    <p className={`mt-2 ${seccion.visibilidad==1 ? 'text-green-500' : 'text-red-500'}`}>
+                      {seccion.visibilidad==1 ? 'Visible' : 'No visible'}
                     </p>
                   </div>
 

@@ -206,33 +206,37 @@ function Home() {
 
       {/* Sección de Secciones Dinámicas */}
       <section className="sections-section">
-        <div className="content">
-          <div className="sections-list">
-            {sections.length > 0 ? (
-              sections.map((section, index) => (
-                <div className="section-card" key={index}>
-                  <h3 className="subtitle">{section.nombre}</h3>
-                  <div className="section-row">
-                    <div className="section-title">
-                      
-                    </div>
-                    <div className="section-description">
-                      <p>{section.descripcion}</p>
-                    </div>
-                    <div className="section-image">
-                      {section.url_de_la_imagen && (
-                        <img src={section.url_de_la_imagen} alt={section.nombre} />
-                      )}
-                    </div>
-                  </div>
+  <div className="content">
+    
+    <div className="sections-list">
+      {sections.length > 0 ? (
+        sections.map((section, index) => (
+          <div className="section-card" key={index}>
+            
+            <div className="content">
+            <p className="subtitle center">{section.nombre}</p>
+            </div>
+            <div className="section-row">
+              <div className="section-description">
+              
+                <p className="left">{section.descripcion}</p>
+            
+              </div>
+              {section.url_de_la_imagen && (
+                <div className="section-image">
+                  <img src={section.url_de_la_imagen} alt={section.nombre} />
                 </div>
-              ))
-            ) : (
-              <p>Cargando secciones...</p>
-            )}
+              )}
+            </div>
           </div>
-        </div>
-      </section>
+        ))
+      ) : (
+        <p>Cargando secciones...</p>
+      )}
+    </div>
+  </div>
+</section>
+
     </>
   );
 }
