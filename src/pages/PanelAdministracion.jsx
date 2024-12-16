@@ -3,7 +3,7 @@ import SeccionInicioAdm from "../components/ComponentesAdmin/SeccionInicioAdm";
 import SeccionEventosAdm from "../components/ComponentesAdmin/SeccionEventosAdm";
 import SeccionCandidatosAdm from "../components/ComponentesAdmin/SeccionCandidatosAdm";
 import SeccionPropuestasAdm from "../components/ComponentesAdmin/SeccionPropuestasAdm";
-import DiagonalBackground from '../components/EscojerNivel';
+import DiagonalBackground from "../components/EscogerNivel";
 
 import {
   CalendarCog,
@@ -15,7 +15,7 @@ import {
   LogOut,
   MessageSquareShare,
   ChartNoAxesColumn,
-  Menu ,
+  Menu,
 } from "lucide-react";
 import SeccionVotacionesAdm from "../components/ComponentesAdmin/SeccionVotacionesAdm";
 import SeccionSugerenciasAdm from "../components/ComponentesAdmin/SeccionSugerenciasAdm";
@@ -129,8 +129,8 @@ function PanelAdministracion() {
       <div className="flex-1 p-6 max-h-screen overflow-y-auto">
         {activeSection === "principal" && (
           <section>
-          <DiagonalBackground />
-        </section>
+            <DiagonalBackground />
+          </section>
         )}
         {activeSection === "inicio" && <SeccionInicioAdm />}
         {activeSection === "eventos" && <SeccionEventosAdm />}
