@@ -32,28 +32,6 @@ function FormularioSeccionInicio({ onCancel }) {
         Formulario de Inicio
       </h2>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="flex flex-col gap-2">
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              id="visible"
-              checked={isVisible}
-              onChange={() => handleVisibilityChange("visible")}
-              className="mr-2"
-            />
-            <label htmlFor="visible" className="text-gray-700">Visible</label>
-          </div>
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              id="invisible"
-              checked={isInvisible}
-              onChange={() => handleVisibilityChange("invisible")}
-              className="mr-2"
-            />
-            <label htmlFor="invisible" className="text-gray-700">Invisible</label>
-          </div>
-        </div>
         <div>
           <label
             htmlFor="nombre"
@@ -101,6 +79,28 @@ function FormularioSeccionInicio({ onCancel }) {
             className="mt-2 block w-full rounded-lg border-gray-300 shadow-md focus:border-blue-500 focus:ring focus:ring-blue-200"
             required
           />
+        </div>
+        <div className="flex flex-col gap-2 mt-4">
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              id="visible"
+              checked={isVisible}
+              onChange={() => handleVisibilityChange("visible")}
+              className="mr-2"
+            />
+            <label htmlFor="visible" className="text-gray-700">Visible</label>
+          </div>
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              id="invisible"
+              checked={isInvisible}
+              onChange={() => handleVisibilityChange("invisible")}
+              className="mr-2"
+            />
+            <label htmlFor="invisible" className="text-gray-700">Invisible</label>
+          </div>
         </div>
         <div className="flex justify-between mt-4">
           <button
