@@ -20,7 +20,9 @@ function SeccionEventosAdm() {
   useEffect(() => {
     const fetchEventos = async () => {
       try {
-        const response = await fetch("http://localhost/ProyectoManejo/PaginaWebCandidata/models/getEventosNoticias.php");
+        const response = await fetch(
+          "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/getEventosNoticias.php"
+        );
         const data = await response.json();
         const uniqueEventos = Array.from(
           new Map(data.eventos.map((e) => [e.id, e])).values()
@@ -52,7 +54,7 @@ function SeccionEventosAdm() {
     try {
       // Enviar los datos al servidor
       const response = await fetch(
-        "http://localhost/ProyectoManejo/PaginaWebCandidata/models/agregar_evento.php", // Asegúrate de tener este endpoint en tu servidor
+        "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/agregar_evento.php", // Asegúrate de tener este endpoint en tu servidor
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -83,7 +85,6 @@ function SeccionEventosAdm() {
     }
   };
 
-
   const handleEditEvento = async () => {
     // Verificar que todos los campos obligatorios estén completos
     if (
@@ -101,7 +102,7 @@ function SeccionEventosAdm() {
 
     try {
       const response = await fetch(
-        "http://localhost/ProyectoManejo/PaginaWebCandidata/models/editar_eventos.php",
+        "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/editar_eventos.php",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -122,14 +123,16 @@ function SeccionEventosAdm() {
     }
   };
 
-
   const handleToggleVisibilidadEvento = async (id, currentVisibility) => {
     try {
-      const response = await fetch("http://localhost/ProyectoManejo/PaginaWebCandidata/models/visibilidad_evento.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id, visible: !currentVisibility }),
-      });
+      const response = await fetch(
+        "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/visibilidad_evento.php",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id, visible: !currentVisibility }),
+        }
+      );
 
       if (response.ok) {
         // Actualiza el estado de los eventos para reflejar el cambio de visibilidad
@@ -146,9 +149,12 @@ function SeccionEventosAdm() {
   const handleDeleteEvento = async (id) => {
     try {
       // Realizar la solicitud DELETE
-      const response = await fetch(`http://localhost/ProyectoManejo/PaginaWebCandidata/models/eliminar_evento.php?id=${id}`, {
-        method: "DELETE",
-      });
+      const response = await fetch(
+        `http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/eliminar_evento.php?id=${id}`,
+        {
+          method: "DELETE",
+        }
+      );
 
       if (response.ok) {
         const updatedEventos = eventos.filter((evento) => evento.id !== id);
@@ -159,12 +165,13 @@ function SeccionEventosAdm() {
     }
   };
 
-
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <div className="bg-white shadow-md rounded-lg p-6">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-gray-800">Gestión de Eventos</h2>
+          <h2 className="text-2xl font-bold text-gray-800">
+            Gestión de Eventos
+          </h2>
           <button
             onClick={() => setIsAddingNew(true)}
             className="flex items-center bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
@@ -222,15 +229,13 @@ function SeccionEventosAdm() {
                   <p className="text-sm text-gray-500">
                     {evento.lugar} - {evento.fecha} {evento.hora}
                   </p>
-                  <p className="text-sm text-blue-500">
-                    {evento.tipo}
-                  </p>
+                  <p className="text-sm text-blue-500">{evento.tipo}</p>
                 </div>
                 <div className="flex space-x-2">
                   <button
                     onClick={() => {
                       setEditingEvento(evento);
-                      window.scrollTo({ top: 0, behavior: 'smooth' }); // Desplaza al inicio de la página
+                      window.scrollTo({ top: 0, behavior: "smooth" }); // Desplaza al inicio de la página
                     }}
                     className="text-blue-500 hover:bg-blue-100 p-2 rounded"
                   >
@@ -238,15 +243,13 @@ function SeccionEventosAdm() {
                   </button>
                   <button
                     onClick={() =>
-                      handleToggleVisibilidadEvento(
-                        evento.id,
-                        evento.visible
-                      )
+                      handleToggleVisibilidadEvento(evento.id, evento.visible)
                     }
-                    className={`p-2 rounded ${evento.visible
-                      ? "text-yellow-500 hover:bg-yellow-100"
-                      : "text-green-500 hover:bg-green-100"
-                      }`}
+                    className={`p-2 rounded ${
+                      evento.visible
+                        ? "text-yellow-500 hover:bg-yellow-100"
+                        : "text-green-500 hover:bg-green-100"
+                    }`}
                   >
                     {evento.visible ? <Eye /> : <EyeOff />}
                   </button>

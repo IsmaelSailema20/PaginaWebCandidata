@@ -6,7 +6,7 @@ const TeamSection = () => {
 
   useEffect(() => {
     fetch(
-      "http://localhost/ProyectoManejo/paginaWebCandidata/models/ConsultaMiembros.php"
+      "http://localhost:8081/ProyectoManejo/paginaWebCandidata/models/ConsultaMiembros.php"
     )
       .then((response) => {
         if (!response.ok) {

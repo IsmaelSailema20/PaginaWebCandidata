@@ -7,13 +7,15 @@ function SeccionInicioAdm() {
   const [secciones, setSecciones] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editingSection, setEditingSection] = useState(null);
-  const [isModalVisible, setIsModalVisible] = useState(false);  
-  const [sectionToDelete, setSectionToDelete] = useState(null);  
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [sectionToDelete, setSectionToDelete] = useState(null);
 
   // Función para obtener las secciones desde el backend
   const fetchSecciones = async () => {
     try {
-      const response = await fetch("http://localhost/ProyectoManejo/PaginaWebCandidata/models/get_secciones_inicio.php");
+      const response = await fetch(
+        "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/get_secciones_inicio.php"
+      );
       const data = await response.json();
 
       if (data.mensaje) {
@@ -30,26 +32,29 @@ function SeccionInicioAdm() {
 
   // Función que se llama cuando se agrega o edita una nueva sección
   const handleSectionAddedOrUpdated = () => {
-    fetchSecciones();  // Recargamos las secciones
-    setIsAddingNew(false);  // Cerrar el formulario después de agregar o editar
+    fetchSecciones(); // Recargamos las secciones
+    setIsAddingNew(false); // Cerrar el formulario después de agregar o editar
     setEditingSection(null); // Limpiar la sección en edición
   };
 
   // Función para mostrar el modal de confirmación
   const handleDeleteClick = (id) => {
-    setSectionToDelete(id);  // Guardamos el ID de la sección a eliminar
-    setIsModalVisible(true);  // Mostramos el modal
+    setSectionToDelete(id); // Guardamos el ID de la sección a eliminar
+    setIsModalVisible(true); // Mostramos el modal
   };
 
   // Función para eliminar una sección
   const handleDelete = async () => {
     if (sectionToDelete) {
       try {
-        const response = await fetch(`http://localhost/ProyectoManejo/PaginaWebCandidata/models/eliminar_seccion.php?id=${sectionToDelete}`, {
-          method: "GET",
-        });
+        const response = await fetch(
+          `http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/eliminar_seccion.php?id=${sectionToDelete}`,
+          {
+            method: "GET",
+          }
+        );
         const data = await response.json();
-        
+
         fetchSecciones(); // Recargar las secciones después de eliminar
         setIsModalVisible(false); // Ocultar el modal
       } catch (error) {
@@ -71,14 +76,16 @@ function SeccionInicioAdm() {
   };
 
   useEffect(() => {
-    fetchSecciones();  // Se ejecuta una vez al montar el componente
+    fetchSecciones(); // Se ejecuta una vez al montar el componente
   }, []);
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <div className="bg-white shadow-md rounded-lg p-6">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-gray-800">Gestión de Secciones de Inicio</h2>
+          <h2 className="text-2xl font-bold text-gray-800">
+            Gestión de Secciones de Inicio
+          </h2>
           <button
             onClick={() => {
               setIsAddingNew(true);
@@ -113,11 +120,16 @@ function SeccionInicioAdm() {
           {loading ? (
             <div className="text-center text-gray-500 py-4">Cargando...</div>
           ) : secciones.length === 0 ? (
-            <div className="text-center text-gray-500 py-4">No se encontraron secciones</div>
+            <div className="text-center text-gray-500 py-4">
+              No se encontraron secciones
+            </div>
           ) : (
             <div>
               {secciones.map((seccion) => (
-                <div key={seccion.id} className="grid grid-cols-3 gap-4 items-center border-b py-4">
+                <div
+                  key={seccion.id}
+                  className="grid grid-cols-3 gap-4 items-center border-b py-4"
+                >
                   {/* Columna para la imagen */}
                   <div className="col-span-1">
                     <img
@@ -129,10 +141,18 @@ function SeccionInicioAdm() {
 
                   {/* Columna para el texto */}
                   <div className="col-span-1">
-                    <h3 className="text-lg font-semibold text-gray-800">{seccion.nombre}</h3>
+                    <h3 className="text-lg font-semibold text-gray-800">
+                      {seccion.nombre}
+                    </h3>
                     <p className="text-gray-600">{seccion.descripcion}</p>
-                    <p className={`mt-2 ${seccion.visibilidad==1 ? 'text-green-500' : 'text-red-500'}`}>
-                      {seccion.visibilidad==1 ? 'Visible' : 'No visible'}
+                    <p
+                      className={`mt-2 ${
+                        seccion.visibilidad == 1
+                          ? "text-green-500"
+                          : "text-red-500"
+                      }`}
+                    >
+                      {seccion.visibilidad == 1 ? "Visible" : "No visible"}
                     </p>
                   </div>
 
@@ -161,8 +181,12 @@ function SeccionInicioAdm() {
         {isModalVisible && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
             <div className="bg-white p-6 rounded-lg shadow-lg relative w-96">
-              <h3 className="text-lg font-semibold text-gray-800">Confirmación</h3>
-              <p className="text-gray-600 mt-4">¿Estás seguro de que quieres eliminar esta sección?</p>
+              <h3 className="text-lg font-semibold text-gray-800">
+                Confirmación
+              </h3>
+              <p className="text-gray-600 mt-4">
+                ¿Estás seguro de que quieres eliminar esta sección?
+              </p>
               <div className="mt-6 flex justify-end space-x-4">
                 <button
                   onClick={handleCancelDelete}

@@ -11,7 +11,9 @@ function Home() {
 
   // Obtener secciones
   useEffect(() => {
-    fetch("http://localhost/ProyectoManejo/PaginaWebCandidata/models/get_secciones_visibles.php")
+    fetch(
+      "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/get_secciones_visibles.php"
+    )
       .then((response) => response.json())
       .then((data) => {
         // Asegurarse de que data es un array antes de actualizar el estado
@@ -26,7 +28,9 @@ function Home() {
 
   // Obtener noticias
   useEffect(() => {
-    fetch("http://localhost/ProyectoManejo/PaginaWebCandidata/models/get_news.php")
+    fetch(
+      "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/get_news.php"
+    )
       .then((response) => response.json())
       .then((data) => setNews(data))
       .catch((error) => console.error("Error al obtener noticias:", error));
@@ -34,7 +38,9 @@ function Home() {
 
   // Obtener eventos (solo los 3 primeros)
   useEffect(() => {
-    fetch("http://localhost/ProyectoManejo/PaginaWebCandidata/models/get_events.php")
+    fetch(
+      "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/get_events.php"
+    )
       .then((response) => response.json())
       .then((data) => {
         if (Array.isArray(data)) {
@@ -48,15 +54,21 @@ function Home() {
 
   // Obtener información del líder
   useEffect(() => {
-    fetch("http://localhost/ProyectoManejo/PaginaWebCandidata/models/get_leader.php")
+    fetch(
+      "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/get_leader.php"
+    )
       .then((response) => response.json())
       .then((data) => setLeader(data))
-      .catch((error) => console.error("Error al obtener información del líder:", error));
+      .catch((error) =>
+        console.error("Error al obtener información del líder:", error)
+      );
   }, []);
 
   // Obtener miembros (no el líder)
   useEffect(() => {
-    fetch("http://localhost/ProyectoManejo/PaginaWebCandidata/models/get_members_no_leader.php")
+    fetch(
+      "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/get_members_no_leader.php"
+    )
       .then((response) => response.json())
       .then((data) => setMembers(data))
       .catch((error) => console.error("Error al obtener miembros:", error));
@@ -64,7 +76,9 @@ function Home() {
 
   // Obtener las primeras 3 propuestas
   useEffect(() => {
-    fetch("http://localhost/ProyectoManejo/PaginaWebCandidata/models/get_proposals.php")
+    fetch(
+      "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/get_proposals.php"
+    )
       .then((response) => response.json())
       .then((data) => {
         if (Array.isArray(data)) {
@@ -106,26 +120,6 @@ function Home() {
                   <p>
                     <strong>Nivel Académico:</strong> {leader.nivel_academico}
                   </p>
-                  <div className="social-links">
-                    {leader.facebook_url && (
-                      <a
-                        href={leader.facebook_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <img src="iconosRedes/facebook.png" alt="Facebook" />
-                      </a>
-                    )}
-                    {leader.instagram_url && (
-                      <a
-                        href={leader.instagram_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <img src="iconosRedes/instagram.png" alt="Instagram" />
-                      </a>
-                    )}
-                  </div>
                 </div>
               </div>
             </div>
@@ -165,7 +159,10 @@ function Home() {
         <div className="content">
           <p className="subtitle">NOTICIAS</p>
           <h1>Últimas Actualizaciones y Noticias</h1>
-          <p>Mantente al día con las últimas noticias y desarrollos de nuestra campaña.</p>
+          <p>
+            Mantente al día con las últimas noticias y desarrollos de nuestra
+            campaña.
+          </p>
         </div>
         <div className="news-items">
           {news.length > 0 ? (
@@ -206,37 +203,35 @@ function Home() {
 
       {/* Sección de Secciones Dinámicas */}
       <section className="sections-section">
-  <div className="content">
-    
-    <div className="sections-list">
-      {sections.length > 0 ? (
-        sections.map((section, index) => (
-          <div className="section-card" key={index}>
-            
-            <div className="content">
-            <p className="subtitle center">{section.nombre}</p>
-            </div>
-            <div className="section-row">
-              <div className="section-description">
-              
-                <p className="left">{section.descripcion}</p>
-            
-              </div>
-              {section.url_de_la_imagen && (
-                <div className="section-image">
-                  <img src={section.url_de_la_imagen} alt={section.nombre} />
+        <div className="content">
+          <div className="sections-list">
+            {sections.length > 0 ? (
+              sections.map((section, index) => (
+                <div className="section-card" key={index}>
+                  <div className="content">
+                    <p className="subtitle center">{section.nombre}</p>
+                  </div>
+                  <div className="section-row">
+                    <div className="section-description">
+                      <p className="left">{section.descripcion}</p>
+                    </div>
+                    {section.url_de_la_imagen && (
+                      <div className="section-image">
+                        <img
+                          src={section.url_de_la_imagen}
+                          alt={section.nombre}
+                        />
+                      </div>
+                    )}
+                  </div>
                 </div>
-              )}
-            </div>
+              ))
+            ) : (
+              <p>Cargando secciones...</p>
+            )}
           </div>
-        ))
-      ) : (
-        <p>Cargando secciones...</p>
-      )}
-    </div>
-  </div>
-</section>
-
+        </div>
+      </section>
     </>
   );
 }

@@ -18,7 +18,7 @@ function FormularioEditarSeccion({ seccion, onCancel, onSectionUpdated }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     const sectionData = {
       id: seccion.id,
       nombre,
@@ -26,10 +26,10 @@ function FormularioEditarSeccion({ seccion, onCancel, onSectionUpdated }) {
       url_de_la_imagen: imagenUrl,
       visibilidad: isVisible,
     };
-  
+
     try {
       const response = await fetch(
-        "http://localhost/ProyectoManejo/PaginaWebCandidata/models/editar_seccion.php",
+        "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/editar_seccion.php",
         {
           method: "POST",
           headers: {
@@ -38,9 +38,9 @@ function FormularioEditarSeccion({ seccion, onCancel, onSectionUpdated }) {
           body: JSON.stringify(sectionData),
         }
       );
-  
+
       const data = await response.json();
-  
+
       if (data.success) {
         // Recargar la lista de secciones antes de cerrar el modal
         if (typeof onSectionUpdated === "function") {
@@ -55,7 +55,7 @@ function FormularioEditarSeccion({ seccion, onCancel, onSectionUpdated }) {
       alert("Hubo un problema al editar la sección.");
     }
   };
-  
+
   return (
     <div className="modal">
       <div className="modal-content">
@@ -117,7 +117,7 @@ function FormularioEditarSeccion({ seccion, onCancel, onSectionUpdated }) {
             <input
               type="checkbox"
               id="visibilidad"
-              checked={isVisible==1}
+              checked={isVisible == 1}
               onChange={() => setIsVisible(!isVisible)}
               className="mt-1"
             />

@@ -29,10 +29,14 @@ const Propuestas = () => {
   const [filteredPropuestas, setFilteredPropuestas] = useState([]);
   const [allCategories, setAllCategories] = useState([]);
   const [allCandidatos, setAllCandidatos] = useState([]);
-  const [allAlcances, setAllAlcances] = useState(["nacional", "regional", "local"]);
+  const [allAlcances, setAllAlcances] = useState([
+    "nacional",
+    "regional",
+    "local",
+  ]);
   const [currentCandidato, setCurrentCandidato] = useState({
     nombre_miembro: "",
-    imgSrc: ""
+    imgSrc: "",
   });
 
   const iconMap = {
@@ -53,14 +57,14 @@ const Propuestas = () => {
     const fetchPropuestas = async () => {
       try {
         const response = await fetch(
-          "http://localhost/models/get_propuestas.php"
+          "http://localhost:8081/ProyectoManejo/paginaWebCandidata/models/get_propuestas.php"
         );
         if (!response.ok)
           throw new Error(`Error en la solicitud: ${response.status}`);
 
         const data = await response.json();
         setPropuestas(data.propuestas);
-        setFilteredPropuestas(data.propuestas.filter(p => p.visible));
+        setFilteredPropuestas(data.propuestas.filter((p) => p.visible));
         setAllCategories(
           Array.from(
             new Set(data.categorias.map((cat) => cat.nombre_cat_propuesta))
@@ -83,7 +87,7 @@ const Propuestas = () => {
   }, []);
 
   useEffect(() => {
-    let filtered = propuestas.filter(propuesta => propuesta.visible);
+    let filtered = propuestas.filter((propuesta) => propuesta.visible);
 
     if (selectedCategories.length > 0) {
       filtered = filtered.filter((propuesta) =>
@@ -92,18 +96,19 @@ const Propuestas = () => {
     }
 
     if (selectedCandidato) {
-      filtered = filtered.filter((propuesta) =>
-        propuesta.nombre_miembro === selectedCandidato
+      filtered = filtered.filter(
+        (propuesta) => propuesta.nombre_miembro === selectedCandidato
       );
     }
 
     if (selectedAlcance) {
-      filtered = filtered.filter((propuesta) =>
-        propuesta.alcance_propuesta === selectedAlcance
+      filtered = filtered.filter(
+        (propuesta) => propuesta.alcance_propuesta === selectedAlcance
       );
     }
-    const uniquePropuestas = Array.from(new Set(filtered.map(p => p.id_propuesta)))
-      .map(id => filtered.find(p => p.id_propuesta === id));
+    const uniquePropuestas = Array.from(
+      new Set(filtered.map((p) => p.id_propuesta))
+    ).map((id) => filtered.find((p) => p.id_propuesta === id));
 
     setFilteredPropuestas(uniquePropuestas);
     setCurrentIndex(0);
@@ -114,7 +119,7 @@ const Propuestas = () => {
       const propuesta = filteredPropuestas[currentIndex];
       setCurrentCandidato({
         nombre_miembro: propuesta.nombre_miembro,
-        imgSrc: propuesta.imgSrc
+        imgSrc: propuesta.imgSrc,
       });
     }
   }, [currentIndex, filteredPropuestas]);
@@ -127,10 +132,10 @@ const Propuestas = () => {
     );
 
   const handleCandidatoClick = (candidato) =>
-    setSelectedCandidato(prev => prev === candidato ? "" : candidato);
+    setSelectedCandidato((prev) => (prev === candidato ? "" : candidato));
 
   const handleAlcanceClick = (alcance) =>
-    setSelectedAlcance(prev => prev === alcance ? "" : alcance);
+    setSelectedAlcance((prev) => (prev === alcance ? "" : alcance));
 
   const handleNavigation = (direction) => {
     if (isAnimating || filteredPropuestas.length === 0) return;
@@ -231,8 +236,10 @@ const Propuestas = () => {
           <div className="mt-8 w-full">
             <div className="bg-gray-100 backdrop-blur-lg rounded-2xl p-4 shadow-xl">
               <div className="mb-4">
-                <h5 className="text-lg font-semibold text-gray-700">Filtrar por Categoría</h5>
-                <br/>
+                <h5 className="text-lg font-semibold text-gray-700">
+                  Filtrar por Categoría
+                </h5>
+                <br />
                 <div className="flex flex-wrap gap-2">
                   {allCategories.map((category) => (
                     <button
@@ -250,8 +257,10 @@ const Propuestas = () => {
                 </div>
               </div>
               <div className="mb-4">
-                <h5 className="text-lg font-semibold text-gray-700">Filtrar por Alcance</h5>
-                <br/>
+                <h5 className="text-lg font-semibold text-gray-700">
+                  Filtrar por Alcance
+                </h5>
+                <br />
                 <div className="flex flex-wrap gap-2">
                   {allAlcances.map((alcance) => (
                     <button
@@ -269,8 +278,10 @@ const Propuestas = () => {
                 </div>
               </div>
               <div className="mb-4">
-                <h5 className="text-lg font-semibold text-gray-700">Filtrar por Candidato</h5>
-                <br/>
+                <h5 className="text-lg font-semibold text-gray-700">
+                  Filtrar por Candidato
+                </h5>
+                <br />
                 <div className="flex flex-wrap gap-2">
                   {allCandidatos.map((candidato) => (
                     <button
@@ -338,7 +349,8 @@ const Propuestas = () => {
                   })
                 ) : (
                   <p className="text-center text-gray-500">
-                    No hay propuestas que coincidan con los criterios de búsqueda.
+                    No hay propuestas que coincidan con los criterios de
+                    búsqueda.
                   </p>
                 )}
               </div>
@@ -382,4 +394,3 @@ const Propuestas = () => {
 };
 
 export default Propuestas;
-
