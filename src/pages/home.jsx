@@ -1,158 +1,238 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import "../styles/stylesHome.css";
 
 function Home() {
-  const [message, setMessage] = useState("Unión y Futuro Universitario");
-  const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
+  const [news, setNews] = useState([]);
+  const [events, setEvents] = useState([]);
+  const [leader, setLeader] = useState(null);
+  const [members, setMembers] = useState([]);
+  const [proposals, setProposals] = useState([]);
+  const [sections, setSections] = useState([]); // Estado para almacenar las secciones
 
-  const sections = [
-    {
-      title: "Eventos",
-      description: "Conoce los próximos eventos del partido.",
-      path: "/eventos",
-    },
-    {
-      title: "Candidatos",
-      description: "Descubre quiénes representan al partido.",
-      path: "/candidatos",
-    },
-    {
-      title: "Propuestas",
-      description: "Consulta las propuestas que tenemos para la universidad.",
-      path: "/propuestas",
-    },
-    {
-      title: "Sugerencias",
-      description: "Compártenos tus ideas y opiniones.",
-      path: "/sugerencias",
-    },
-  ];
-
+  // Obtener secciones
   useEffect(() => {
-    fetch("/api/message")
+    fetch(
+      "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/get_secciones_visibles.php"
+    )
       .then((response) => response.json())
-      .then((data) =>
-        setMessage(data.message || "Unión y Futuro Universitario")
+      .then((data) => {
+        // Asegurarse de que data es un array antes de actualizar el estado
+        if (Array.isArray(data)) {
+          setSections(data);
+        } else {
+          console.error("La respuesta no es un arreglo válido");
+        }
+      })
+      .catch((error) => console.error("Error al obtener secciones:", error));
+  }, []);
+
+  // Obtener noticias
+  useEffect(() => {
+    fetch(
+      "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/get_news.php"
+    )
+      .then((response) => response.json())
+      .then((data) => setNews(data))
+      .catch((error) => console.error("Error al obtener noticias:", error));
+  }, []);
+
+  // Obtener eventos (solo los 3 primeros)
+  useEffect(() => {
+    fetch(
+      "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/get_events.php"
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setEvents(data.slice(0, 3));
+        } else {
+          console.error("La respuesta no es un arreglo de eventos válido");
+        }
+      })
+      .catch((error) => console.error("Error al obtener eventos:", error));
+  }, []);
+
+  // Obtener información del líder
+  useEffect(() => {
+    fetch(
+      "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/get_leader.php"
+    )
+      .then((response) => response.json())
+      .then((data) => setLeader(data))
+      .catch((error) =>
+        console.error("Error al obtener información del líder:", error)
       );
   }, []);
 
-  const scrollToBottom = () => {
-    window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
-  };
+  // Obtener miembros (no el líder)
+  useEffect(() => {
+    fetch(
+      "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/get_members_no_leader.php"
+    )
+      .then((response) => response.json())
+      .then((data) => setMembers(data))
+      .catch((error) => console.error("Error al obtener miembros:", error));
+  }, []);
 
-  const nextSection = () => {
-    if (currentSectionIndex >= sections.length - 3) {
-      setCurrentSectionIndex(0);
-    } else {
-      setCurrentSectionIndex(currentSectionIndex + 1);
-    }
-  };
-
-  const prevSection = () => {
-    if (currentSectionIndex > 0) {
-      setCurrentSectionIndex(currentSectionIndex - 1);
-    }
-  };
+  // Obtener las primeras 3 propuestas
+  useEffect(() => {
+    fetch(
+      "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/get_proposals.php"
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setProposals(data.slice(0, 3));
+        } else {
+          console.error("La respuesta no es un arreglo de propuestas válido");
+        }
+      })
+      .catch((error) => console.error("Error al obtener propuestas:", error));
+  }, []);
 
   return (
-    <div className="min-h-screen bg-white text-gray-900 flex flex-col">
-      <div className="relative flex-1">
-        <img
-          src="/imagenInicio/inicio.png"
-          alt="Inicio"
-          className="w-full h-[90vh] object-cover"
-        />
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50">
-          <h1 className="text-4xl font-bold text-white">{message}</h1>
+    <>
+      {/* Título, imagen y descripción en la parte superior */}
+      <section className="top-section">
+        <div className="content">
+          <table style={{ width: "100%", borderCollapse: "collapse" }}></table>
         </div>
-      </div>
+      </section>
 
-      <div className="flex flex-1">
-        <div className="flex flex-col w-3/4 p-4">
-          <div className="flex items-center mb-4">
-            <button
-              onClick={prevSection}
-              disabled={currentSectionIndex === 0}
-              className="bg-gray-300 p-2 rounded-l-md"
-            >
-              ←
-            </button>
-            <div className="flex overflow-hidden">
-              {sections
-                .slice(currentSectionIndex, currentSectionIndex + 3)
-                .map((section, index) => (
-                  <Link to={section.path} key={index} className="flex-1">
-                    <div className="bg-red-100 text-center rounded-lg shadow-md flex flex-col mx-2 h-[500px] transition-all duration-300 transform hover:scale-105 cursor-pointer">
-                      <h3 className="text-2xl font-semibold mb-2 p-4">
-                        {section.title}
-                      </h3>
-                      <p className="text-sm mb-2 px-4">{section.description}</p>
-                      <div className="flex-grow flex items-center justify-center h-20">
+      {/* Sección de Líder */}
+      {leader && (
+        <section className="leader-section">
+          <div className="content">
+            <div className="leader-info">
+              <h2>Líder del partido</h2>
+              <div className="leader-card">
+                <div className="leader-name-photo">
+                  <h3>{leader.nombre_miembro}</h3>
+                  {leader.url_to_image_placeholder && (
+                    <img
+                      src={leader.url_to_image_placeholder}
+                      alt={leader.nombre_miembro}
+                    />
+                  )}
+                </div>
+                <div className="leader-description">
+                  <p>{leader.descripcion_miembro}</p>
+                  <p>
+                    <strong>Nivel Académico:</strong> {leader.nivel_academico}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Sección de Miembros (no el líder) */}
+      <section className="news-section">
+        <div className="content">
+          <p className="subtitle">MIEMBROS DESTACADOS</p>
+          <div className="members-list">
+            {members.length > 0 ? (
+              members.map((member, index) => (
+                <div className="member-card" key={index}>
+                  <div className="member-name-photo">
+                    <h3>{member.nombre_miembro}</h3>
+                    <img
+                      src={member.url_to_image_placeholder}
+                      alt={member.nombre_miembro}
+                    />
+                  </div>
+                  <div className="member-description">
+                    <p>{member.descripcion_miembro}</p>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p>Cargando miembros...</p>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* Sección de Noticias */}
+      <section className="news-section">
+        <div className="content">
+          <p className="subtitle">NOTICIAS</p>
+          <h1>Últimas Actualizaciones y Noticias</h1>
+          <p>
+            Mantente al día con las últimas noticias y desarrollos de nuestra
+            campaña.
+          </p>
+        </div>
+        <div className="news-items">
+          {news.length > 0 ? (
+            news.map((item, index) => (
+              <div className="news-item" key={index}>
+                <img src={item.urlImagen} alt={item.titulo} />
+                <h3>{item.titulo}</h3>
+                <p>{item.descripcion}</p>
+              </div>
+            ))
+          ) : (
+            <p>Cargando noticias...</p>
+          )}
+        </div>
+      </section>
+
+      {/* Sección de Propuestas */}
+      <section className="news-section">
+        <div className="content">
+          <p className="subtitle">PROPUETAS DESTACADAS</p>
+          <div className="news-items">
+            {proposals.length > 0 ? (
+              proposals.map((proposal, index) => (
+                <div className="news-item" key={index}>
+                  <h3>{proposal.titulo_propuesta}</h3>
+                  <p>{proposal.descripcion_propuesta}</p>
+                  <p>
+                    <strong>Alcance:</strong> {proposal.alcance_propuesta}
+                  </p>
+                </div>
+              ))
+            ) : (
+              <p>Cargando propuestas...</p>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* Sección de Secciones Dinámicas */}
+      <section className="sections-section">
+        <div className="content">
+          <div className="sections-list">
+            {sections.length > 0 ? (
+              sections.map((section, index) => (
+                <div className="section-card" key={index}>
+                  <div className="content">
+                    <p className="subtitle center">{section.nombre}</p>
+                  </div>
+                  <div className="section-row">
+                    <div className="section-description">
+                      <p className="left">{section.descripcion}</p>
+                    </div>
+                    {section.url_de_la_imagen && (
+                      <div className="section-image">
                         <img
-                          src={`/seccionesMenuIm/${section.title}.png`}
-                          alt={section.title}
-                          className="h-full object-contain"
+                          src={section.url_de_la_imagen}
+                          alt={section.nombre}
                         />
                       </div>
-                    </div>
-                  </Link>
-                ))}
-            </div>
-            <button
-              onClick={nextSection}
-              className="bg-gray-300 p-2 rounded-r-md"
-            >
-              →
-            </button>
+                    )}
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p>Cargando secciones...</p>
+            )}
           </div>
-
-          <footer className="mt-auto p-4 text-center">
-            <h4 className="text-lg font-semibold">
-              Síguenos en redes sociales
-            </h4>
-            <div className="flex justify-center items-center gap-8 mt-2">
-              <img
-                src="/iconosRedes/facebook.png"
-                alt="Facebook"
-                className="w-12 h-12 cursor-pointer rounded-full"
-              />
-              <img
-                src="/iconosRedes/instagram.png"
-                alt="Instagram"
-                className="w-9 h-9   cursor-pointer rounded-full"
-              />
-              <img
-                src="/iconosRedes/tiktok.png"
-                alt="TikTok"
-                className="w-8 h-8 cursor-pointer rounded-full"
-              />
-            </div>
-          </footer>
         </div>
-
-        <div className="w-1/4 p-4 flex flex-col h-full">
-          <Link to="/sugerencias" className="flex-grow">
-            <div className="bg-purple-500 text-white p-4 rounded-lg cursor-pointer">
-              <h2 className="text-lg font-bold">Dinos por quién vas a votar</h2>
-              <img
-                src="/seccionesMenuIm/Encuesta.png"
-                alt="Encuesta"
-                className="mt-2 transition-transform duration-300 transform hover:scale-105"
-              />
-            </div>
-          </Link>
-        </div>
-      </div>
-
-      <div className="flex justify-center mb-4">
-        <button
-          onClick={scrollToBottom}
-          className="bg-red-600 text-white rounded-full p-3 shadow-md absolute bottom-10 w-12 h-12 flex items-center justify-center"
-        >
-          ↓
-        </button>
-      </div>
-    </div>
+      </section>
+    </>
   );
 }
 
