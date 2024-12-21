@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { PlusCircle, Edit2, Trash2, Eye, EyeOff } from "lucide-react";
-import ModalPropuestas from '../ModalPropuestas';
+import ModalPropuestas from "../ModalPropuestas";
 
 function SeccionPropuestasAdm() {
   const [propuestas, setPropuestas] = useState([]);
@@ -37,7 +37,7 @@ function SeccionPropuestasAdm() {
     const fetchPropuestas = async () => {
       try {
         const response = await fetch(
-          "http://localhost/models/get_propuestas.php"
+          "http://localhost:8081/ProyectoManejo/paginaWebCandidata/models/get_propuestas.php"
         );
         const data = await response.json();
         const uniquePropuestas = Array.from(
@@ -53,7 +53,7 @@ function SeccionPropuestasAdm() {
     const fetchCandidatos = async () => {
       try {
         const response = await fetch(
-          "http://localhost/models/ConsultaMiembros.php"
+          "http://localhost:8081/ProyectoManejo/paginaWebCandidata/models/ConsultaMiembros.php"
         );
         const data = await response.json();
         setCandidatos(data);
@@ -67,14 +67,20 @@ function SeccionPropuestasAdm() {
   }, []);
 
   const handleAddPropuesta = async () => {
-    if (!newPropuesta.titulo_propuesta || !newPropuesta.categoria || !newPropuesta.icon || !newPropuesta.id_candidato || !newPropuesta.alcance_propuesta) {
+    if (
+      !newPropuesta.titulo_propuesta ||
+      !newPropuesta.categoria ||
+      !newPropuesta.icon ||
+      !newPropuesta.id_candidato ||
+      !newPropuesta.alcance_propuesta
+    ) {
       alert("Por favor complete todos los campos obligatorios");
       return;
     }
 
     try {
       const response = await fetch(
-        "http://localhost/models/agregar_propuesta.php",
+        "http://localhost:8081/ProyectoManejo/paginaWebCandidata/models/agregar_propuesta.php",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -103,14 +109,20 @@ function SeccionPropuestasAdm() {
   };
 
   const handleEditPropuesta = async (propuesta) => {
-    if (!propuesta.titulo_propuesta || !propuesta.categoria || !propuesta.icon || !propuesta.id_candidato || !propuesta.alcance_propuesta) {
+    if (
+      !propuesta.titulo_propuesta ||
+      !propuesta.categoria ||
+      !propuesta.icon ||
+      !propuesta.id_candidato ||
+      !propuesta.alcance_propuesta
+    ) {
       alert("Por favor complete todos los campos obligatorios");
       return;
     }
 
     try {
       const response = await fetch(
-        "http://localhost/models/editar_propuesta.php",
+        "http://localhost:8081/ProyectoManejo/paginaWebCandidata/models/editar_propuesta.php",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -133,7 +145,7 @@ function SeccionPropuestasAdm() {
   const handleDeletePropuesta = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost/models/eliminar_propuesta.php?id=${id}`,
+        `http://localhost:8081/ProyectoManejo/paginaWebCandidata/models/eliminar_propuesta.php?id=${id}`,
         { method: "DELETE" }
       );
 
@@ -148,7 +160,7 @@ function SeccionPropuestasAdm() {
   const handleToggleVisibilidad = async (id, currentVisibility) => {
     try {
       const response = await fetch(
-        "http://localhost/models/visibilidad_propuesta.php",
+        "http://localhost:8081/ProyectoManejo/paginaWebCandidata/models/visibilidad_propuesta.php",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -219,7 +231,11 @@ function SeccionPropuestasAdm() {
                     !propuesta.visible ? "opacity-50 bg-gray-100" : ""
                   }`}
                 >
-                  <div className={`flex-grow ${!propuesta.visible ? "opacity-70" : ""}`}>
+                  <div
+                    className={`flex-grow ${
+                      !propuesta.visible ? "opacity-70" : ""
+                    }`}
+                  >
                     <h3 className="font-bold text-lg flex items-center">
                       {propuesta.titulo_propuesta}
                       {!propuesta.visible && (
@@ -267,17 +283,18 @@ function SeccionPropuestasAdm() {
                     </button>
                   </div>
                 </div>
-                {editingPropuesta && editingPropuesta.id_propuesta === propuesta.id_propuesta && (
-                  <ModalPropuestas
-                    propuesta={editingPropuesta}
-                    setPropuesta={setEditingPropuesta}
-                    categorias={categorias}
-                    availableIcons={availableIcons}
-                    onSave={() => handleEditPropuesta(editingPropuesta)}
-                    onCancel={() => setEditingPropuesta(null)}
-                    candidatos={candidatos}
-                  />
-                )}
+                {editingPropuesta &&
+                  editingPropuesta.id_propuesta === propuesta.id_propuesta && (
+                    <ModalPropuestas
+                      propuesta={editingPropuesta}
+                      setPropuesta={setEditingPropuesta}
+                      categorias={categorias}
+                      availableIcons={availableIcons}
+                      onSave={() => handleEditPropuesta(editingPropuesta)}
+                      onCancel={() => setEditingPropuesta(null)}
+                      candidatos={candidatos}
+                    />
+                  )}
               </div>
             ))
           )}
@@ -288,4 +305,3 @@ function SeccionPropuestasAdm() {
 }
 
 export default SeccionPropuestasAdm;
-

@@ -21,7 +21,7 @@ try {
     $conn->beginTransaction();
 
     // Eliminar datos de las tablas relevantes
-    $tablesToDelete = ['propuestas_categorias', 'propuestas', 'miembros']; // Reemplaza con los nombres de tus tablas
+    $tablesToDelete = ['propuestas_categorias', 'propuestas', 'miembros', 'secciones_inicio', 'eventos_noticias', 'propuestas', 'votos', 'votaciones', 'sugerencias']; // Reemplaza con los nombres de tus tablas
     foreach ($tablesToDelete as $table) {
         $queryDelete = "DELETE FROM $table";
         $conn->exec($queryDelete);

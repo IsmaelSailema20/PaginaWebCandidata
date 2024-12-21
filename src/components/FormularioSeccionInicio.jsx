@@ -17,20 +17,22 @@ function FormularioSeccionInicio({ onCancel, onSectionAdded }) {
     };
 
     try {
-      const response = await fetch("http://localhost/ProyectoManejo/PaginaWebCandidata/models/agregar_seccion_inicio.php", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(sectionData),
-      });
+      const response = await fetch(
+        "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/agregar_seccion_inicio.php",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(sectionData),
+        }
+      );
 
       const data = await response.json();
 
       if (data.success) {
-       
-        onSectionAdded();  // Llamamos a la función para actualizar las secciones en SeccionInicioAdm
-        onCancel();  // Cerramos el modal
+        onSectionAdded(); // Llamamos a la función para actualizar las secciones en SeccionInicioAdm
+        onCancel(); // Cerramos el modal
       } else {
         alert("Error al agregar la sección: " + data.message);
       }
@@ -43,7 +45,12 @@ function FormularioSeccionInicio({ onCancel, onSectionAdded }) {
   return (
     <form onSubmit={handleSubmit}>
       <div className="mb-4">
-        <label htmlFor="nombre" className="block text-sm font-medium text-gray-700">Nombre</label>
+        <label
+          htmlFor="nombre"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Nombre
+        </label>
         <input
           type="text"
           id="nombre"
@@ -54,7 +61,12 @@ function FormularioSeccionInicio({ onCancel, onSectionAdded }) {
         />
       </div>
       <div className="mb-4">
-        <label htmlFor="descripcion" className="block text-sm font-medium text-gray-700">Descripción</label>
+        <label
+          htmlFor="descripcion"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Descripción
+        </label>
         <textarea
           id="descripcion"
           value={descripcion}
@@ -64,7 +76,12 @@ function FormularioSeccionInicio({ onCancel, onSectionAdded }) {
         />
       </div>
       <div className="mb-4">
-        <label htmlFor="imagenUrl" className="block text-sm font-medium text-gray-700">URL de la imagen</label>
+        <label
+          htmlFor="imagenUrl"
+          className="block text-sm font-medium text-gray-700"
+        >
+          URL de la imagen
+        </label>
         <input
           type="url"
           id="imagenUrl"
@@ -75,7 +92,12 @@ function FormularioSeccionInicio({ onCancel, onSectionAdded }) {
         />
       </div>
       <div className="mb-4">
-        <label htmlFor="visibilidad" className="block text-sm font-medium text-gray-700">Visible</label>
+        <label
+          htmlFor="visibilidad"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Visible
+        </label>
         <input
           type="checkbox"
           id="visibilidad"

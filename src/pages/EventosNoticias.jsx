@@ -7,7 +7,7 @@ const EventosNoticias = () => {
 
   useEffect(() => {
     fetch(
-      "http://localhost/ProyectoManejo/paginaWebCandidata/models/ConsultaImagenesCarrusel.php"
+      "http://localhost:8081/ProyectoManejo/paginaWebCandidata/models/ConsultaImagenesCarrusel.php"
     )
       .then((response) => {
         if (!response.ok) {
@@ -56,7 +56,7 @@ const EventosNoticias = () => {
   const [eventos, setEventos] = useState([]);
   useEffect(() => {
     fetch(
-      "http://localhost/ProyectoManejo/paginaWebCandidata/models/ConsultaEventos.php"
+      "http://localhost:8081/ProyectoManejo/paginaWebCandidata/models/ConsultaEventos.php"
     )
       .then((response) => {
         if (!response.ok) {
@@ -74,7 +74,7 @@ const EventosNoticias = () => {
   const [noticias, setNoticias] = useState([]);
   useEffect(() => {
     fetch(
-      "http://localhost/ProyectoManejo/paginaWebCandidata/models/ConsultaNoticias.php"
+      "http://localhost:8081/ProyectoManejo/paginaWebCandidata/models/ConsultaNoticias.php"
     )
       .then((response) => {
         if (!response.ok) {
