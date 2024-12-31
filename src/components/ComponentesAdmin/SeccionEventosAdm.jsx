@@ -21,7 +21,7 @@ function SeccionEventosAdm() {
     const fetchEventos = async () => {
       try {
         const response = await fetch(
-          "http://localhost/ProyectoManejo/PaginaWebCandidata/models/getEventosNoticias.php"
+          "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/getEventosNoticias.php"
         );
         const data = await response.json();
         const uniqueEventos = Array.from(
@@ -66,7 +66,7 @@ function SeccionEventosAdm() {
 
     try {
       const response = await fetch(
-        "http://localhost/ProyectoManejo/PaginaWebCandidata/models/agregar_evento.php",
+        "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/agregar_evento.php",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -126,7 +126,7 @@ function SeccionEventosAdm() {
 
     try {
       const response = await fetch(
-        "http://localhost/ProyectoManejo/PaginaWebCandidata/models/editar_eventos.php",
+        "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/editar_eventos.php",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -151,7 +151,7 @@ function SeccionEventosAdm() {
   const handleToggleVisibilidadEvento = async (id, currentVisibility) => {
     try {
       const response = await fetch(
-        "http://localhost/ProyectoManejo/PaginaWebCandidata/models/visibilidad_evento.php",
+        "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/visibilidad_evento.php",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -175,7 +175,7 @@ function SeccionEventosAdm() {
     try {
       // Realizar la solicitud DELETE
       const response = await fetch(
-        `http://localhost/ProyectoManejo/PaginaWebCandidata/models/eliminar_evento.php?id=${id}`,
+        `http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/eliminar_evento.php?id=${id}`,
         {
           method: "DELETE",
         }
