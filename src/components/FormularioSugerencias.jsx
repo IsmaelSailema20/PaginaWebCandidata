@@ -37,7 +37,13 @@ const FormElementInput = () => {
 
     const form = document.getElementById("form-sugerencias");
     const formData = new FormData(form);
-
+    // Añade el ID del candidato al formulario
+    if (!selectedOption) {
+      setMensajeErrorAlert("Por favor, selecciona un candidato.");
+      setShowErrorAlert(true);
+      return;
+    }
+    formData.append("id_candidato", selectedOption);
     for (let [key, value] of formData.entries()) {
       // Considera campos vacíos o el valor "" del ComboBox como inválido
       if (!value.trim() || value === "") {
@@ -77,6 +83,7 @@ const FormElementInput = () => {
         mensajeField.resetField();
         setGenero("");
         setTipoPersona("");
+        setSelectedOption("");
         await enviarCorreoConfirmacion(
           nombreCompleto,
           "devTeam",
@@ -207,7 +214,7 @@ const FormElementInput = () => {
                 Seleccione una opción
               </option>
               {candidatos.map((candidato) => (
-                <option key={candidato.id} value={candidato.label}>
+                <option key={candidato.id} value={candidato.id}>
                   {candidato.label}
                 </option>
               ))}
