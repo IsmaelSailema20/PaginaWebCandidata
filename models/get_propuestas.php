@@ -4,7 +4,9 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-header('Access-Control-Allow-Origin: http://localhost:5173'); // Ajusta esto según tu configuración de CORS
+
+header('Access-Control-Allow-Origin: http://localhost:5173');
+
 header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
 header('Access-Control-Allow-Credentials: true');
@@ -34,9 +36,10 @@ class Propuestas {
                                 p.descripcion_propuesta,
                                 p.icon,
                                 p.visible,
+                                p.is_favorite,
                                 p.alcance_propuesta,
                                 p.id_candidato,
-                                p.img_url, -- Agregar img_url
+                                p.img_url,
                                 m.id_miembro,
                                 m.nombre_miembro,
                                 m.url_to_image_placeholder AS imgSrc,
@@ -55,8 +58,6 @@ class Propuestas {
             $stmtCategorias = $this->conn->prepare($sqlCategorias);
             $stmtCategorias->execute();
             $categorias = $stmtCategorias->fetchAll(PDO::FETCH_ASSOC);
-
-            // Convertir visible a booleano
             $propuestas = array_map(function ($propuesta) {
                 $propuesta['visible'] = $propuesta['visible'] == 1;
                 return $propuesta;
@@ -79,3 +80,4 @@ try {
     echo json_encode(['error' => $e->getMessage()]);
 }
 ?>
+
