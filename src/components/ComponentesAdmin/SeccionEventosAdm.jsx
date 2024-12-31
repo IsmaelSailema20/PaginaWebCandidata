@@ -21,7 +21,7 @@ function SeccionEventosAdm() {
     const fetchEventos = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/getEventosNoticias.php"
+          "http://localhost/ProyectoManejo/PaginaWebCandidata/models/getEventosNoticias.php"
         );
         const data = await response.json();
         const uniqueEventos = Array.from(
@@ -37,7 +37,11 @@ function SeccionEventosAdm() {
   }, []);
 
   const handleAddEvento = async () => {
-    // Verificar si todos los campos obligatorios están completos
+    // Obtener la fecha y hora actual
+    const now = new Date();
+    const selectedDate = new Date(`${newEvento.fecha}T${newEvento.hora}`);
+
+    // Validar campos obligatorios
     if (
       !newEvento.titulo ||
       !newEvento.tipo ||
@@ -51,10 +55,18 @@ function SeccionEventosAdm() {
       return;
     }
 
+    // Validar fechas según el tipo
+    if (newEvento.tipo === "Noticia" && selectedDate > now) {
+      alert("La fecha y hora para Noticias no puede ser futura.");
+      return;
+    } else if (newEvento.tipo === "Evento" && selectedDate < now) {
+      alert("La fecha y hora para Eventos debe ser a partir del momento actual.");
+      return;
+    }
+
     try {
-      // Enviar los datos al servidor
       const response = await fetch(
-        "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/agregar_evento.php", // Asegúrate de tener este endpoint en tu servidor
+        "http://localhost/ProyectoManejo/PaginaWebCandidata/models/agregar_evento.php",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -86,7 +98,10 @@ function SeccionEventosAdm() {
   };
 
   const handleEditEvento = async () => {
-    // Verificar que todos los campos obligatorios estén completos
+    const now = new Date();
+    const selectedDate = new Date(`${editingEvento.fecha}T${editingEvento.hora}`);
+
+    // Validar campos obligatorios
     if (
       !editingEvento.titulo ||
       !editingEvento.tipo ||
@@ -100,9 +115,18 @@ function SeccionEventosAdm() {
       return;
     }
 
+    // Validar fechas según el tipo
+    if (editingEvento.tipo === "Noticia" && selectedDate > now) {
+      alert("La fecha y hora para Noticias no puede ser futura.");
+      return;
+    } else if (editingEvento.tipo === "Evento" && selectedDate < now) {
+      alert("La fecha y hora para Eventos debe ser a partir del momento actual.");
+      return;
+    }
+
     try {
       const response = await fetch(
-        "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/editar_eventos.php",
+        "http://localhost/ProyectoManejo/PaginaWebCandidata/models/editar_eventos.php",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -114,7 +138,6 @@ function SeccionEventosAdm() {
         const updatedEventos = eventos.map((evento) =>
           evento.id === editingEvento.id ? { ...editingEvento } : evento
         );
-
         setEventos(updatedEventos);
         setEditingEvento(null);
       }
@@ -123,10 +146,12 @@ function SeccionEventosAdm() {
     }
   };
 
+
+
   const handleToggleVisibilidadEvento = async (id, currentVisibility) => {
     try {
       const response = await fetch(
-        "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/visibilidad_evento.php",
+        "http://localhost/ProyectoManejo/PaginaWebCandidata/models/visibilidad_evento.php",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -150,7 +175,7 @@ function SeccionEventosAdm() {
     try {
       // Realizar la solicitud DELETE
       const response = await fetch(
-        `http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/eliminar_evento.php?id=${id}`,
+        `http://localhost/ProyectoManejo/PaginaWebCandidata/models/eliminar_evento.php?id=${id}`,
         {
           method: "DELETE",
         }
@@ -234,6 +259,7 @@ function SeccionEventosAdm() {
                 <div className="flex space-x-2">
                   <button
                     onClick={() => {
+                      setIsAddingNew(false);
                       setEditingEvento(evento);
                       window.scrollTo({ top: 0, behavior: "smooth" }); // Desplaza al inicio de la página
                     }}
@@ -245,11 +271,10 @@ function SeccionEventosAdm() {
                     onClick={() =>
                       handleToggleVisibilidadEvento(evento.id, evento.visible)
                     }
-                    className={`p-2 rounded ${
-                      evento.visible
-                        ? "text-yellow-500 hover:bg-yellow-100"
-                        : "text-green-500 hover:bg-green-100"
-                    }`}
+                    className={`p-2 rounded ${evento.visible
+                      ? "text-yellow-500 hover:bg-yellow-100"
+                      : "text-green-500 hover:bg-green-100"
+                      }`}
                   >
                     {evento.visible ? <Eye /> : <EyeOff />}
                   </button>
