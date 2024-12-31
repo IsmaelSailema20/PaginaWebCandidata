@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
 import CardVotaciones from "../components/CardVotaciones";
+import EstadisticaGraficoBarras from "../components/EstadisticaGraficoBarras";
+import { CircleX } from "lucide-react";
 
 function Votaciones() {
   const [votedCandidate, setVotedCandidate] = useState(null);
   const [votaciones, setVotaciones] = useState([]); // Estado para las votaciones desde el backend
+  const [isModalOpen, setIsModalOpen] = useState(false); // Estado para abrir/cerrar el modal
 
   useEffect(() => {
     // Verificar en localStorage si ya se ha votado por una candidata
@@ -116,7 +119,7 @@ function Votaciones() {
       <div className="w-full flex flex-col items-center justify-center px-4">
         <div className="w-full max-w-screen-2xl p-10 rounded-xl flex flex-col">
           <button
-            type="submit"
+            onClick={() => setIsModalOpen(true)} // Abrir modal
             className=" w-1/4 mb-5 text-lg px-14 py-3 font-bold text-center rounded-lg  focus:ring-4 focus:outline-none bg-gradient-to-r bg-blue-600 text-white p-3  shadow-lg hover:opacity-90 transition-all duration-300 transform hover:scale-110 disabled:opacity-50"
           >
             Estadísticas de votos
@@ -151,6 +154,26 @@ function Votaciones() {
           </h5>
         </div>
       </div>
+      {/* Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="w-4/5 h-[90%] mx-auto p-2 bg-white rounded-lg shadow-md overflow-auto relative">
+            <div className="flex justify-end">
+              <button
+                onClick={() => setIsModalOpen(false)} // Cerrar modal
+                className="text-red-600 hover:text-red-700 p-2 "
+              >
+                <CircleX className="w-6 h-6" />
+              </button>
+            </div>
+            <div className="w-full h-full flex items-center justify-center">
+              <div className="w-full h-full max-h-full max-w-full">
+                <EstadisticaGraficoBarras />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
