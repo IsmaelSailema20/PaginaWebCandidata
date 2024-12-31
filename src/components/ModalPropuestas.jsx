@@ -151,6 +151,20 @@ const ModalPropuestas = ({
             <option value="local">Local</option>
           </select>
         </div>
+        {/* Nuevo campo para la URL de la imagen */}
+        <div className="col-span-2">
+          <label htmlFor="img_url" className="block mb-1">URL de la Imagen de la Propuesta</label>
+          <input
+            type="url"
+            id="img_url"
+            placeholder="https://ejemplo.com/imagen.jpg"
+            value={propuesta.img_url}
+            onChange={(e) =>
+              setPropuesta({ ...propuesta, img_url: e.target.value })
+            }
+            className="border p-2 rounded w-full"
+          />
+        </div>
         <div className="col-span-2 flex justify-end space-x-2">
           <button
             onClick={onCancel}
