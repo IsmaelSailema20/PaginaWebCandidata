@@ -319,6 +319,7 @@ function SeccionPropuestasAdm() {
     }
   };
 
+
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <div className="bg-white shadow-md rounded-lg p-6">
