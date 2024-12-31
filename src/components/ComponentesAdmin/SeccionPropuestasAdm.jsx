@@ -16,6 +16,7 @@ function SeccionPropuestasAdm() {
     visible: true,
     id_candidato: "",
     alcance_propuesta: "",
+    img_url: "",
   });
   const [isAddingNew, setIsAddingNew] = useState(false);
 
@@ -40,6 +41,10 @@ function SeccionPropuestasAdm() {
           "http://localhost:8081/ProyectoManejo/paginaWebCandidata/models/get_propuestas.php"
         );
         const data = await response.json();
+        if (data.error) {
+          console.error("Error fetching proposals:", data.error);
+          return;
+        }
         const uniquePropuestas = Array.from(
           new Map(data.propuestas.map((p) => [p.id_propuesta, p])).values()
         );
@@ -72,9 +77,15 @@ function SeccionPropuestasAdm() {
       !newPropuesta.categoria ||
       !newPropuesta.icon ||
       !newPropuesta.id_candidato ||
-      !newPropuesta.alcance_propuesta
+      !newPropuesta.alcance_propuesta ||
+      !newPropuesta.img_url
     ) {
       alert("Por favor complete todos los campos obligatorios");
+      return;
+    }
+
+    if (newPropuesta.img_url && !isValidImageUrl(newPropuesta.img_url)) {
+      alert("Por favor ingrese una URL válida de imagen (png, jpg, jpeg, gif, svg).");
       return;
     }
 
@@ -90,18 +101,16 @@ function SeccionPropuestasAdm() {
 
       if (response.ok) {
         const result = await response.json();
+        if (result.error) {
+          alert(`Error al agregar propuesta: ${result.error}`);
+          return;
+        }
         setPropuestas([...propuestas, result.propuesta]);
-        setNewPropuesta({
-          titulo_propuesta: "",
-          subtitle: "",
-          descripcion_propuesta: "",
-          categoria: "",
-          icon: "",
-          visible: true,
-          id_candidato: "",
-          alcance_propuesta: "",
-        });
+        setNewPropuesta(resetPropuesta());
         setIsAddingNew(false);
+      } else {
+        const errorData = await response.json();
+        alert(`Error al agregar propuesta: ${errorData.error || response.statusText}`);
       }
     } catch (error) {
       console.error("Error adding proposal:", error);
@@ -114,9 +123,15 @@ function SeccionPropuestasAdm() {
       !propuesta.categoria ||
       !propuesta.icon ||
       !propuesta.id_candidato ||
-      !propuesta.alcance_propuesta
+      !propuesta.alcance_propuesta ||
+      !propuesta.img_url
     ) {
       alert("Por favor complete todos los campos obligatorios");
+      return;
+    }
+
+    if (propuesta.img_url && !isValidImageUrl(propuesta.img_url)) {
+      alert("Por favor ingrese una URL válida de imagen (png, jpg, jpeg, gif, svg).");
       return;
     }
 
@@ -131,11 +146,19 @@ function SeccionPropuestasAdm() {
       );
 
       if (response.ok) {
+        const result = await response.json();
+        if (result.error) {
+          alert(`Error al editar propuesta: ${result.error}`);
+          return;
+        }
         const updatedPropuestas = propuestas.map((p) =>
           p.id_propuesta === propuesta.id_propuesta ? propuesta : p
         );
         setPropuestas(updatedPropuestas);
         setEditingPropuesta(null);
+      } else {
+        const errorData = await response.json();
+        alert(`Error al editar propuesta: ${errorData.error || response.statusText}`);
       }
     } catch (error) {
       console.error("Error editing proposal:", error);
@@ -143,6 +166,10 @@ function SeccionPropuestasAdm() {
   };
 
   const handleDeletePropuesta = async (id) => {
+    if (!window.confirm("¿Estás seguro de que deseas eliminar esta propuesta?")) {
+      return;
+    }
+
     try {
       const response = await fetch(
         `http://localhost:8081/ProyectoManejo/paginaWebCandidata/models/eliminar_propuesta.php?id=${id}`,
@@ -150,7 +177,15 @@ function SeccionPropuestasAdm() {
       );
 
       if (response.ok) {
+        const result = await response.json();
+        if (result.error) {
+          alert(`Error al eliminar propuesta: ${result.error}`);
+          return;
+        }
         setPropuestas(propuestas.filter((p) => p.id_propuesta !== id));
+      } else {
+        const errorData = await response.json();
+        alert(`Error al eliminar propuesta: ${errorData.error || response.statusText}`);
       }
     } catch (error) {
       console.error("Error deleting proposal:", error);
@@ -169,15 +204,39 @@ function SeccionPropuestasAdm() {
       );
 
       if (response.ok) {
+        const result = await response.json();
+        if (result.error) {
+          alert(`Error al cambiar visibilidad: ${result.error}`);
+          return;
+        }
         const updatedPropuestas = propuestas.map((p) =>
           p.id_propuesta === id ? { ...p, visible: !currentVisibility } : p
         );
         setPropuestas(updatedPropuestas);
+      } else {
+        const errorData = await response.json();
+        alert(`Error al cambiar visibilidad: ${errorData.error || response.statusText}`);
       }
     } catch (error) {
       console.error("Error cambiando visibilidad:", error);
     }
   };
+
+  const isValidImageUrl = (url) => {
+    return /(https?:\/\/.*\.(?:png|jpg|jpeg|gif|svg))/i.test(url);
+  };
+
+  const resetPropuesta = () => ({
+    titulo_propuesta: "",
+    subtitle: "",
+    descripcion_propuesta: "",
+    categoria: "",
+    icon: "",
+    visible: true,
+    id_candidato: "",
+    alcance_propuesta: "",
+    img_url: "",
+  });
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
@@ -203,16 +262,7 @@ function SeccionPropuestasAdm() {
             onSave={handleAddPropuesta}
             onCancel={() => {
               setIsAddingNew(false);
-              setNewPropuesta({
-                titulo_propuesta: "",
-                subtitle: "",
-                descripcion_propuesta: "",
-                categoria: "",
-                icon: "",
-                visible: true,
-                id_candidato: "",
-                alcance_propuesta: "",
-              });
+              setNewPropuesta(resetPropuesta());
             }}
             candidatos={candidatos}
           />
@@ -231,6 +281,16 @@ function SeccionPropuestasAdm() {
                     !propuesta.visible ? "opacity-50 bg-gray-100" : ""
                   }`}
                 >
+                  {propuesta.img_url && (
+                    <img
+                      src={propuesta.img_url}
+                      alt={propuesta.titulo_propuesta}
+                      className="w-24 h-24 object-cover rounded-md mr-4"
+                      loading="lazy"
+                      onError={(e) => { e.target.src = 'https://via.placeholder.com/96'; }}
+                    />
+                  )}
+
                   <div
                     className={`flex-grow ${
                       !propuesta.visible ? "opacity-70" : ""
