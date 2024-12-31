@@ -115,6 +115,12 @@ function Votaciones() {
       </div>
       <div className="w-full flex flex-col items-center justify-center px-4">
         <div className="w-full max-w-screen-2xl p-10 rounded-xl flex flex-col">
+          <button
+            type="submit"
+            className=" w-1/4 mb-5 text-lg px-14 py-3 font-bold text-center rounded-lg  focus:ring-4 focus:outline-none bg-gradient-to-r bg-blue-600 text-white p-3  shadow-lg hover:opacity-90 transition-all duration-300 transform hover:scale-110 disabled:opacity-50"
+          >
+            Estadísticas de votos
+          </button>
           <h1 className="text-4xl font-bold text-center mb-6">
             Queremos Conocer A quién Apoyas
           </h1>
