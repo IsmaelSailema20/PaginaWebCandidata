@@ -1,9 +1,6 @@
 import { useState, useEffect } from "react";
 
 const EventosNoticias = () => {
-  const [slides, setSlides] = useState([]);
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [transitionClass, setTransitionClass] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedNoticia, setSelectedNoticia] = useState(null);
   const [isModalEventOpen, setIsModalEventOpen] = useState(false);
@@ -28,49 +25,6 @@ const EventosNoticias = () => {
     setIsModalEventOpen(false);
     setSelectedEvent(null);
   };
-
-  useEffect(() => {
-    fetch(
-      "http://localhost/ProyectoManejo/paginaWebCandidata/models/ConsultaImagenesCarrusel.php"
-    )
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setSlides(data.map((evento) => evento.url));
-      })
-      .catch((error) => {
-        console.error("Error fetching the events:", error);
-      });
-  }, []);
-
-  const handleNextSlide = () => {
-    setTransitionClass("animate-slide");
-    setTimeout(() => {
-      setCurrentSlide((prevSlide) =>
-        prevSlide === slides.length - 1 ? 0 : prevSlide + 1
-      );
-      setTransitionClass("");
-    }, 300);
-  };
-
-  const handlePrevSlide = () => {
-    setTransitionClass("animate-slide");
-    setTimeout(() => {
-      setCurrentSlide((prevSlide) =>
-        prevSlide === 0 ? slides.length - 1 : prevSlide - 1
-      );
-      setTransitionClass("");
-    }, 300);
-  };
-
-  const getPrevSlide = () =>
-    currentSlide === 0 ? slides.length - 1 : currentSlide - 1;
-  const getNextSlide = () =>
-    currentSlide === slides.length - 1 ? 0 : currentSlide + 1;
 
   const [eventos, setEventos] = useState([]);
   useEffect(() => {
@@ -112,8 +66,8 @@ const EventosNoticias = () => {
 
   return (
     <div className="general overflow-x-hidden p-10 relative w-full min-h-screen overflow-hidden bg-white">
-      <h1 className="text-center mt-2 mb-10 text-4xl font-bold text-black">
-        Eventos Y Noticias
+      <h1 className="text-center mt-2 mb-10 text-6xl font-bold text-black">
+        EVENTOS Y NOTICIAS
       </h1>
       <div className=" text-black py-10 px-4">
         <h2 className="text-4xl font-bold text-center mb-8">NOTICIAS</h2>
@@ -187,7 +141,7 @@ const EventosNoticias = () => {
                 <p className="text-black text-4xl uppercase">{noticia.titulo}</p>
                 <p className="text-gray-700 text-sm">
                   {noticia.descripcion.length > 100
-                    ? `${noticia.descripcion.substring(0, 100)} + "..."`
+                    ? `${noticia.descripcion.substring(0, 100)} ...`
                     : noticia.descripcion}
                 </p>
               </div>
@@ -255,77 +209,89 @@ const EventosNoticias = () => {
         </div>
       </div>
       <div className="contenedorEventos mt-10">
-        <h1 className="text-center mt-2 mb-10 text-4xl font-bold">Eventos</h1>
-        <div className="eventos flex flex-col gap-8 w-full max-w-screen-lg mx-auto">
-          {eventos.map((evento, index) => (
-
-            <div
-              key={evento.id}
-              className={`flex w-full ${index % 2 === 0 ? "flex-row" : "flex-row-reverse"
-                } mt-10`}
-            >
-              <button className=" bg-red-500 text-white text-sm px-3 py-1  hover:bg-red-400 hover:scale-x-105"
-                onClick={() => openModalEvent(evento)}>
+        <h1 className="text-center mt-2 mb-10 text-4xl font-bold">EVENTOS</h1>
+        <div className="eventos grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-screen-lg mx-auto">
+          {eventos.map((evento) => (
+            <div className="relative bg-white text-black rounded-lg overflow-hidden shadow-lg">
+              <button
+                className="absolute z-20 top-0 right-0 bg-red-500 text-white text-sm px-3 py-1 hover:bg-red-400 hover:scale-x-105"
+                onClick={() => openModalEvent(evento)}
+              >
                 Leer más
               </button>
-              <div
-                className={`contenido${index % 2 === 0 ? "Izquierda" : "Derecha"
-                  } hover:scale-105 rounded-md shadow-lg bg-slate-50 border w-1/2 p-4 flex ${index % 2 === 0 ? "justify-start" : "justify-end"
-                  }`}
-              >
-                {index % 2 === 0 && (
-                  <p className="mb-4 mr-10 text-justify">
-                    <h1 className={`text-xl font-bold mb-2`}>
-                      {evento.titulo}
-                    </h1>
-                    {evento.descripcion}
-                    <p className="mt-5">{evento.lugar}</p>
-
-                  </p>
-
-                )}
-
-                <div className="before:absolute border-black border-2 before:w-12 before:h-12 before:rounded-full before:blur-xl before:top-16 relative flex flex-col justify-around items-center w-24 h-24 rounded-2xl shadow-lg  bg-gray-600 text-gray-50">
-                  <span className=""> {evento.fecha}</span>
-                  <span className="z-10 flex items-center text-4xl text-white [text-shadow:_2px_2px_#231917,_1px_2px_#231917]">
-                    {evento.hora.split(":")[0]}
-                    <span class="text-xl font-bold text-gray-50 [text-shadow:none]">
-                      :
-                    </span>
-                    {evento.hora.split(":")[1]}
-                  </span>
-                  <div className="text-gray-50 w-48 flex flex-row justify-evenly"></div>
-
-                </div>
-                {index % 2 !== 0 && (
-                  <div className="text-right">
-                    <h1 className={`mr-5 text-xl font-bold mb-2`}>
-                      {evento.titulo}
-                    </h1>
-                    <p className="mb-4 text-justify w-[85%] ml-10">
-                      {evento.descripcion}
-                    </p>
-                    <p className="mt-5">{evento.lugar}</p>
-                  </div>
-                )}
-
-              </div>
-              <div
-                className={`flex gap-4 ${index % 2 === 0 ? "ml-32" : "mr-32"
-                  } self-center relative w-64 h-64`}
-              >
+              <div className="relative w-full h-64">
                 <img
+                  className="object-cover w-full h-60 rounded-sm"
                   src={evento.imagen}
                   alt={evento.titulo}
-                  className="w-72 h-60 object-cover rounded-md"
                 />
               </div>
 
+              <div className="p-2">
+                <div className="text-lg sm:text-xl md:text-2xl font-bold">
+                  {evento.titulo}
+                </div>
+                <p className="text-gray-700 text-xs sm:text-sm md:text-base mt-2">
+                  {evento.descripcion.length > 100
+                    ? `${evento.descripcion.substring(0, 100)} ...`
+                    : evento.descripcion}
+                </p>
+              </div>
+
+              <div className="p-4 bg-red-500 text-white text-sm flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                <div className="flex items-center">
+                  <span className="font-bold whitespace-normal break-words flex items-center">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-4 w-4 mr-1 text-white"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M12 2C8.686 2 6 4.686 6 8c0 4.28 6 12 6 12s6-7.72 6-12c0-3.314-2.686-6-6-6zm0 8.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 5.5 12 5.5s2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
+                      />
+                    </svg>
+                    {evento.lugar}
+                  </span>
+                </div>
+                <div className="flex items-center mt-2 sm:mt-0">
+                  <span className="flex flex-col items-start">
+                    <span className="flex items-center">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-4 w-4 mr-1 text-white"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2zM5 8h14v12H5V8zm2-4h10v2H7V4z"
+                        />
+                      </svg>
+                      {evento.fecha}
+                    </span>
+                    <span className="flex items-center">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-4 w-4 mr-1 text-white"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          d="M12 1a11 11 0 110 22A11 11 0 0112 1zm0 2a9 9 0 100 18 9 9 0 000-18zm0 4a1 1 0 011 1v4.586l3.293 3.293-1.414 1.414L11 12.414V7a1 1 0 011-1z"
+                        />
+                      </svg>
+                      {evento.hora}
+                    </span>
+                  </span>
+                </div>
+              </div>
             </div>
           ))}
-
         </div>
+
       </div>
+
+
       {isModalEventOpen && selectedEvent && (
         <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
           <div className="bg-white rounded-2xl shadow-xl w-11/12 md:w-3/5 overflow-hidden relative">
