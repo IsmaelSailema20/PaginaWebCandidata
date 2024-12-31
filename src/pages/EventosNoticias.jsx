@@ -4,10 +4,21 @@ const EventosNoticias = () => {
   const [slides, setSlides] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [transitionClass, setTransitionClass] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedNoticia, setSelectedNoticia] = useState(null);
+  const openModal = (noticia) => {
+    setSelectedNoticia(noticia);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedNoticia(null);
+  };
 
   useEffect(() => {
     fetch(
-      "http://localhost:8081/ProyectoManejo/paginaWebCandidata/models/ConsultaImagenesCarrusel.php"
+      "http://localhost/ProyectoManejo/paginaWebCandidata/models/ConsultaImagenesCarrusel.php"
     )
       .then((response) => {
         if (!response.ok) {
@@ -56,7 +67,7 @@ const EventosNoticias = () => {
   const [eventos, setEventos] = useState([]);
   useEffect(() => {
     fetch(
-      "http://localhost:8081/ProyectoManejo/paginaWebCandidata/models/ConsultaEventos.php"
+      "http://localhost/ProyectoManejo/paginaWebCandidata/models/ConsultaEventos.php"
     )
       .then((response) => {
         if (!response.ok) {
@@ -74,7 +85,7 @@ const EventosNoticias = () => {
   const [noticias, setNoticias] = useState([]);
   useEffect(() => {
     fetch(
-      "http://localhost:8081/ProyectoManejo/paginaWebCandidata/models/ConsultaNoticias.php"
+      "http://localhost/ProyectoManejo/paginaWebCandidata/models/ConsultaNoticias.php"
     )
       .then((response) => {
         if (!response.ok) {
@@ -172,9 +183,15 @@ const EventosNoticias = () => {
               key={noticia.id}
               className="relative flex w-80 mt-8 flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md hover:scale-105"
             >
-              <div className="relative mx-4 -mt-6 h-40 overflow-hidden rounded-xl bg-blue-gray-500 bg-clip-border text-white shadow-lg shadow-blue-gray-500/40 bg-gradient-to-r from-blue-500 to-blue-600">
-                <img src={noticia.imagen} alt={noticia.titulo} />
-              </div>
+              <img
+                src={noticia.imagen}
+                alt={noticia.titulo}
+                className="w-full h-56 object-cover"
+              />
+              <button className="absolute bottom-0 left-0 bg-red-500 text-white text-sm px-3 py-1  hover:bg-red-400 hover:scale-x-105"
+                onClick={() => openModal(noticia)}>
+                Leer más
+              </button>
               <div className="p-6">
                 <h5 className="text-black mb-2 block font-sans text-xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
                   {noticia.titulo}
@@ -190,6 +207,50 @@ const EventosNoticias = () => {
               </div>
             </div>
           ))}
+          {isModalOpen && selectedNoticia && (
+            <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
+              <div className="bg-white rounded-lg shadow-lg w-11/12 md:w-1/2 overflow-hidden relative">
+
+                {/* Button X with transparent background and hover effect, positioned at the top right of the modal */}
+                <button
+                  className="absolute top-4 right-4 bg-opacity-50 bg-slate-900 text-white text-lg hover:bg-red-500 hover:text-black hover:scale-110 rounded-full w-11 h-11 flex items-center justify-center"
+                  onClick={closeModal}
+                >
+                  X
+                </button>
+
+                <div className="overflow-y-auto max-h-[calc(100vh-80px)] scrollbar-hide">
+                  <img
+                    src={selectedNoticia.imagen}
+                    alt={selectedNoticia.titulo}
+                    className="w-full h-96 object-cover rounded-t-lg mb-4"
+                  />
+                  <div className="p-2 border rounded-md m-4">
+                    <p className="text-gray-700 ">{selectedNoticia.descripcion}</p>
+                  </div>
+
+                  <div className="mb-4 rounded-md p-2 border m-4">
+                    <p className="font-semibold text-sm text-gray-800">Lugar: </p>
+                    <p>{selectedNoticia.lugar}</p>
+                  </div>
+                  <div className="mb-4 rounded-md p-2 border m-4">
+                    <p className="font-semibold text-sm text-gray-800">Fecha:</p>
+                    <p>{selectedNoticia.fecha}</p>
+                  </div>
+                  <div className="mb-6 rounded-md p-2 border m-4">
+                    <p className="font-semibold text-sm text-gray-800">Hora:</p>
+                    <p>{selectedNoticia.hora}</p>
+                  </div>
+                </div>
+
+
+                {/* Footer */}
+                <div className="bg-red-800 p-4 rounded-b-lg">
+                  <p className="text-center uppercase text-3xl text-white">{selectedNoticia.titulo}</p>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
       <div className="contenedorEventos mt-10">
@@ -198,16 +259,13 @@ const EventosNoticias = () => {
           {eventos.map((evento, index) => (
             <div
               key={evento.id}
-              className={`flex w-full ${
-                index % 2 === 0 ? "flex-row" : "flex-row-reverse"
-              } mt-10`}
+              className={`flex w-full ${index % 2 === 0 ? "flex-row" : "flex-row-reverse"
+                } mt-10`}
             >
               <div
-                className={`contenido${
-                  index % 2 === 0 ? "Izquierda" : "Derecha"
-                } hover:scale-105 rounded-md shadow-lg bg-slate-50 border w-1/2 p-4 flex ${
-                  index % 2 === 0 ? "justify-start" : "justify-end"
-                }`}
+                className={`contenido${index % 2 === 0 ? "Izquierda" : "Derecha"
+                  } hover:scale-105 rounded-md shadow-lg bg-slate-50 border w-1/2 p-4 flex ${index % 2 === 0 ? "justify-start" : "justify-end"
+                  }`}
               >
                 {index % 2 === 0 && (
                   <p className="mb-4 mr-10 text-justify">
@@ -242,9 +300,8 @@ const EventosNoticias = () => {
                 )}
               </div>
               <div
-                className={`flex gap-4 ${
-                  index % 2 === 0 ? "ml-32" : "mr-32"
-                } self-center relative w-64 h-64`}
+                className={`flex gap-4 ${index % 2 === 0 ? "ml-32" : "mr-32"
+                  } self-center relative w-64 h-64`}
               >
                 <img
                   src={evento.imagen}
