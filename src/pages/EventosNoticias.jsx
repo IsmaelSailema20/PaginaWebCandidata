@@ -6,6 +6,8 @@ const EventosNoticias = () => {
   const [transitionClass, setTransitionClass] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedNoticia, setSelectedNoticia] = useState(null);
+  const [isModalEventOpen, setIsModalEventOpen] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState(null);
   const openModal = (noticia) => {
     setSelectedNoticia(noticia);
     setIsModalOpen(true);
@@ -14,6 +16,16 @@ const EventosNoticias = () => {
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedNoticia(null);
+  };
+
+  const openModalEvent = (evento) => {
+    setSelectedEvent(evento);
+    setIsModalEventOpen(true);
+  };
+
+  const closeModalEvent = () => {
+    setIsModalEventOpen(false);
+    setSelectedEvent(null);
   };
 
   useEffect(() => {
@@ -208,48 +220,63 @@ const EventosNoticias = () => {
             </div>
           ))}
           {isModalOpen && selectedNoticia && (
-            <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
-              <div className="bg-white rounded-lg shadow-lg w-11/12 md:w-1/2 overflow-hidden relative">
-
-                {/* Button X with transparent background and hover effect, positioned at the top right of the modal */}
+            <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+              <div className="bg-white rounded-2xl shadow-xl w-11/12 md:w-3/5 overflow-hidden relative">
+                {/* Botón de cierre */}
                 <button
-                  className="absolute top-4 right-4 bg-opacity-50 bg-slate-900 text-white text-lg hover:bg-red-500 hover:text-black hover:scale-110 rounded-full w-11 h-11 flex items-center justify-center"
+                  className="absolute top-4 right-4 bg-gray-100 hover:bg-red-500 text-gray-800 hover:text-white text-xl rounded-full w-10 h-10 flex items-center justify-center transition-all"
                   onClick={closeModal}
                 >
-                  X
+                  &times;
                 </button>
 
-                <div className="overflow-y-auto max-h-[calc(100vh-80px)] scrollbar-hide">
+                {/* Contenido del modal */}
+                <div className="overflow-y-auto max-h-[calc(100vh-100px)] scrollbar-hide">
+                  {/* Imagen */}
                   <img
                     src={selectedNoticia.imagen}
                     alt={selectedNoticia.titulo}
-                    className="w-full h-96 object-cover rounded-t-lg mb-4"
+                    className="w-full h-72 object-cover"
                   />
-                  <div className="p-2 border rounded-md m-4">
-                    <p className="text-gray-700 ">{selectedNoticia.descripcion}</p>
-                  </div>
 
-                  <div className="mb-4 rounded-md p-2 border m-4">
-                    <p className="font-semibold text-sm text-gray-800">Lugar: </p>
-                    <p>{selectedNoticia.lugar}</p>
-                  </div>
-                  <div className="mb-4 rounded-md p-2 border m-4">
-                    <p className="font-semibold text-sm text-gray-800">Fecha:</p>
-                    <p>{selectedNoticia.fecha}</p>
-                  </div>
-                  <div className="mb-6 rounded-md p-2 border m-4">
-                    <p className="font-semibold text-sm text-gray-800">Hora:</p>
-                    <p>{selectedNoticia.hora}</p>
+                  {/* Contenido textual */}
+                  <div className="p-6 space-y-4">
+                    <div>
+                      <h2 className="text-2xl font-bold text-gray-800">{selectedNoticia.titulo}</h2>
+                    </div>
+
+                    <div className="bg-gray-100 rounded-lg p-4">
+                      <p className="font-semibold text-sm text-gray-700">Descripción:</p>
+                      <p className="text-gray-600 mt-1">{selectedNoticia.descripcion}</p>
+                    </div>
+
+                    <div className="bg-gray-100 rounded-lg p-4">
+                      <p className="font-semibold text-sm text-gray-700">Lugar:</p>
+                      <p className="text-gray-600 mt-1">{selectedNoticia.lugar}</p>
+                    </div>
+
+                    <div className=" rounded-lg p-4 grid grid-cols-2 gap-4">
+                      <div className="bg-gray-100 rounded-lg p-4">
+                        <p className="font-semibold text-sm text-gray-700">Fecha:</p>
+                        <p className="text-gray-600 mt-1">{selectedNoticia.fecha}</p>
+                      </div>
+                      <div className="bg-gray-100 rounded-lg p-4">
+                        <p className="font-semibold text-sm text-gray-700">Hora:</p>
+                        <p className="text-gray-600 mt-1">{selectedNoticia.hora}</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
-
                 {/* Footer */}
-                <div className="bg-red-800 p-4 rounded-b-lg">
-                  <p className="text-center uppercase text-3xl text-white">{selectedNoticia.titulo}</p>
+                <div className="bg-red-600 p-4 rounded-b-2xl">
+                  <p className="text-center text-lg font-bold text-white uppercase">
+                    {selectedNoticia.titulo}
+                  </p>
                 </div>
               </div>
             </div>
+
           )}
         </div>
       </div>
@@ -257,11 +284,16 @@ const EventosNoticias = () => {
         <h1 className="text-center mt-2 mb-10 text-4xl font-bold">Eventos</h1>
         <div className="eventos flex flex-col gap-8 w-full max-w-screen-lg mx-auto">
           {eventos.map((evento, index) => (
+
             <div
               key={evento.id}
               className={`flex w-full ${index % 2 === 0 ? "flex-row" : "flex-row-reverse"
                 } mt-10`}
             >
+              <button className=" bg-red-500 text-white text-sm px-3 py-1  hover:bg-red-400 hover:scale-x-105"
+                onClick={() => openModalEvent(evento)}>
+                Leer más
+              </button>
               <div
                 className={`contenido${index % 2 === 0 ? "Izquierda" : "Derecha"
                   } hover:scale-105 rounded-md shadow-lg bg-slate-50 border w-1/2 p-4 flex ${index % 2 === 0 ? "justify-start" : "justify-end"
@@ -274,8 +306,11 @@ const EventosNoticias = () => {
                     </h1>
                     {evento.descripcion}
                     <p className="mt-5">{evento.lugar}</p>
+
                   </p>
+
                 )}
+
                 <div className="before:absolute border-black border-2 before:w-12 before:h-12 before:rounded-full before:blur-xl before:top-16 relative flex flex-col justify-around items-center w-24 h-24 rounded-2xl shadow-lg  bg-gray-600 text-gray-50">
                   <span className=""> {evento.fecha}</span>
                   <span className="z-10 flex items-center text-4xl text-white [text-shadow:_2px_2px_#231917,_1px_2px_#231917]">
@@ -286,6 +321,7 @@ const EventosNoticias = () => {
                     {evento.hora.split(":")[1]}
                   </span>
                   <div className="text-gray-50 w-48 flex flex-row justify-evenly"></div>
+
                 </div>
                 {index % 2 !== 0 && (
                   <div className="text-right">
@@ -298,6 +334,7 @@ const EventosNoticias = () => {
                     <p className="mt-5">{evento.lugar}</p>
                   </div>
                 )}
+
               </div>
               <div
                 className={`flex gap-4 ${index % 2 === 0 ? "ml-32" : "mr-32"
@@ -309,10 +346,71 @@ const EventosNoticias = () => {
                   className="w-72 h-60 object-cover rounded-md"
                 />
               </div>
+
             </div>
           ))}
+
         </div>
       </div>
+      {isModalEventOpen && selectedEvent && (
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl shadow-xl w-11/12 md:w-3/5 overflow-hidden relative">
+            {/* Botón de cierre */}
+            <button
+              className="absolute top-4 right-4 bg-gray-100 hover:bg-red-500 text-gray-800 hover:text-white text-xl rounded-full w-10 h-10 flex items-center justify-center transition-all"
+              onClick={closeModalEvent}
+            >
+              &times;
+            </button>
+
+            {/* Contenido del modal */}
+            <div className="overflow-y-auto max-h-[calc(100vh-100px)] scrollbar-hide">
+              {/* Imagen */}
+              <img
+                src={selectedEvent.imagen}
+                alt={selectedEvent.titulo}
+                className="w-full h-72 object-cover"
+              />
+
+              {/* Contenido textual */}
+              <div className="p-6 space-y-4">
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-800">{selectedEvent.titulo}</h2>
+                </div>
+
+                <div className="bg-gray-100 rounded-lg p-4">
+                  <p className="font-semibold text-sm text-gray-700">Descripción:</p>
+                  <p className="text-gray-600 mt-1">{selectedEvent.descripcion}</p>
+                </div>
+
+                <div className="bg-gray-100 rounded-lg p-4">
+                  <p className="font-semibold text-sm text-gray-700">Lugar:</p>
+                  <p className="text-gray-600 mt-1">{selectedEvent.lugar}</p>
+                </div>
+
+                <div className=" rounded-lg p-4 grid grid-cols-2 gap-4">
+                  <div className="bg-gray-100 rounded-lg p-4">
+                    <p className="font-semibold text-sm text-gray-700">Fecha:</p>
+                    <p className="text-gray-600 mt-1">{selectedEvent.fecha}</p>
+                  </div>
+                  <div className="bg-gray-100 rounded-lg p-4">
+                    <p className="font-semibold text-sm text-gray-700">Hora:</p>
+                    <p className="text-gray-600 mt-1">{selectedEvent.hora}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="bg-red-600 p-4 rounded-b-2xl">
+              <p className="text-center text-lg font-bold text-white uppercase">
+                {selectedEvent.titulo}
+              </p>
+            </div>
+          </div>
+        </div>
+
+      )}
     </div>
   );
 };
