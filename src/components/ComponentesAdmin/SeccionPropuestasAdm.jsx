@@ -1,5 +1,7 @@
+// SeccionPropuestasAdm.jsx
+
 import React, { useState, useEffect } from "react";
-import { PlusCircle, Edit2, Trash2, Eye, EyeOff } from "lucide-react";
+import { PlusCircle, Edit2, Trash2, Eye, EyeOff, Star } from "lucide-react";
 import ModalPropuestas from "../ModalPropuestas";
 
 function SeccionPropuestasAdm() {
@@ -17,8 +19,10 @@ function SeccionPropuestasAdm() {
     id_candidato: "",
     alcance_propuesta: "",
     img_url: "",
+    is_favorite: 0, // Añadido para manejar el estado favorito
   });
   const [isAddingNew, setIsAddingNew] = useState(false);
+  const [selectedFavorites, setSelectedFavorites] = useState([]); // Estado para las favoritas
 
   const availableIcons = [
     "ScrollText",
@@ -46,9 +50,20 @@ function SeccionPropuestasAdm() {
           return;
         }
         const uniquePropuestas = Array.from(
-          new Map(data.propuestas.map((p) => [p.id_propuesta, p])).values()
+          new Map(
+            data.propuestas.map((p) => [
+              p.id_propuesta,
+              { ...p, is_favorite: parseInt(p.is_favorite, 10) },
+            ])
+          ).values()
         );
         setPropuestas(uniquePropuestas);
+
+        const favoritosActuales = uniquePropuestas
+          .filter((p) => p.is_favorite === 1)
+          .map((p) => p.id_propuesta);
+        setSelectedFavorites(favoritosActuales);
+
         setCategorias(data.categorias);
       } catch (error) {
         console.error("Error fetching proposals:", error);
@@ -95,7 +110,7 @@ function SeccionPropuestasAdm() {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ...newPropuesta, visible: true }),
+          body: JSON.stringify({ ...newPropuesta, visible: true, is_favorite: 0 }), // Añadir is_favorite
         }
       );
 
@@ -155,6 +170,21 @@ function SeccionPropuestasAdm() {
           p.id_propuesta === propuesta.id_propuesta ? propuesta : p
         );
         setPropuestas(updatedPropuestas);
+
+        if (propuesta.is_favorite === 1 && !selectedFavorites.includes(propuesta.id_propuesta)) {
+          if (selectedFavorites.length >= 4) {
+            alert("Solo puedes tener 4 propuestas favoritas.");
+            const revertedPropuestas = propuestas.map((p) =>
+              p.id_propuesta === propuesta.id_propuesta ? { ...p, is_favorite: 0 } : p
+            );
+            setPropuestas(revertedPropuestas);
+            return;
+          }
+          setSelectedFavorites([...selectedFavorites, propuesta.id_propuesta]);
+        } else if (propuesta.is_favorite === 0 && selectedFavorites.includes(propuesta.id_propuesta)) {
+          setSelectedFavorites(selectedFavorites.filter((id) => id !== propuesta.id_propuesta));
+        }
+
         setEditingPropuesta(null);
       } else {
         const errorData = await response.json();
@@ -183,6 +213,7 @@ function SeccionPropuestasAdm() {
           return;
         }
         setPropuestas(propuestas.filter((p) => p.id_propuesta !== id));
+        setSelectedFavorites(selectedFavorites.filter((favId) => favId !== id));
       } else {
         const errorData = await response.json();
         alert(`Error al eliminar propuesta: ${errorData.error || response.statusText}`);
@@ -236,7 +267,58 @@ function SeccionPropuestasAdm() {
     id_candidato: "",
     alcance_propuesta: "",
     img_url: "",
+    is_favorite: 0,
   });
+
+  const handleToggleFavorite = async (id_propuesta) => {
+    const isCurrentlyFavorite = selectedFavorites.includes(id_propuesta);
+
+    if (!isCurrentlyFavorite && selectedFavorites.length >= 4) {
+      alert("Solo puedes seleccionar hasta 4 propuestas favoritas.");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        "http://localhost:8081/ProyectoManejo/paginaWebCandidata/models/set_favorite.php",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id_propuesta: id_propuesta,
+            is_favorite: isCurrentlyFavorite ? 0 : 1,
+          }),
+        }
+      );
+
+      const result = await response.json();
+
+      if (result.error) {
+        alert(result.error);
+        return;
+      }
+
+
+      setPropuestas(
+        propuestas.map((p) =>
+          p.id_propuesta === id_propuesta
+            ? { ...p, is_favorite: isCurrentlyFavorite ? 0 : 1 }
+            : p
+        )
+      );
+
+      if (isCurrentlyFavorite) {
+        setSelectedFavorites(selectedFavorites.filter((id) => id !== id_propuesta));
+      } else {
+        setSelectedFavorites([...selectedFavorites, id_propuesta]);
+      }
+
+    } catch (error) {
+      console.error("Error al actualizar favorito:", error);
+      alert("Ocurrió un error al actualizar el favorito.");
+    }
+  };
+
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
@@ -279,7 +361,7 @@ function SeccionPropuestasAdm() {
                 <div
                   className={`bg-white border rounded-lg p-4 flex justify-between items-center hover:shadow-md transition ${
                     !propuesta.visible ? "opacity-50 bg-gray-100" : ""
-                  }`}
+                  } ${propuesta.is_favorite === 1 ? "border-yellow-500" : ""}`}
                 >
                   {propuesta.img_url && (
                     <img
@@ -303,6 +385,9 @@ function SeccionPropuestasAdm() {
                           (Oculto)
                         </span>
                       )}
+                      {propuesta.is_favorite === 1 && (
+                        <Star className="ml-2 text-yellow-500 w-5 h-5" />
+                      )}
                     </h3>
                     <p className="text-gray-600">
                       {propuesta.descripcion_propuesta}
@@ -313,8 +398,27 @@ function SeccionPropuestasAdm() {
                   </div>
                   <div className="flex space-x-2">
                     <button
+                      onClick={() => handleToggleFavorite(propuesta.id_propuesta)}
+                      className={`p-2 rounded ${
+                        propuesta.is_favorite === 1
+                          ? "text-yellow-500 hover:bg-yellow-100"
+                          : "text-gray-400 hover:bg-gray-200"
+                      }`}
+                      title={propuesta.is_favorite === 1 ? "Eliminar Favorito" : "Agregar Favorito"}
+                    >
+                      <Star
+                        className={
+                          propuesta.is_favorite === 1
+                            ? "fill-current text-yellow-500"
+                            : "stroke-current text-gray-400"
+                        }
+                      />
+                    </button>
+
+                    <button
                       onClick={() => setEditingPropuesta(propuesta)}
                       className="text-blue-500 hover:bg-blue-100 p-2 rounded"
+                      title="Editar Propuesta"
                     >
                       <Edit2 />
                     </button>
@@ -330,6 +434,7 @@ function SeccionPropuestasAdm() {
                           ? "text-yellow-500 hover:bg-yellow-100"
                           : "text-green-500 hover:bg-green-100"
                       }`}
+                      title={propuesta.visible ? "Ocultar Propuesta" : "Mostrar Propuesta"}
                     >
                       {propuesta.visible ? <Eye /> : <EyeOff />}
                     </button>
@@ -338,6 +443,7 @@ function SeccionPropuestasAdm() {
                         handleDeletePropuesta(propuesta.id_propuesta)
                       }
                       className="text-red-500 hover:bg-red-100 p-2 rounded"
+                      title="Eliminar Propuesta"
                     >
                       <Trash2 />
                     </button>
