@@ -17,6 +17,8 @@ const FormElementInput = () => {
     "Ciudadano Independiente",
     "Prefiero no decirlo",
   ];
+  const candidatos = ["Candidato 1", "Candidato 2", "Candidato 3"];
+  const [candidato, setCandidato] = useState("");
 
   // Estados para el valor seleccionado de cada ComboBox
   const [genero, setGenero] = useState("");
@@ -153,6 +155,15 @@ const FormElementInput = () => {
                 setSelectedOption={setTipoPersona}
               />
             </div>
+          </div>
+          <div>
+            <ComboBox
+              options={candidatos}
+              label="Candidato"
+              name="candidato"
+              selectedOption={candidato}
+              setSelectedOption={setCandidato}
+            ></ComboBox>
           </div>
           <div className="relative z-0 w-full mb-5 group">
             <MessageTextarea {...mensajeField} />
