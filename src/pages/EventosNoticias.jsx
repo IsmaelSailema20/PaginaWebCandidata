@@ -8,6 +8,7 @@ const EventosNoticias = () => {
   const [selectedNoticia, setSelectedNoticia] = useState(null);
   const [isModalEventOpen, setIsModalEventOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
+
   const openModal = (noticia) => {
     setSelectedNoticia(noticia);
     setIsModalOpen(true);
@@ -39,7 +40,6 @@ const EventosNoticias = () => {
         return response.json();
       })
       .then((data) => {
-        // Supongamos que data es un arreglo de objetos y cada objeto tiene una propiedad `url` con la URL de la imagen.
         setSlides(data.map((evento) => evento.url));
       })
       .catch((error) => {
@@ -47,30 +47,26 @@ const EventosNoticias = () => {
       });
   }, []);
 
-  // Cambiar automáticamente cada 3 segundos
-
-  // Función para manejar el cambio de slide y activar la animación
   const handleNextSlide = () => {
-    setTransitionClass("animate-slide"); // Activa la animación
+    setTransitionClass("animate-slide");
     setTimeout(() => {
       setCurrentSlide((prevSlide) =>
         prevSlide === slides.length - 1 ? 0 : prevSlide + 1
       );
-      setTransitionClass(""); // Remueve la animación después de cambiar de slide
-    }, 50); // Duración de la animación
+      setTransitionClass("");
+    }, 300);
   };
 
   const handlePrevSlide = () => {
-    setTransitionClass("animate-slide"); // Activa la animación
+    setTransitionClass("animate-slide");
     setTimeout(() => {
       setCurrentSlide((prevSlide) =>
         prevSlide === 0 ? slides.length - 1 : prevSlide - 1
       );
-      setTransitionClass(""); // Remueve la animación después de cambiar de slide
-    }, 50); // Duración de la animación
+      setTransitionClass("");
+    }, 300);
   };
 
-  // Función para obtener los índices de las imágenes en pantalla (anterior, actual, siguiente)
   const getPrevSlide = () =>
     currentSlide === 0 ? slides.length - 1 : currentSlide - 1;
   const getNextSlide = () =>
@@ -94,6 +90,7 @@ const EventosNoticias = () => {
         console.error("Error fetching the events:", error);
       });
   }, []);
+
   const [noticias, setNoticias] = useState([]);
   useEffect(() => {
     fetch(
@@ -114,107 +111,84 @@ const EventosNoticias = () => {
   }, []);
 
   return (
-    <div className="general overflow-x-hidden p-10 relative w-full min-h-screen overflow-hidden bg-white">
+    <div className="general overflow-x-hidden p-10 relative w-full min-h-screen overflow-hidden bg-white">
       <h1 className="text-center mt-2 mb-10 text-4xl font-bold text-black">
         Eventos Y Noticias
       </h1>
-      {slides.length > 0 ? (
-        <div className="relative p-10 bg-slate-100 rounded-md border-dotted shadow-lg">
-          {/* Botón para ir al slide anterior */}
-          <button
-            onClick={handlePrevSlide}
-            className="absolute left-10 top-1/2 transform -translate-y-1/2 bg-gray-500 text-white rounded-full
-                    bg-gradient-to-r from-[#FF8B9A] to-[#72D5FF]  p-3 shadow-lg hover:opacity-90 transition-all duration-300 
-                    hover:scale-110 disabled:opacity-50"
-          >
-            &#10094;
-          </button>
-
-          <div className="carrusel flex items-center justify-center space-x-4 max-w-screen-md mx-auto relative">
-            {/* Imagen izquierda - sin animación */}
-            <img
-              src={slides[getPrevSlide()]}
-              alt="Prev Slide"
-              className="rounded-md w-1/3 h-64 object-cover opacity-60 scale-90"
-            />
-
-            {/* Imagen central - con animación hacia la derecha */}
-            <img
-              src={slides[currentSlide]}
-              alt="Current Slide"
-              className={`rounded-md w-8/12 h-96 object-cover transition-transform duration-500 transform scale-105`}
-            />
-
-            {/* Imagen derecha - con animación hacia la derecha */}
-            <img
-              src={slides[getNextSlide()]}
-              alt="Next Slide"
-              className={`rounded-md w-1/3 h-64 object-cover opacity-60 scale-90 transition-transform duration-500 `}
-            />
-          </div>
-
-          {/* Botón para ir al siguiente slide */}
-          <button
-            onClick={handleNextSlide}
-            className="absolute right-10 top-1/2 -translate-y-1/2 bg-gray-500 text-white rounded-full
-                    bg-gradient-to-r from-[#FF8B9A] to-[#72D5FF]  p-3 shadow-lg hover:opacity-90 transition-all duration-300 
-                    transform hover:scale-110 disabled:opacity-50"
-          >
-            &#10095;
-          </button>
-        </div>
-      ) : (
-        <div className="text-center text-gray-500 py-4">
-          No existen Eventos ni Noticias
-        </div>
-      )}
-
-      {/* Estilos para la animación */}
-      <style jsx>{`
-        @keyframes slideRight {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(100%);
-          }
-        }
-
-        .animate-slide {
-          animation: slideRight 0.2s ease-in-out forwards;
-        }
-      `}</style>
-
-      <div className="noticias mt-10 mb10 text-5xl">
-        <h1 className="text-black text-center mt-2 mb-10 text-4xl font-bold">
-          Noticias
-        </h1>
-        <div className="contenedorNoticias grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-20  mt-14">
-          {noticias.map((noticia) => (
+      <div className=" text-black py-10 px-4">
+        <h2 className="text-4xl font-bold text-center mb-8">NOTICIAS</h2>
+        <div className="flex flex-wrap justify-center gap-6">
+          {noticias.map((noticia, index) => (
             <div
-              key={noticia.id}
-              className="relative flex w-80 mt-8 flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md hover:scale-105"
+              key={index}
+              className="w-full max-w-sm bg-white text-black rounded-lg overflow-hidden shadow-lg"
             >
-              <img
-                src={noticia.imagen}
-                alt={noticia.titulo}
-                className="w-full h-56 object-cover"
-              />
-              <button className="absolute bottom-0 left-0 bg-red-500 text-white text-sm px-3 py-1  hover:bg-red-400 hover:scale-x-105"
-                onClick={() => openModal(noticia)}>
-                Leer más
-              </button>
-              <div className="p-6">
-                <h5 className="text-black mb-2 block font-sans text-xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
-                  {noticia.titulo}
-                </h5>
-                <p className="block font-sans text-base font-light leading-relaxed text-inherit antialiased">
-                  {noticia.descripcion}
-                </p>
+              <div className="relative">
+                <img
+                  src={noticia.imagen}
+                  alt={`Noticia ${index + 1}`}
+                  className="w-full h-56 object-cover"
+                />
+                <button className="absolute bottom-0 left-0 bg-red-500 text-white text-sm px-3 py-1  hover:bg-red-400 hover:scale-x-105"
+                  onClick={() => openModal(noticia)}>
+                  Leer más
+                </button>
+                <div className="absolute top-0 left-0 w-full bg-red-500 text-white text-sm px-3 py-2 flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                  <div className="flex items-center">
+                    <span className="font-bold whitespace-normal break-words flex items-center">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-4 w-4 mr-1 text-white"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          d="M12 2C8.686 2 6 4.686 6 8c0 4.28 6 12 6 12s6-7.72 6-12c0-3.314-2.686-6-6-6zm0 8.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 5.5 12 5.5s2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
+                        />
+                      </svg>
+                      {noticia.lugar}
+                    </span>
+
+                  </div>
+                  <div className="flex items-center mt-2 sm:mt-0">
+                    <span className="flex flex-col items-start">
+                      <span className="flex items-center">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-4 w-4 mr-1 text-white"
+                          fill="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2zM5 8h14v12H5V8zm2-4h10v2H7V4z"
+                          />
+                        </svg>
+                        {noticia.fecha}
+                      </span>
+                      <span className="flex items-center">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-4 w-4 mr-1 text-white"
+                          fill="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M12 1a11 11 0 110 22A11 11 0 0112 1zm0 2a9 9 0 100 18 9 9 0 000-18zm0 4a1 1 0 011 1v4.586l3.293 3.293-1.414 1.414L11 12.414V7a1 1 0 011-1z"
+                          />
+                        </svg>
+                        {noticia.hora}
+                      </span>
+                    </span>
+
+                  </div>
+                </div>
               </div>
-              <div className="p-6 pt-0">
-                <p className="text-[#3662e6] text-xl absolute bottom-5">
-                  {noticia.lugar}, {noticia.fecha}
+              <div className="p-4">
+                <p className="text-black text-4xl uppercase">{noticia.titulo}</p>
+                <p className="text-gray-700 text-sm">
+                  {noticia.descripcion.length > 100
+                    ? `${noticia.descripcion.substring(0, 100)} + "..."`
+                    : noticia.descripcion}
                 </p>
               </div>
             </div>
@@ -276,8 +250,8 @@ const EventosNoticias = () => {
                 </div>
               </div>
             </div>
-
           )}
+
         </div>
       </div>
       <div className="contenedorEventos mt-10">
