@@ -29,7 +29,7 @@ const EventosNoticias = () => {
   const [eventos, setEventos] = useState([]);
   useEffect(() => {
     fetch(
-      "http://localhost/ProyectoManejo/paginaWebCandidata/models/ConsultaEventos.php"
+      "http://localhost:8081/ProyectoManejo/paginaWebCandidata/models/ConsultaEventos.php"
     )
       .then((response) => {
         if (!response.ok) {
@@ -48,7 +48,7 @@ const EventosNoticias = () => {
   const [noticias, setNoticias] = useState([]);
   useEffect(() => {
     fetch(
-      "http://localhost/ProyectoManejo/paginaWebCandidata/models/ConsultaNoticias.php"
+      "http://localhost:8081/ProyectoManejo/paginaWebCandidata/models/ConsultaNoticias.php"
     )
       .then((response) => {
         if (!response.ok) {
@@ -72,15 +72,15 @@ const EventosNoticias = () => {
       <div className=" text-black py-10 px-4">
         <h2 className="text-4xl font-bold text-center mb-8">NOTICIAS</h2>
         <div className="flex flex-wrap justify-center gap-6">
-          {noticias.map((noticia, index) => (
+          {noticias.map((noticia) => (
             <div
-              key={index}
+              key={noticia.id}
               className="w-full max-w-sm bg-white text-black rounded-lg overflow-hidden shadow-lg"
             >
               <div className="relative">
                 <img
                   src={noticia.imagen}
-                  alt={`Noticia ${index + 1}`}
+                  alt={`Noticia ${noticia.id + 1}`}
                   className="w-full h-56 object-cover"
                 />
                 <button className="absolute bottom-0 left-0 bg-red-500 text-white text-sm px-3 py-1  hover:bg-red-400 hover:scale-x-105"
@@ -212,7 +212,7 @@ const EventosNoticias = () => {
         <h1 className="text-center mt-2 mb-10 text-4xl font-bold">EVENTOS</h1>
         <div className="eventos grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-screen-lg mx-auto">
           {eventos.map((evento) => (
-            <div className="relative bg-white text-black rounded-lg overflow-hidden shadow-lg">
+            <div key={evento.id} className="relative bg-white text-black rounded-lg overflow-hidden shadow-lg">
               <button
                 className="absolute z-20 top-0 right-0 bg-red-500 text-white text-sm px-3 py-1 hover:bg-red-400 hover:scale-x-105"
                 onClick={() => openModalEvent(evento)}
