@@ -66,7 +66,7 @@ const EventosNoticias = () => {
 
   return (
     <div className="general overflow-x-hidden p-10 relative w-full min-h-screen overflow-hidden bg-white">
-      <h1 className="text-center mt-2 mb-10 text-6xl font-bold text-black">
+      <h1 className="text-center mt-2 mb-10 text-5xl font-bold text-black">
         EVENTOS Y NOTICIAS
       </h1>
       <div className=" text-black py-10 px-4">
@@ -83,26 +83,25 @@ const EventosNoticias = () => {
                   alt={`Noticia ${noticia.id + 1}`}
                   className="w-full h-56 object-cover"
                 />
-                <button className="absolute bottom-0 left-0 bg-red-500 text-white text-sm px-3 py-1  hover:bg-red-400 hover:scale-x-105"
-                  onClick={() => openModal(noticia)}>
+                <button
+                  className="absolute bottom-0 left-0 bg-red-500 text-white text-sm px-3 py-1  hover:bg-red-400 hover:scale-x-105"
+                  onClick={() => openModal(noticia)}
+                >
                   Leer más
                 </button>
                 <div className="absolute top-0 left-0 w-full bg-red-500 text-white text-sm px-3 py-2 flex flex-col sm:flex-row justify-between items-start sm:items-center">
                   <div className="flex items-center">
-                    <span className="font-bold whitespace-normal break-words flex items-center">
+                    <span className="font-bold whitespace-normal break-words flex items-center w-full">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-4 w-4 mr-1 text-white"
                         fill="currentColor"
                         viewBox="0 0 24 24"
                       >
-                        <path
-                          d="M12 2C8.686 2 6 4.686 6 8c0 4.28 6 12 6 12s6-7.72 6-12c0-3.314-2.686-6-6-6zm0 8.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 5.5 12 5.5s2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
-                        />
+                        <path d="M12 2C8.686 2 6 4.686 6 8c0 4.28 6 12 6 12s6-7.72 6-12c0-3.314-2.686-6-6-6zm0 8.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 5.5 12 5.5s2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
                       </svg>
                       {noticia.lugar}
                     </span>
-
                   </div>
                   <div className="flex items-center mt-2 sm:mt-0">
                     <span className="flex flex-col items-start">
@@ -113,9 +112,7 @@ const EventosNoticias = () => {
                           fill="currentColor"
                           viewBox="0 0 24 24"
                         >
-                          <path
-                            d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2zM5 8h14v12H5V8zm2-4h10v2H7V4z"
-                          />
+                          <path d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2zM5 8h14v12H5V8zm2-4h10v2H7V4z" />
                         </svg>
                         {noticia.fecha}
                       </span>
@@ -126,19 +123,18 @@ const EventosNoticias = () => {
                           fill="currentColor"
                           viewBox="0 0 24 24"
                         >
-                          <path
-                            d="M12 1a11 11 0 110 22A11 11 0 0112 1zm0 2a9 9 0 100 18 9 9 0 000-18zm0 4a1 1 0 011 1v4.586l3.293 3.293-1.414 1.414L11 12.414V7a1 1 0 011-1z"
-                          />
+                          <path d="M12 1a11 11 0 110 22A11 11 0 0112 1zm0 2a9 9 0 100 18 9 9 0 000-18zm0 4a1 1 0 011 1v4.586l3.293 3.293-1.414 1.414L11 12.414V7a1 1 0 011-1z" />
                         </svg>
                         {noticia.hora}
                       </span>
                     </span>
-
                   </div>
                 </div>
               </div>
               <div className="p-4">
-                <p className="text-black text-4xl uppercase">{noticia.titulo}</p>
+                <p className="text-black text-2xl uppercase font-semibold">
+                  {noticia.titulo}
+                </p>
                 <p className="text-gray-700 text-sm">
                   {noticia.descripcion.length > 100
                     ? `${noticia.descripcion.substring(0, 100)} ...`
@@ -170,27 +166,45 @@ const EventosNoticias = () => {
                   {/* Contenido textual */}
                   <div className="p-6 space-y-4">
                     <div>
-                      <h2 className="text-2xl font-bold text-gray-800">{selectedNoticia.titulo}</h2>
+                      <h2 className="text-2xl font-bold text-gray-800">
+                        {selectedNoticia.titulo}
+                      </h2>
                     </div>
 
                     <div className="bg-gray-100 rounded-lg p-4">
-                      <p className="font-semibold text-sm text-gray-700">Descripción:</p>
-                      <p className="text-gray-600 mt-1">{selectedNoticia.descripcion}</p>
+                      <p className="font-semibold text-sm text-gray-700">
+                        Descripción:
+                      </p>
+                      <p className="text-gray-600 mt-1">
+                        {selectedNoticia.descripcion}
+                      </p>
                     </div>
 
                     <div className="bg-gray-100 rounded-lg p-4">
-                      <p className="font-semibold text-sm text-gray-700">Lugar:</p>
-                      <p className="text-gray-600 mt-1">{selectedNoticia.lugar}</p>
+                      <p className="font-semibold text-sm text-gray-700">
+                        Lugar:
+                      </p>
+                      <p className="text-gray-600 mt-1">
+                        {selectedNoticia.lugar}
+                      </p>
                     </div>
 
                     <div className=" rounded-lg p-4 grid grid-cols-2 gap-4">
                       <div className="bg-gray-100 rounded-lg p-4">
-                        <p className="font-semibold text-sm text-gray-700">Fecha:</p>
-                        <p className="text-gray-600 mt-1">{selectedNoticia.fecha}</p>
+                        <p className="font-semibold text-sm text-gray-700">
+                          Fecha:
+                        </p>
+                        <p className="text-gray-600 mt-1">
+                          {selectedNoticia.fecha}
+                        </p>
                       </div>
                       <div className="bg-gray-100 rounded-lg p-4">
-                        <p className="font-semibold text-sm text-gray-700">Hora:</p>
-                        <p className="text-gray-600 mt-1">{selectedNoticia.hora}</p>
+                        <p className="font-semibold text-sm text-gray-700">
+                          Hora:
+                        </p>
+                        <p className="text-gray-600 mt-1">
+                          {selectedNoticia.hora}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -205,14 +219,16 @@ const EventosNoticias = () => {
               </div>
             </div>
           )}
-
         </div>
       </div>
       <div className="contenedorEventos mt-10">
         <h1 className="text-center mt-2 mb-10 text-4xl font-bold">EVENTOS</h1>
         <div className="eventos grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-screen-lg mx-auto">
           {eventos.map((evento) => (
-            <div key={evento.id} className="relative bg-white text-black rounded-lg overflow-hidden shadow-lg">
+            <div
+              key={evento.id}
+              className="relative bg-white text-black rounded-lg overflow-hidden shadow-lg"
+            >
               <button
                 className="absolute z-20 top-0 right-0 bg-red-500 text-white text-sm px-3 py-1 hover:bg-red-400 hover:scale-x-105"
                 onClick={() => openModalEvent(evento)}
@@ -239,17 +255,15 @@ const EventosNoticias = () => {
               </div>
 
               <div className="p-4 bg-red-500 text-white text-sm flex flex-col sm:flex-row justify-between items-start sm:items-center">
-                <div className="flex items-center">
-                  <span className="font-bold whitespace-normal break-words flex items-center">
+                <div className="flex items-center w-3/4">
+                  <span className="font-bold whitespace-normal break-words flex items-center w-full">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-4 w-4 mr-1 text-white"
                       fill="currentColor"
                       viewBox="0 0 24 24"
                     >
-                      <path
-                        d="M12 2C8.686 2 6 4.686 6 8c0 4.28 6 12 6 12s6-7.72 6-12c0-3.314-2.686-6-6-6zm0 8.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 5.5 12 5.5s2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
-                      />
+                      <path d="M12 2C8.686 2 6 4.686 6 8c0 4.28 6 12 6 12s6-7.72 6-12c0-3.314-2.686-6-6-6zm0 8.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 5.5 12 5.5s2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
                     </svg>
                     {evento.lugar}
                   </span>
@@ -263,9 +277,7 @@ const EventosNoticias = () => {
                         fill="currentColor"
                         viewBox="0 0 24 24"
                       >
-                        <path
-                          d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2zM5 8h14v12H5V8zm2-4h10v2H7V4z"
-                        />
+                        <path d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2zM5 8h14v12H5V8zm2-4h10v2H7V4z" />
                       </svg>
                       {evento.fecha}
                     </span>
@@ -276,9 +288,7 @@ const EventosNoticias = () => {
                         fill="currentColor"
                         viewBox="0 0 24 24"
                       >
-                        <path
-                          d="M12 1a11 11 0 110 22A11 11 0 0112 1zm0 2a9 9 0 100 18 9 9 0 000-18zm0 4a1 1 0 011 1v4.586l3.293 3.293-1.414 1.414L11 12.414V7a1 1 0 011-1z"
-                        />
+                        <path d="M12 1a11 11 0 110 22A11 11 0 0112 1zm0 2a9 9 0 100 18 9 9 0 000-18zm0 4a1 1 0 011 1v4.586l3.293 3.293-1.414 1.414L11 12.414V7a1 1 0 011-1z" />
                       </svg>
                       {evento.hora}
                     </span>
@@ -288,9 +298,7 @@ const EventosNoticias = () => {
             </div>
           ))}
         </div>
-
       </div>
-
 
       {isModalEventOpen && selectedEvent && (
         <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
@@ -315,12 +323,18 @@ const EventosNoticias = () => {
               {/* Contenido textual */}
               <div className="p-6 space-y-4">
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-800">{selectedEvent.titulo}</h2>
+                  <h2 className="text-2xl font-bold text-gray-800">
+                    {selectedEvent.titulo}
+                  </h2>
                 </div>
 
                 <div className="bg-gray-100 rounded-lg p-4">
-                  <p className="font-semibold text-sm text-gray-700">Descripción:</p>
-                  <p className="text-gray-600 mt-1">{selectedEvent.descripcion}</p>
+                  <p className="font-semibold text-sm text-gray-700">
+                    Descripción:
+                  </p>
+                  <p className="text-gray-600 mt-1">
+                    {selectedEvent.descripcion}
+                  </p>
                 </div>
 
                 <div className="bg-gray-100 rounded-lg p-4">
@@ -330,7 +344,9 @@ const EventosNoticias = () => {
 
                 <div className=" rounded-lg p-4 grid grid-cols-2 gap-4">
                   <div className="bg-gray-100 rounded-lg p-4">
-                    <p className="font-semibold text-sm text-gray-700">Fecha:</p>
+                    <p className="font-semibold text-sm text-gray-700">
+                      Fecha:
+                    </p>
                     <p className="text-gray-600 mt-1">{selectedEvent.fecha}</p>
                   </div>
                   <div className="bg-gray-100 rounded-lg p-4">
@@ -349,7 +365,6 @@ const EventosNoticias = () => {
             </div>
           </div>
         </div>
-
       )}
     </div>
   );
