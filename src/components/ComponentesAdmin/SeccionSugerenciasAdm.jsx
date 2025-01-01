@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 function SeccionSugerenciasAdm() {
   const [sugerencias, setSugerencias] = useState([]);
   const [sugerenciaSeleccionada, setSugerenciaSeleccionada] = useState(null);
-
+  const [estadoSugerencia, setEstadoSugerencia] = useState("");
   // Función para cargar las sugerencias desde la base de datos
   const fetchSugerencias = async () => {
     try {
@@ -13,6 +13,7 @@ function SeccionSugerenciasAdm() {
       );
       const data = await response.json();
       setSugerencias(data); // Actualizar el estado con las sugerencias obtenidas
+      setEstadoSugerencia(data.estado);
     } catch (error) {
       console.error("Error al cargar sugerencias:", error);
     }
@@ -53,6 +54,40 @@ function SeccionSugerenciasAdm() {
         console.error("Error:", error);
       });
   };
+
+  const cambiarEstado = (id, estadoActual) => {
+    // Determinar el nuevo estado basado en el estado actual
+    const nuevoEstado = estadoActual === "Nueva" ? "Revisada" : "Nueva";
+
+    // Realizar la solicitud al backend para actualizar el estado
+    fetch(
+      "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/ActualizarEstadoSugerencias.php",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id_sugerencia: id, estado: nuevoEstado }),
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.ok) {
+          // Actualizar el estado en el frontend
+          setSugerencias((prevSugerencias) =>
+            prevSugerencias.map((sugerencia) =>
+              sugerencia.id_sugerencia === id
+                ? { ...sugerencia, estado: nuevoEstado }
+                : sugerencia
+            )
+          );
+        } else {
+          alert("Error al actualizar el estado de la sugerencia");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+
   return (
     <>
       <div className="flex flex-col gap-4">
@@ -84,6 +119,24 @@ function SeccionSugerenciasAdm() {
                   {sugerencia.correo_electronico}
                 </h4>
                 <p className="text-gray-600"> {sugerencia.sugerencia}</p>
+              </div>
+              <div>
+                <span
+                  onClick={() =>
+                    cambiarEstado(sugerencia.id_sugerencia, sugerencia.estado)
+                  }
+                  className={`hover:cursor-pointer mr-3 text-center align-baseline inline-flex px-4 py-3 items-center font-semibold text-[.95rem] leading-none rounded-lg ${
+                    sugerencia.estado === "Nueva"
+                      ? "text-orange-700 bg-orange-100"
+                      : sugerencia.estado === "Revisada"
+                      ? "text-green-700 bg-green-100"
+                      : "text-gray-500 bg-gray-200"
+                  }`}
+                >
+                  {sugerencia.estado === "Nueva"
+                    ? "Pendiente"
+                    : sugerencia.estado || "Pendiente"}
+                </span>
               </div>
               <div className="flex space-x-2">
                 <button
