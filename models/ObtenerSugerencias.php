@@ -7,7 +7,7 @@ header("Content-Type: application/json");
 $objetoConexion = new Conexion;
 $conn = $objetoConexion->conectar();
 
-$sql = "SELECT * FROM sugerencias ORDER BY fecha_sugerencia DESC;";
+$sql = "SELECT * FROM sugerencias where visible = 1 ORDER BY fecha_sugerencia DESC;";
 $result = $conn->query($sql);
 
 $sugerencias = array();
