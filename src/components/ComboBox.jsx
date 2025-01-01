@@ -21,7 +21,7 @@ const ComboBox = ({
 
   return (
     <div className="mb-4">
-      <label className="mb-[10px] block text-base font-medium text-dark">
+      <label className="mb-[10px] block text-base font-semibold text-dark">
         {label}
       </label>
       <div className="relative">

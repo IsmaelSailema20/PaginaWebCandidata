@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ComboBox from "./ComboBox";
 import SuccessAlert from "./SuccessAlert";
 import ErrorAlert from "./ErrorAlert";
@@ -17,7 +17,9 @@ const FormElementInput = () => {
     "Ciudadano Independiente",
     "Prefiero no decirlo",
   ];
-
+  const [candidatos, setCandidatos] = useState([]);
+  const [selectedOption, setSelectedOption] = useState(""); // Opción predeterminada
+  const [isEmpty, setIsEmpty] = useState(false);
   // Estados para el valor seleccionado de cada ComboBox
   const [genero, setGenero] = useState("");
   const [tipoPersona, setTipoPersona] = useState("");
@@ -35,7 +37,13 @@ const FormElementInput = () => {
 
     const form = document.getElementById("form-sugerencias");
     const formData = new FormData(form);
-
+    // Añade el ID del candidato al formulario
+    if (!selectedOption) {
+      setMensajeErrorAlert("Por favor, selecciona un candidato.");
+      setShowErrorAlert(true);
+      return;
+    }
+    formData.append("id_candidato", selectedOption);
     for (let [key, value] of formData.entries()) {
       // Considera campos vacíos o el valor "" del ComboBox como inválido
       if (!value.trim() || value === "") {
@@ -75,6 +83,7 @@ const FormElementInput = () => {
         mensajeField.resetField();
         setGenero("");
         setTipoPersona("");
+        setSelectedOption("");
         await enviarCorreoConfirmacion(
           nombreCompleto,
           "devTeam",
@@ -99,6 +108,37 @@ const FormElementInput = () => {
       console.error("Error en la solicitud:", error);
     }
   }
+  useEffect(() => {
+    fetch(
+      "http://localhost:8081/ProyectoManejo/paginaWebCandidata/models/ConsultaMiembros.php"
+    )
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        // Transforma los datos en un array de objetos con id y label
+        const opcionesCandidatos = data.map((element) => ({
+          id: element.id_miembro,
+          label: element.nombre_miembro + " / " + element.tipo_miembro,
+        }));
+        setCandidatos(opcionesCandidatos); // Almacena las opciones en el estado
+      })
+      .catch((error) => {
+        console.error("Error fetching the team members:", error);
+      });
+  }, []);
+  const handleSelectChange = (e) => {
+    setSelectedOption(e.target.value);
+    setIsEmpty(false);
+  };
+  const handleBlur = () => {
+    if (!selectedOption) {
+      setIsEmpty(true); // Marca el campo como vacío si no se selecciona ninguna opción
+    }
+  };
   return (
     <>
       {showSuccessAlert && (
@@ -154,6 +194,32 @@ const FormElementInput = () => {
               />
             </div>
           </div>
+          <div className="relative z-0 w-full group">
+            <label
+              htmlFor="candidato"
+              className=" block text-base font-semibold text-dark"
+            >
+              Candidato al que se dirige la sugerencia
+            </label>
+            <select
+              id="candidato"
+              value={selectedOption} // Vincula el valor del select al estado
+              onChange={handleSelectChange}
+              onBlur={handleBlur}
+              className={`my-5 w-full bg-transparent rounded-md border py-[10px] pr-5 pl-4 text-dark-6 outline-none transition ${
+                isEmpty ? "border-red-500" : "border-stroke"
+              } focus:border-blue-500 active:border-blue-500 disabled:cursor-default disabled:bg-gray-2 disabled:border-gray-2`}
+            >
+              <option value="" disabled>
+                Seleccione una opción
+              </option>
+              {candidatos.map((candidato) => (
+                <option key={candidato.id} value={candidato.id}>
+                  {candidato.label}
+                </option>
+              ))}
+            </select>
+          </div>
           <div className="relative z-0 w-full mb-5 group">
             <MessageTextarea {...mensajeField} />
           </div>
@@ -176,7 +242,7 @@ export default FormElementInput;
 const InfoInput = ({ label, value, isEmpty, handleBlur, handleChange }) => {
   return (
     <>
-      <label className="mb-[10px] block text-base font-medium text-dark ">
+      <label className="mb-[10px] block text-base text-dark font-semibold">
         {label}
       </label>
       <div className="relative">
@@ -216,7 +282,7 @@ const InfoInput = ({ label, value, isEmpty, handleBlur, handleChange }) => {
 const EmailInput = ({ value, isEmpty, handleBlur, handleChange }) => {
   return (
     <>
-      <label className="mb-[10px] block text-base font-medium text-dark ">
+      <label className="mb-[10px] block text-base font-semibold text-dark ">
         Email
       </label>
       <div className="relative">
@@ -258,7 +324,7 @@ const EmailInput = ({ value, isEmpty, handleBlur, handleChange }) => {
 const MessageTextarea = ({ value, isEmpty, handleBlur, handleChange }) => {
   return (
     <>
-      <label className="mb-[10px] block text-base font-medium text-dark ">
+      <label className="mb-[10px] block text-base font-semibold text-dark ">
         Mensaje
       </label>
       <div className="relative">
