@@ -1,4 +1,4 @@
-import { EyeIcon } from "lucide-react";
+import { EyeIcon, Trash2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
 function SeccionSugerenciasAdm() {
@@ -31,7 +31,28 @@ function SeccionSugerenciasAdm() {
   const handleCloseModal = () => {
     setSugerenciaSeleccionada(null);
   };
-
+  const handleDeleteSugerencia = (id) => {
+    //Peticion para editar la visibilidad de la votacion
+    fetch(
+      "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/EliminarSugerencia.php",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id_sugerencia: id }),
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.ok) {
+          fetchSugerencias();
+        } else {
+          alert("Error al eliminar la sugerencia");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
   return (
     <>
       <div className="flex flex-col gap-4">
@@ -70,6 +91,14 @@ function SeccionSugerenciasAdm() {
                   onClick={() => handleOpenModal(sugerencia)} // Abre la modal
                 >
                   <EyeIcon />
+                </button>
+                <button
+                  onClick={() =>
+                    handleDeleteSugerencia(sugerencia.id_sugerencia)
+                  }
+                  className="text-red-500 hover:bg-red-100 p-2 rounded"
+                >
+                  <Trash2 />
                 </button>
               </div>
             </div>
