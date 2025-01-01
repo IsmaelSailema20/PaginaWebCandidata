@@ -13,7 +13,7 @@ $genero = $_POST['genero'];
 $tipo_persona = $_POST['tipo_persona'];
 $sugerencia = $_POST['sugerencia'];
 $id_candidato = $_POST['id_candidato'];
-$sqlInsertSugerencia = "INSERT INTO sugerencias (id_sugerencia, nombre_usuario, apellido_usuario, correo_electronico, genero, tipo_persona, sugerencia,id_candidato) VALUES (NULL, '$nombre_usuario', '$apellido_usuario', '$correo_electronico', '$genero','$tipo_persona', '$sugerencia','$id_candidato' );";
+$sqlInsertSugerencia = "INSERT INTO sugerencias (id_sugerencia, nombre_usuario, apellido_usuario, correo_electronico, genero, tipo_persona, sugerencia,visible,estado,id_candidato) VALUES (NULL, '$nombre_usuario', '$apellido_usuario', '$correo_electronico', '$genero','$tipo_persona', '$sugerencia',1,'Nueva','$id_candidato' );";
 $result = $conn->prepare($sqlInsertSugerencia);
 $result->execute();
 //print_r("se inserto correctamente");
