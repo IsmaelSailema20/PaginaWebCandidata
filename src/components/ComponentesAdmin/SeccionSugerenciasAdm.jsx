@@ -35,7 +35,7 @@ function SeccionSugerenciasAdm() {
   return (
     <>
       <div className="flex flex-col gap-4">
-        <h2 className="font-semibold text-3xl mb-6">
+        <h2 className="font-semibold text-3xl my-6 mx-6">
           Sugerencias recibidas por los usuarios
         </h2>
       </div>
