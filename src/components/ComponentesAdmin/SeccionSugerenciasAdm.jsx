@@ -53,6 +53,9 @@ function SeccionSugerenciasAdm() {
               className="bg-white border rounded-lg p-4 flex justify-between items-center hover:shadow-md transition"
             >
               <div className="flex-grow ml-5">
+                <span className="font-bold text-sm text-blue-600">
+                  {sugerencia.fecha_sugerencia.split(" ")[0]}
+                </span>
                 <h3 className="font-bold text-lg">
                   {sugerencia.nombre_usuario} {sugerencia.apellido_usuario}
                 </h3>
@@ -85,6 +88,10 @@ function SeccionSugerenciasAdm() {
 
             {/* Contenido */}
             <div className="p-6 space-y-4 text-gray-700">
+              <p>
+                <strong>Fecha:</strong>{" "}
+                {sugerenciaSeleccionada.fecha_sugerencia}
+              </p>
               <p>
                 <strong>Nombre:</strong> {sugerenciaSeleccionada.nombre_usuario}{" "}
                 {sugerenciaSeleccionada.apellido_usuario}
