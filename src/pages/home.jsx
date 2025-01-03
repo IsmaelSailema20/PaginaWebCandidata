@@ -8,15 +8,14 @@ function Home() {
   const [members, setMembers] = useState([]);
   const [proposals, setProposals] = useState([]);
   const [sections, setSections] = useState([]); // Estado para almacenar las secciones
+  const [informacion, setInformacion] = useState([]);
+  const API_BASE_URL = "http://localhost/ProyectoManejo/PaginaWebCandidata/models";
 
   // Obtener secciones
   useEffect(() => {
-    fetch(
-      "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/get_secciones_visibles.php"
-    )
+    fetch(`${API_BASE_URL}/get_secciones_visibles.php`)
       .then((response) => response.json())
       .then((data) => {
-        // Asegurarse de que data es un array antes de actualizar el estado
         if (Array.isArray(data)) {
           setSections(data);
         } else {
@@ -28,19 +27,20 @@ function Home() {
 
   // Obtener noticias
   useEffect(() => {
-    fetch(
-      "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/get_news.php"
-    )
+    fetch(`${API_BASE_URL}/get_news.php`)
       .then((response) => response.json())
       .then((data) => setNews(data))
       .catch((error) => console.error("Error al obtener noticias:", error));
   }, []);
-
+  useEffect(() => {
+    fetch(`${API_BASE_URL}/get_informacion_partido.php`)
+      .then((response) => response.json())
+      .then((data) => setInformacion(data))
+      .catch((error) => console.error("Error al obtener noticias:", error));
+  }, []);
   // Obtener eventos (solo los 3 primeros)
   useEffect(() => {
-    fetch(
-      "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/get_events.php"
-    )
+    fetch(`${API_BASE_URL}/get_events.php`)
       .then((response) => response.json())
       .then((data) => {
         if (Array.isArray(data)) {
@@ -54,9 +54,7 @@ function Home() {
 
   // Obtener información del líder
   useEffect(() => {
-    fetch(
-      "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/get_leader.php"
-    )
+    fetch(`${API_BASE_URL}/get_leader.php`)
       .then((response) => response.json())
       .then((data) => setLeader(data))
       .catch((error) =>
@@ -66,9 +64,7 @@ function Home() {
 
   // Obtener miembros (no el líder)
   useEffect(() => {
-    fetch(
-      "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/get_members_no_leader.php"
-    )
+    fetch(`${API_BASE_URL}/get_members_no_leader.php`)
       .then((response) => response.json())
       .then((data) => setMembers(data))
       .catch((error) => console.error("Error al obtener miembros:", error));
@@ -76,9 +72,7 @@ function Home() {
 
   // Obtener las primeras 3 propuestas
   useEffect(() => {
-    fetch(
-      "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/get_proposals.php"
-    )
+    fetch(`${API_BASE_URL}/get_proposals.php`)
       .then((response) => response.json())
       .then((data) => {
         if (Array.isArray(data)) {
@@ -92,40 +86,106 @@ function Home() {
 
   return (
     <>
-      {/* Título, imagen y descripción en la parte superior */}
-      <section className="top-section">
-        <div className="content">
-          <table style={{ width: "100%", borderCollapse: "collapse" }}></table>
+      <section
+        className="top-section"
+        style={{
+          position: "relative",
+          height: "95vh",
+          overflow: "hidden",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          color: "#fff",
+        }}
+      >
+        {/* Imagen de fondo borrosa */}
+        <div
+          style={{
+            backgroundImage: "url(/fondo.jpg)",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            height: "100%",
+            width: "100%",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            zIndex: -1,
+            filter: "brightness(0.5) blur(5px)" 
+          }}
+        ></div>
+
+        {/* Contenido principal */}
+        <div
+          style={{
+            position: "relative",
+            zIndex: 1,
+            display: "flex",
+            flexDirection: "row",
+            width: "90%",
+            maxWidth: "1200px",
+            gap: "20px",
+            padding: "20px",
+            borderRadius: "10px",
+          }}
+        >
+          {/* Información del partido (Izquierda) */}
+          <div style={{ flex: 1, marginTop: "50px" , textAlign: "center"}}>
+            {leader && (
+              <div>
+                <h3
+                  style={{
+                    fontSize: "2rem",
+                    marginBottom: "20px",
+                    padding: "10px",
+                    backgroundColor: "#007bff",
+                    color: "white",
+                    borderRadius: "5px",
+                    textAlign: "center",
+                  }}
+                >
+                  {informacion['Nombre del partido']}
+                </h3>
+                <h3 style={{ fontSize: "1.5rem", lineHeight: "1.5", marginTop: "10px",  textAlign: "center" }}>
+                  {informacion['Slogan del partido']}
+                </h3>
+              </div>
+            )}
+          </div>
+
+          {/* Imagen del líder (Centro) */}
+          <div style={{ flex: 1, display: "flex", justifyContent: "center" }}>
+            {leader?.url_to_image_placeholder && (
+              <img
+                src={leader.url_to_image_placeholder}
+                alt={leader.nombre_miembro}
+                style={{
+                  width: "300px",
+                  height: "300px",
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                  boxShadow: "0 4px 10px rgba(0, 0, 0, 0.5)",
+                }}
+              />
+            )}
+          </div>
+
+          {/* Información del líder (Derecha) */}
+          <div style={{ flex: 1 }}>
+            {leader && (
+              <div style={{ marginTop: "50px" , textAlign: "center"}}>
+              
+              <h3 style={{ fontSize: "2.1rem",color: "fuchsia", lineHeight: "1.5", marginTop: "30px" }}>
+                {leader.descripcion_miembro}
+              </h3>
+              <h3 style={{ fontSize: "2rem", marginBottom: "30px" }}>
+                {leader.nombre_miembro}
+              </h3>
+            </div>
+            )}
+          </div>
         </div>
       </section>
 
-      {/* Sección de Líder */}
-      {leader && (
-        <section className="leader-section">
-          <div className="content">
-            <div className="leader-info">
-              <h2>Líder del partido</h2>
-              <div className="leader-card">
-                <div className="leader-name-photo">
-                  <h3>{leader.nombre_miembro}</h3>
-                  {leader.url_to_image_placeholder && (
-                    <img
-                      src={leader.url_to_image_placeholder}
-                      alt={leader.nombre_miembro}
-                    />
-                  )}
-                </div>
-                <div className="leader-description">
-                  <p>{leader.descripcion_miembro}</p>
-                  <p>
-                    <strong>Nivel Académico:</strong> {leader.nivel_academico}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* Sección de Miembros (no el líder) */}
       <section className="news-section">
