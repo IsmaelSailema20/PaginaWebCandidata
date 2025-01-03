@@ -10,7 +10,29 @@ function Home() {
   const [sections, setSections] = useState([]); // Estado para almacenar las secciones
   const [informacion, setInformacion] = useState([]);
   const API_BASE_URL = "http://localhost/ProyectoManejo/PaginaWebCandidata/models";
+  const [selectedMember, setSelectedMember] = useState(members[0]);
+  // Aquí debería estar la lista de miembros
 
+  // Función para ir al siguiente miembro
+  const nextMember = () => {
+    const currentIndex = members.indexOf(selectedMember);
+    const nextIndex = (currentIndex + 1) % members.length;  // Si llega al final, vuelve al primero
+    setSelectedMember(members[nextIndex]);
+  };
+
+  // Función para ir al miembro anterior
+  const prevMember = () => {
+    const currentIndex = members.indexOf(selectedMember);
+    const prevIndex = (currentIndex - 1 + members.length) % members.length;  // Si llega al primero, vuelve al último
+    setSelectedMember(members[prevIndex]);
+  };
+
+  // Inicializa el primer miembro
+  useEffect(() => {
+    if (members.length > 0) {
+      setSelectedMember(members[0]);
+    }
+  }, [members]);
   // Obtener secciones
   useEffect(() => {
     fetch(`${API_BASE_URL}/get_secciones_visibles.php`)
@@ -84,8 +106,13 @@ function Home() {
       .catch((error) => console.error("Error al obtener propuestas:", error));
   }, []);
 
+
   return (
     <>
+      <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      />
       <section
         className="top-section"
         style={{
@@ -110,7 +137,7 @@ function Home() {
             top: 0,
             left: 0,
             zIndex: -1,
-            filter: "brightness(0.5) blur(5px)" 
+            filter: "brightness(0.5) blur(2px)"
           }}
         ></div>
 
@@ -129,7 +156,7 @@ function Home() {
           }}
         >
           {/* Información del partido (Izquierda) */}
-          <div style={{ flex: 1, marginTop: "50px" , textAlign: "center"}}>
+          <div style={{ flex: 1, marginTop: "50px", textAlign: "center" }}>
             {leader && (
               <div>
                 <h3
@@ -145,7 +172,7 @@ function Home() {
                 >
                   {informacion['Nombre del partido']}
                 </h3>
-                <h3 style={{ fontSize: "1.5rem", lineHeight: "1.5", marginTop: "10px",  textAlign: "center" }}>
+                <h3 style={{ fontSize: "1.5rem", lineHeight: "1.5", marginTop: "10px", textAlign: "center" }}>
                   {informacion['Slogan del partido']}
                 </h3>
               </div>
@@ -172,15 +199,15 @@ function Home() {
           {/* Información del líder (Derecha) */}
           <div style={{ flex: 1 }}>
             {leader && (
-              <div style={{ marginTop: "50px" , textAlign: "center"}}>
-              
-              <h3 style={{ fontSize: "2.1rem",color: "fuchsia", lineHeight: "1.5", marginTop: "30px" }}>
-                {leader.descripcion_miembro}
-              </h3>
-              <h3 style={{ fontSize: "2rem", marginBottom: "30px" }}>
-                {leader.nombre_miembro}
-              </h3>
-            </div>
+              <div style={{ marginTop: "50px", textAlign: "center" }}>
+
+                <h3 style={{ fontSize: "2.1rem", color: "fuchsia", lineHeight: "1.5", marginTop: "30px" }}>
+                  {leader.descripcion_miembro}
+                </h3>
+                <h3 style={{ fontSize: "2rem", marginBottom: "30px" }}>
+                  {leader.nombre_miembro}
+                </h3>
+              </div>
             )}
           </div>
         </div>
@@ -188,31 +215,94 @@ function Home() {
 
 
       {/* Sección de Miembros (no el líder) */}
-      <section className="news-section">
-        <div className="content">
-          <p className="subtitle">MIEMBROS DESTACADOS</p>
-          <div className="members-list">
-            {members.length > 0 ? (
-              members.map((member, index) => (
-                <div className="member-card" key={index}>
-                  <div className="member-name-photo">
-                    <h3>{member.nombre_miembro}</h3>
-                    <img
-                      src={member.url_to_image_placeholder}
-                      alt={member.nombre_miembro}
-                    />
-                  </div>
-                  <div className="member-description">
-                    <p>{member.descripcion_miembro}</p>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <p>Cargando miembros...</p>
-            )}
+      <section className="min-h-[600px] relative bg-dark text-white p-8">
+  <div className="content container mx-auto relative flex flex-col items-center gap-4">
+    {selectedMember ? (
+      <div className="grid grid-cols-2 items-center w-full max-w-5xl">
+        {/* Card de información */}
+        <div className="bg-blue-900 text-white rounded-l-lg shadow-lg p-6 h-[350px] w-full flex flex-col justify-between">
+          <div>
+            <h3 className="text-2xl font-bold mb-2">{selectedMember.tipo_miembro}</h3>
+            <h3 className="text-xl mb-2">{selectedMember.nombre_miembro}</h3>
+            <h2 className="text-base font-normal mb-4">{selectedMember.descripcion_miembro}</h2>
+          </div>
+          <div className="border-b-2 border-fuchsia-500 my-2"></div>
+          <div className="flex space-x-4">
+            <i
+              className="fab fa-facebook text-3xl text-blue-600 hover:scale-110 cursor-pointer transition-transform"
+              onClick={() => window.location.href = selectedMember.facebook_url}
+            ></i>
+            <i
+              className="fab fa-instagram text-3xl text-pink-500 hover:scale-110 cursor-pointer transition-transform"
+              onClick={() => window.location.href = selectedMember.instagram_url}
+            ></i>
+            <button
+              className="bg-fuchsia-500 text-white px-4 py-2 rounded-lg text-base font-semibold hover:scale-110 transition-transform"
+              onClick={() => window.location.href = selectedMember.ver_mas_url}
+            >
+              Ver más
+            </button>
           </div>
         </div>
-      </section>
+
+        {/* Imagen */}
+        <div className="w-[350px] h-[350px] flex">
+          <img
+            src={selectedMember.url_to_image_placeholder}
+            alt={selectedMember.nombre_miembro}
+            className="w-full h-full object-cover rounded-r-lg"
+          />
+        </div>
+      </div>
+    ) : (
+      <p className="text-center text-gray-400">Cargando miembro...</p>
+    )}
+
+    {/* Botones de navegación */}
+    <div className="flex gap-4 mt-4">
+      <button
+        onClick={prevMember}
+        className="bg-blue-950 text-white w-12 h-12 flex items-center justify-center rounded-full hover:bg-fuchsia-800"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="w-6 h-6"
+        >
+          <path d="M14 7l-5 5 5 5" />
+        </svg>
+      </button>
+      <button
+        onClick={nextMember}
+        className="bg-blue-950 text-white w-12 h-12 flex items-center justify-center rounded-full hover:bg-fuchsia-800"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="w-6 h-6"
+        >
+          <path d="M10 17l5-5-5-5" />
+        </svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+
 
       {/* Sección de Noticias */}
       <section className="news-section">
