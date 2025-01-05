@@ -118,11 +118,6 @@ body {
 }
 
 /* Sección de Noticias */
-.news-section {
-  background-color: #f4f4f4;
-  padding: 60px 20px;
-  text-align: center;
-}
 
 .news-items {
   display: flex;
@@ -133,7 +128,6 @@ body {
 
 .news-item {
   width: 32%;
-  background-color: white;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -152,12 +146,10 @@ body {
   font-family: "Poppins", sans-serif;
   font-size: 1.5rem;
   font-weight: 700;
-  color: #333;
 }
 
 .news-item p {
   font-size: 1.1rem;
-  color: #555;
 }
 
 /* Estilos generales */
