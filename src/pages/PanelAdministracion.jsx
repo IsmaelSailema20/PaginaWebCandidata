@@ -126,7 +126,7 @@ function PanelAdministracion() {
       </aside>
 
       {/* Área de contenido que cambia dependiendo de la sección */}
-      <div className="flex-1 p-6 max-h-screen overflow-y-auto">
+      <div className="flex-1 max-h-screen overflow-y-auto">
         {activeSection === "principal" && (
           <section>
             <DiagonalBackground />

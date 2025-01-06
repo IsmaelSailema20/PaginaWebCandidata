@@ -1,7 +1,12 @@
 <?php
+// get_propuestas.php
+
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+
+
 header('Access-Control-Allow-Origin: http://localhost:5173');
+
 header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
 header('Access-Control-Allow-Credentials: true');
@@ -12,20 +17,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
-include 'conexion.php';
+include 'Conexion.php';
 
-class Propuestas
-{
+class Propuestas {
     private $conn;
 
-    public function __construct()
-    {
+    public function __construct() {
         $conexion = new Conexion();
         $this->conn = $conexion->conectar();
     }
 
-    public function obtenerPropuestasYCategorias()
-    {
+    public function obtenerPropuestasYCategorias() {
         try {
             $sqlPropuestas = "SELECT
                                 p.id_propuesta,
@@ -34,8 +36,10 @@ class Propuestas
                                 p.descripcion_propuesta,
                                 p.icon,
                                 p.visible,
+                                p.is_favorite,
                                 p.alcance_propuesta,
                                 p.id_candidato,
+                                p.img_url,
                                 m.id_miembro,
                                 m.nombre_miembro,
                                 m.url_to_image_placeholder AS imgSrc,
@@ -54,8 +58,6 @@ class Propuestas
             $stmtCategorias = $this->conn->prepare($sqlCategorias);
             $stmtCategorias->execute();
             $categorias = $stmtCategorias->fetchAll(PDO::FETCH_ASSOC);
-
-            // Convert visible to boolean
             $propuestas = array_map(function ($propuesta) {
                 $propuesta['visible'] = $propuesta['visible'] == 1;
                 return $propuesta;
@@ -77,3 +79,5 @@ try {
     http_response_code(500);
     echo json_encode(['error' => $e->getMessage()]);
 }
+?>
+

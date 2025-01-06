@@ -1,8 +1,10 @@
 <?php
+// agregar_propuesta.php
+
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Origin: *'); // Ajusta esto según tu configuración de CORS
 header('Access-Control-Allow-Methods: POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
 header('Access-Control-Allow-Credentials: true');
@@ -23,13 +25,23 @@ class PropuestaManager {
         $this->conn = $conexion->conectar();
     }
 
+    // Función para validar la URL de la imagen
+    private function validarImagenUrl($url) {
+        return filter_var($url, FILTER_VALIDATE_URL) && preg_match('/\.(jpeg|jpg|gif|png|svg)$/i', $url);
+    }
+
     public function agregarPropuesta($datos) {
         try {
+            // Validar img_url si está proporcionada
+            if (!empty($datos['img_url']) && !$this->validarImagenUrl($datos['img_url'])) {
+                throw new Exception('URL de imagen inválida.');
+            }
+
             $this->conn->beginTransaction();
 
             $sqlPropuesta = "INSERT INTO propuestas
-                (titulo_propuesta, subtitle, descripcion_propuesta, icon, id_candidato, alcance_propuesta)
-                VALUES (:titulo, :subtitle, :descripcion, :icon, :id_candidato, :alcance_propuesta)";
+                (titulo_propuesta, subtitle, descripcion_propuesta, icon, id_candidato, alcance_propuesta, img_url)
+                VALUES (:titulo, :subtitle, :descripcion, :icon, :id_candidato, :alcance_propuesta, :img_url)";
 
             $stmtPropuesta = $this->conn->prepare($sqlPropuesta);
             $stmtPropuesta->bindValue(':titulo', $datos['titulo_propuesta']);
@@ -38,6 +50,7 @@ class PropuestaManager {
             $stmtPropuesta->bindValue(':icon', $datos['icon']);
             $stmtPropuesta->bindValue(':id_candidato', $datos['id_candidato']);
             $stmtPropuesta->bindValue(':alcance_propuesta', $datos['alcance_propuesta']);
+            $stmtPropuesta->bindValue(':img_url', $datos['img_url'] ?? null); // Maneja valores nulos
             $stmtPropuesta->execute();
 
             $idPropuesta = $this->conn->lastInsertId();
@@ -70,12 +83,16 @@ class PropuestaManager {
                     'icon' => $datos['icon'],
                     'categoria' => $datos['categoria'],
                     'id_candidato' => $datos['id_candidato'],
-                    'alcance_propuesta' => $datos['alcance_propuesta']
+                    'alcance_propuesta' => $datos['alcance_propuesta'],
+                    'img_url' => $datos['img_url'] ?? null
                 ]
             ];
         } catch (PDOException $e) {
             $this->conn->rollBack();
             http_response_code(500);
+            return ['error' => $e->getMessage()];
+        } catch (Exception $e) {
+            http_response_code(400);
             return ['error' => $e->getMessage()];
         }
     }
@@ -93,4 +110,4 @@ try {
     http_response_code(500);
     echo json_encode(['error' => $e->getMessage()]);
 }
-
+?>

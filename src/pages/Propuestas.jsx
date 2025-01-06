@@ -29,10 +29,14 @@ const Propuestas = () => {
   const [filteredPropuestas, setFilteredPropuestas] = useState([]);
   const [allCategories, setAllCategories] = useState([]);
   const [allCandidatos, setAllCandidatos] = useState([]);
-  const [allAlcances, setAllAlcances] = useState(["nacional", "regional", "local"]);
+  const [allAlcances, setAllAlcances] = useState([
+    "nacional",
+    "regional",
+    "local",
+  ]);
   const [currentCandidato, setCurrentCandidato] = useState({
     nombre_miembro: "",
-    imgSrc: ""
+    imgSrc: "",
   });
 
   const iconMap = {
@@ -53,14 +57,23 @@ const Propuestas = () => {
     const fetchPropuestas = async () => {
       try {
         const response = await fetch(
-          "http://localhost/models/get_propuestas.php"
+          "http://localhost:8081/ProyectoManejo/paginaWebCandidata/models/get_propuestas.php"
         );
         if (!response.ok)
           throw new Error(`Error en la solicitud: ${response.status}`);
 
         const data = await response.json();
+        if (data.error) {
+          console.error("Error fetching proposals:", data.error);
+          setPropuestas([]);
+          setFilteredPropuestas([]);
+          setAllCategories([]);
+          setAllCandidatos([]);
+          return;
+        }
+
         setPropuestas(data.propuestas);
-        setFilteredPropuestas(data.propuestas.filter(p => p.visible));
+        setFilteredPropuestas(data.propuestas.filter((p) => p.visible));
         setAllCategories(
           Array.from(
             new Set(data.categorias.map((cat) => cat.nombre_cat_propuesta))
@@ -83,7 +96,7 @@ const Propuestas = () => {
   }, []);
 
   useEffect(() => {
-    let filtered = propuestas.filter(propuesta => propuesta.visible);
+    let filtered = propuestas.filter((propuesta) => propuesta.visible);
 
     if (selectedCategories.length > 0) {
       filtered = filtered.filter((propuesta) =>
@@ -92,18 +105,19 @@ const Propuestas = () => {
     }
 
     if (selectedCandidato) {
-      filtered = filtered.filter((propuesta) =>
-        propuesta.nombre_miembro === selectedCandidato
+      filtered = filtered.filter(
+        (propuesta) => propuesta.nombre_miembro === selectedCandidato
       );
     }
 
     if (selectedAlcance) {
-      filtered = filtered.filter((propuesta) =>
-        propuesta.alcance_propuesta === selectedAlcance
+      filtered = filtered.filter(
+        (propuesta) => propuesta.alcance_propuesta === selectedAlcance
       );
     }
-    const uniquePropuestas = Array.from(new Set(filtered.map(p => p.id_propuesta)))
-      .map(id => filtered.find(p => p.id_propuesta === id));
+    const uniquePropuestas = Array.from(
+      new Set(filtered.map((p) => p.id_propuesta))
+    ).map((id) => filtered.find((p) => p.id_propuesta === id));
 
     setFilteredPropuestas(uniquePropuestas);
     setCurrentIndex(0);
@@ -114,7 +128,12 @@ const Propuestas = () => {
       const propuesta = filteredPropuestas[currentIndex];
       setCurrentCandidato({
         nombre_miembro: propuesta.nombre_miembro,
-        imgSrc: propuesta.imgSrc
+        imgSrc: propuesta.imgSrc,
+      });
+    } else {
+      setCurrentCandidato({
+        nombre_miembro: "",
+        imgSrc: "",
       });
     }
   }, [currentIndex, filteredPropuestas]);
@@ -127,10 +146,10 @@ const Propuestas = () => {
     );
 
   const handleCandidatoClick = (candidato) =>
-    setSelectedCandidato(prev => prev === candidato ? "" : candidato);
+    setSelectedCandidato((prev) => (prev === candidato ? "" : candidato));
 
   const handleAlcanceClick = (alcance) =>
-    setSelectedAlcance(prev => prev === alcance ? "" : alcance);
+    setSelectedAlcance((prev) => (prev === alcance ? "" : alcance));
 
   const handleNavigation = (direction) => {
     if (isAnimating || filteredPropuestas.length === 0) return;
@@ -214,9 +233,11 @@ const Propuestas = () => {
         <div className="w-full md:w-5/12 p-8 flex flex-col justify-center items-center">
           <div className="relative mb-8">
             <img
-              src={currentCandidato.imgSrc}
-              alt={currentCandidato.nombre_miembro}
-              className="w-60 h-50 relative rounded-lg shadow-2xl transform transition-transform duration-500 hover:scale-105"
+              src={currentCandidato.imgSrc || 'https://via.placeholder.com/240'}
+              alt={currentCandidato.nombre_miembro || 'Candidato'}
+              className="w-60 h-50 relative rounded-lg shadow-2xl transform transition-transform duration-500 hover:scale-105 object-cover"
+              loading="lazy"
+              onError={(e) => { e.target.src = 'https://via.placeholder.com/240'; }}
             />
             {showSparkle && (
               <Sparkles
@@ -226,14 +247,15 @@ const Propuestas = () => {
             )}
           </div>
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-4 font-montserrat">
-            {currentCandidato.nombre_miembro}
+            {currentCandidato.nombre_miembro || "Nombre del Candidato"}
           </h2>
           <div className="mt-8 w-full">
             <div className="bg-gray-100 backdrop-blur-lg rounded-2xl p-4 shadow-xl">
               <div className="mb-4">
-                <h5 className="text-lg font-semibold text-gray-700">Filtrar por Categoría</h5>
-                <br/>
-                <div className="flex flex-wrap gap-2">
+                <h5 className="text-lg font-semibold text-gray-700">
+                  Filtrar por Categoría
+                </h5>
+                <div className="flex flex-wrap gap-2 mt-2">
                   {allCategories.map((category) => (
                     <button
                       key={category}
@@ -250,9 +272,10 @@ const Propuestas = () => {
                 </div>
               </div>
               <div className="mb-4">
-                <h5 className="text-lg font-semibold text-gray-700">Filtrar por Alcance</h5>
-                <br/>
-                <div className="flex flex-wrap gap-2">
+                <h5 className="text-lg font-semibold text-gray-700">
+                  Filtrar por Alcance
+                </h5>
+                <div className="flex flex-wrap gap-2 mt-2">
                   {allAlcances.map((alcance) => (
                     <button
                       key={alcance}
@@ -263,15 +286,16 @@ const Propuestas = () => {
                           : "bg-gray-300 text-gray-700 hover:bg-gray-400"
                       }`}
                     >
-                      {alcance}
+                      {alcance.charAt(0).toUpperCase() + alcance.slice(1)}
                     </button>
                   ))}
                 </div>
               </div>
               <div className="mb-4">
-                <h5 className="text-lg font-semibold text-gray-700">Filtrar por Candidato</h5>
-                <br/>
-                <div className="flex flex-wrap gap-2">
+                <h5 className="text-lg font-semibold text-gray-700">
+                  Filtrar por Candidato
+                </h5>
+                <div className="flex flex-wrap gap-2 mt-2">
                   {allCandidatos.map((candidato) => (
                     <button
                       key={candidato}
@@ -294,62 +318,69 @@ const Propuestas = () => {
         <div className="w-full md:w-7/12 p-8 flex flex-col justify-center">
           <div className="flex flex-col items-center">
             <div className="text-center mb-20">
-              <h3 className="text-5xl font-bold text-grey-900 bg-clip-text animate-gradient font-montserrat">
+              <h3 className="text-5xl font-bold text-gray-900 bg-clip-text animate-gradient font-montserrat">
                 Nuestras Propuestas
               </h3>
             </div>
 
-            <div className="w-full max-w-xl">
-              <div className="relative h-96">
+            <div className="w-full max-w-2xl">
+              <div className="w-full">
                 {filteredPropuestas.length > 0 ? (
                   filteredPropuestas.map((propuesta, index) => {
                     const isActive = index === currentIndex;
                     return (
                       <div
                         key={propuesta.id_propuesta}
-                        className={`absolute inset-0 w-full transition-all duration-500 ease-out ${
+                        className={`w-full transition-all duration-500 ease-out ${
                           isActive
-                            ? "opacity-100 translate-x-0 scale-100"
-                            : index < currentIndex
-                            ? "opacity-0 -translate-x-full scale-95"
-                            : "opacity-0 translate-x-full scale-95"
+                            ? "block opacity-100 translate-x-0 scale-100"
+                            : "hidden opacity-0"
                         }`}
                       >
-                        <div className="bg-gray-100 rounded-xl shadow-lg p-8 h-full flex flex-col border border-gray-200">
-                          <div className="flex justify-center mb-4">
-                            <div className="p-3 rounded-full bg-gradient-to-r from-[#42B9E5] to-[#FF5B8E]">
+                        <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden transition-transform transform hover:scale-105 hover:shadow-xl">
+                          <div className="relative">
+                            <img
+                              src={propuesta.img_url || 'https://via.placeholder.com/400x300?text=Sin+Imagen'}
+                              alt={propuesta.titulo_propuesta}
+                              className="w-full h-56 object-cover"
+                              loading="lazy"
+                              onError={(e) => { e.target.src = 'https://via.placeholder.com/400x300?text=Imagen+No+Disponible'; }}
+                            />
+                            <div className="absolute top-4 right-4 bg-black bg-opacity-75 rounded-full p-2 shadow-lg">
                               {renderIcon(propuesta.icon)}
                             </div>
                           </div>
-                          <div className="text-center mb-4">
-                            <h3 className="text-2xl font-bold bg-clip-text text-grey-900  font-montserrat">
+                          <div className="p-6 flex flex-col">
+                            <h3 className="text-center text-3xl font-bold text-gray-900 mb-2 font-montserrat">
                               {propuesta.titulo_propuesta}
                             </h3>
-                            <h4 className="text-lg font-semibold text-grey-900 font-montserrat">
+                            <h4 className="text-xl text-center font-semibold text-gray-700 mb-4">
                               {propuesta.subtitle}
                             </h4>
+                            <p className="text-justify text-lg text-gray-600 leading-relaxed font-montserrat">
+                              {propuesta.descripcion_propuesta}
+                            </p>
                           </div>
-                          <p className="text-gray-600 leading-relaxed text-center flex-grow font-montserrat">
-                            {propuesta.descripcion_propuesta}
-                          </p>
                         </div>
                       </div>
                     );
                   })
                 ) : (
                   <p className="text-center text-gray-500">
-                    No hay propuestas que coincidan con los criterios de búsqueda.
+                    No hay propuestas que coincidan con los criterios de
+                    búsqueda.
                   </p>
                 )}
               </div>
 
-              <div className="flex justify-center gap-2 mt-6">
+              <div className="mt-6 space-y-6">
+              <div className="flex justify-center gap-2">
                 {filteredPropuestas.map((_, index) => (
                   <button
                     key={index}
-                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
                       index === currentIndex
-                        ? "bg-[#FF8B9A] w-4"
+                        ? "bg-black w-4 h-4"
                         : "bg-gray-300"
                     }`}
                     onClick={() => setCurrentIndex(index)}
@@ -357,21 +388,22 @@ const Propuestas = () => {
                 ))}
               </div>
 
-              <div className="flex justify-center gap-20 mt-8">
+              <div className="flex justify-center gap-20">
                 <button
                   onClick={() => handleNavigation("prev")}
-                  className="bg-gradient-to-r from-[#FF8B9A] to-[#72D5FF] text-white p-3 rounded-full shadow-lg hover:opacity-90 transition-all duration-300 transform hover:scale-110 disabled:opacity-50"
+                  className="bg-black bg-opacity-75 text-white p-3 rounded-full shadow-lg hover:opacity-90 transition-all duration-300 transform hover:scale-110 disabled:opacity-50"
                   disabled={isAnimating || filteredPropuestas.length === 0}
                 >
                   <ChevronLeft size={24} />
                 </button>
                 <button
                   onClick={() => handleNavigation("next")}
-                  className="bg-gradient-to-r from-[#FF8B9A] to-[#72D5FF] text-white p-3 rounded-full shadow-lg hover:opacity-90 transition-all duration-300 transform hover:scale-110 disabled:opacity-50"
+                  className="bg-black bg-opacity-75 text-white p-3 rounded-full shadow-lg hover:opacity-90 transition-all duration-300 transform hover:scale-110 disabled:opacity-50"
                   disabled={isAnimating || filteredPropuestas.length === 0}
                 >
                   <ChevronRight size={24} />
                 </button>
+                </div>
               </div>
             </div>
           </div>
