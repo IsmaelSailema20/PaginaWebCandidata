@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { PlusCircle, Edit2, Trash2, Eye, EyeOff, Star } from "lucide-react"; // Importación de los iconos
 import FormularioSeccionInicio from "../FormularioSeccionInicio.jsx";
-import FormularioEditarSeccion from "../FormularioEditarSeccion.jsx"; // Renombrado
+import FormularioEditarSeccion from "../FormularioEditarSeccion.jsx";
+import FormularioInfoPartido from "../FormularioInfoPartido.jsx";
 
 function SeccionInicioAdm() {
+  const API_BASE_URL = "http://localhost/ProyectoManejo/PaginaWebCandidata/models";
+
   const [isAddingNew, setIsAddingNew] = useState(false);
   const [secciones, setSecciones] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -10,12 +14,9 @@ function SeccionInicioAdm() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [sectionToDelete, setSectionToDelete] = useState(null);
 
-  // Función para obtener las secciones desde el backend
   const fetchSecciones = async () => {
     try {
-      const response = await fetch(
-        "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/get_secciones_inicio.php"
-      );
+      const response = await fetch(`${API_BASE_URL}/get_secciones_inicio.php`);
       const data = await response.json();
 
       if (data.mensaje) {
@@ -30,58 +31,55 @@ function SeccionInicioAdm() {
     }
   };
 
-  // Función que se llama cuando se agrega o edita una nueva sección
   const handleSectionAddedOrUpdated = () => {
-    fetchSecciones(); // Recargamos las secciones
-    setIsAddingNew(false); // Cerrar el formulario después de agregar o editar
-    setEditingSection(null); // Limpiar la sección en edición
+    fetchSecciones();
+    setIsAddingNew(false);
+    setEditingSection(null);
   };
 
-  // Función para mostrar el modal de confirmación
   const handleDeleteClick = (id) => {
-    setSectionToDelete(id); // Guardamos el ID de la sección a eliminar
-    setIsModalVisible(true); // Mostramos el modal
+    setSectionToDelete(id);
+    setIsModalVisible(true);
   };
 
-  // Función para eliminar una sección
   const handleDelete = async () => {
     if (sectionToDelete) {
       try {
         const response = await fetch(
-          `http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/eliminar_seccion.php?id=${sectionToDelete}`,
+          `${API_BASE_URL}/eliminar_seccion.php?id=${sectionToDelete}`,
           {
             method: "GET",
           }
         );
         const data = await response.json();
 
-        fetchSecciones(); // Recargar las secciones después de eliminar
-        setIsModalVisible(false); // Ocultar el modal
+        fetchSecciones();
+        setIsModalVisible(false);
       } catch (error) {
         console.error("Error al eliminar la sección:", error);
       }
     }
   };
 
-  // Función para cancelar la eliminación
   const handleCancelDelete = () => {
-    setIsModalVisible(false); // Ocultar el modal sin hacer nada
-    setSectionToDelete(null); // Limpiar el ID de la sección
+    setIsModalVisible(false);
+    setSectionToDelete(null);
   };
 
-  // Función para iniciar la edición de una sección
   const handleEdit = (seccion) => {
-    setEditingSection(seccion); // Poner la sección en estado de edición
-    setIsAddingNew(true); // Mostrar el formulario para editar
+    setEditingSection(seccion);
+    setIsAddingNew(true);
   };
 
   useEffect(() => {
-    fetchSecciones(); // Se ejecuta una vez al montar el componente
+    fetchSecciones();
   }, []);
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
+      {/* Título "Información del Partido" con el botón al lado */}
       <div className="bg-white shadow-md rounded-lg p-6">
+        
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold text-gray-800">
             Gestión de Secciones de Inicio
@@ -89,10 +87,11 @@ function SeccionInicioAdm() {
           <button
             onClick={() => {
               setIsAddingNew(true);
-              setEditingSection(null); // No hay sección para editar cuando agregamos nueva
+              setEditingSection(null);
             }}
             className="flex items-center bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
           >
+            <PlusCircle className="mr-2" />
             Agregar sección en el inicio
           </button>
         </div>
@@ -128,7 +127,7 @@ function SeccionInicioAdm() {
               {secciones.map((seccion) => (
                 <div
                   key={seccion.id}
-                  className="grid grid-cols-3 gap-4 items-center border-b py-4"
+                  className="grid grid-cols-4 gap-4 items-center border-b py-4"
                 >
                   {/* Columna para la imagen */}
                   <div className="col-span-1">
@@ -139,12 +138,15 @@ function SeccionInicioAdm() {
                     />
                   </div>
 
-                  {/* Columna para el texto */}
-                  <div className="col-span-1">
+                  {/* Columna para la descripción */}
+                  <div className="col-span-2">
                     <h3 className="text-lg font-semibold text-gray-800">
                       {seccion.nombre}
                     </h3>
-                    <p className="text-gray-600">{seccion.descripcion}</p>
+                    <p className="text-gray-600">
+                      {seccion.descripcion.split(" ").slice(0, 7).join(" ")}
+                      {seccion.descripcion.split(" ").length > 7 && "..."}
+                    </p>
                     <p
                       className={`mt-2 ${
                         seccion.visibilidad == 1
@@ -162,12 +164,14 @@ function SeccionInicioAdm() {
                       onClick={() => handleEdit(seccion)}
                       className="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 transition mr-2"
                     >
+                      <Edit2 className="mr-2" />
                       Editar
                     </button>
                     <button
                       onClick={() => handleDeleteClick(seccion.id)}
                       className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition"
                     >
+                      <Trash2 className="mr-2" />
                       Eliminar
                     </button>
                   </div>
@@ -177,13 +181,10 @@ function SeccionInicioAdm() {
           )}
         </div>
 
-        {/* Modal de confirmación */}
         {isModalVisible && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
             <div className="bg-white p-6 rounded-lg shadow-lg relative w-96">
-              <h3 className="text-lg font-semibold text-gray-800">
-                Confirmación
-              </h3>
+              <h3 className="text-lg font-semibold text-gray-800">Confirmación</h3>
               <p className="text-gray-600 mt-4">
                 ¿Estás seguro de que quieres eliminar esta sección?
               </p>
