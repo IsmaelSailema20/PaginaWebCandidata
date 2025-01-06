@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 
+const ENDPOINT =
+  "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/editar_seccion.php";
+
 function FormularioEditarSeccion({ seccion, onCancel, onSectionUpdated }) {
   const [nombre, setNombre] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [imagenUrl, setImagenUrl] = useState("");
   const [isVisible, setIsVisible] = useState(false);
 
-  // Llenar los campos con los datos de la sección cuando se recibe el prop 'seccion'
   useEffect(() => {
     if (seccion) {
       setNombre(seccion.nombre);
@@ -28,25 +30,21 @@ function FormularioEditarSeccion({ seccion, onCancel, onSectionUpdated }) {
     };
 
     try {
-      const response = await fetch(
-        "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/editar_seccion.php",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(sectionData),
-        }
-      );
+      const response = await fetch(ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(sectionData),
+      });
 
       const data = await response.json();
 
       if (data.success) {
-        // Recargar la lista de secciones antes de cerrar el modal
         if (typeof onSectionUpdated === "function") {
-          await onSectionUpdated(); // Asegúrate de que la actualización se complete
+          await onSectionUpdated();
         }
-        onCancel(); // Cerrar el modal
+        onCancel();
       } else {
         alert("Error al editar la sección: " + data.message);
       }

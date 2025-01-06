@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 
+const ENDPOINT =
+  "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/agregar_seccion_inicio.php";
+
 function FormularioSeccionInicio({ onCancel, onSectionAdded }) {
   const [nombre, setNombre] = useState("");
   const [descripcion, setDescripcion] = useState("");
@@ -17,16 +20,13 @@ function FormularioSeccionInicio({ onCancel, onSectionAdded }) {
     };
 
     try {
-      const response = await fetch(
-        "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/agregar_seccion_inicio.php",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(sectionData),
-        }
-      );
+      const response = await fetch(ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(sectionData),
+      });
 
       const data = await response.json();
 
