@@ -498,36 +498,37 @@ function Home() {
       </section>
 
       {/* Sección de Secciones Dinámicas */}
-      <section className="sections-section">
-        <div className="content">
-          <div className="sections-list">
+      <section className="py-6 text-white">
+        <div className="max-w-7xl mx-auto px-4 text-white">
+          <div className="space-y-6 text-white">
             {sections.length > 0 ? (
               sections.map((section, index) => (
-                <div className="section-card" key={index}>
-                  <div className="content">
-                    <p className="subtitle center">{section.nombre}</p>
+                <div className="flex items-center p-4 text-white border border-gray-300 rounded-lg shadow-sm space-x-6" key={index}>
+                  <div className="flex-1 bg-blue-900 text-white p-4 rounded-lg">
+                    <p className="text-center text-white font-semibold text-lg">{section.nombre}</p>
+                    <div className="mt-2 mb-4 border-b-2 border-fuchsia-500 w-full mx-auto"></div> {/* Cambié w-12 por w-full */}
+                    <p className="mt-2 mb-4 text-white">{section.descripcion}</p>
                   </div>
-                  <div className="section-row">
-                    <div className="section-description">
-                      <p className="left">{section.descripcion}</p>
+                  {section.url_de_la_imagen && (
+                    <div className="flex-shrink-0">
+                      <img
+                        src={section.url_de_la_imagen}
+                        alt={section.nombre}
+                        className="w-80 h-auto rounded-lg shadow-lg"
+                      />
                     </div>
-                    {section.url_de_la_imagen && (
-                      <div className="section-image">
-                        <img
-                          src={section.url_de_la_imagen}
-                          alt={section.nombre}
-                        />
-                      </div>
-                    )}
-                  </div>
+                  )}
                 </div>
               ))
             ) : (
-              <p>Cargando secciones...</p>
+              <p className="text-center text-white">Cargando secciones...</p>
             )}
           </div>
         </div>
       </section>
+
+
+
 
     </>
   );
