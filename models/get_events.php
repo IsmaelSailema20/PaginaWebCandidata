@@ -2,10 +2,13 @@
 require_once 'conexion.php';
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
+
 try {
-    $query = $conn->prepare("SELECT titulo_evento_noticia AS titulo, descrip_evento_noticia AS descripcion, urlImagen, lugar_Evt AS lugar, fecha 
+    $query = $conn->prepare("SELECT * 
                              FROM eventos_noticias 
-                             WHERE tipo = 'Evento' AND visible = 1");
+                             WHERE tipo = 'Evento' AND visible = 1
+                             ORDER BY fecha DESC
+                             LIMIT 4");
     $query->execute();
     $result = $query->fetchAll(PDO::FETCH_ASSOC);
 
