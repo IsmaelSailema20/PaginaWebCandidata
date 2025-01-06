@@ -315,7 +315,9 @@ function Home() {
               </div>
             </div>
           ) : (
-            <p className="text-center text-gray-400">Cargando miembro...</p>
+            <p className="text-center text-gray-400">
+              No se encontrarón miembros del partido.
+            </p>
           )}
 
           {/* Botones de navegación */}
@@ -405,7 +407,7 @@ function Home() {
               </div>
             ))
           ) : (
-            <p className="text-gray-500">Cargando noticias...</p>
+            <p className="text-gray-500">No existen Noticias</p>
           )}
         </div>
       </section>
@@ -453,7 +455,7 @@ function Home() {
               </div>
             ))
           ) : (
-            <p className="text-gray-500">Cargando eventos...</p>
+            <p className="text-gray-500">No existen eventos</p>
           )}
         </div>
       </section>
@@ -512,7 +514,7 @@ function Home() {
               </div>
             ))
           ) : (
-            <p className="text-gray-500">Cargando propuestas...</p>
+            <p className="text-gray-500">No existen propuestas favoritas.</p>
           )}
         </div>
 
@@ -576,7 +578,9 @@ function Home() {
                 </div>
               ))
             ) : (
-              <p className="text-center text-white">Cargando secciones...</p>
+              <p className="text-center text-white">
+                No se encontrarón mas secciones.
+              </p>
             )}
           </div>
         </div>
