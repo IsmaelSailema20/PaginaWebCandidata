@@ -200,11 +200,26 @@ export default function EditModal({
       setError("Error al comunicarse con el servidor.");
     }
   };
-
+  const restricciones = {
+    Pais: {
+      PRESIDENTE: 1,
+      VICEPRESIDENTE: 1,
+      ASAMBLEISTA: 10,
+    },
+    Provincia: {
+      ALCALDE: 1,
+      PREFECTO: 1,
+      CONCEJAL: 10,
+    },
+    Universidad: {
+      RECTOR: 1,
+      VICERRECTOR: 3,
+    },
+  };
   const handleInputChange = (event) => {
     const { name, value } = event.target;
 
-    if (name === "descripcion_miembro" && value.length > 210) {
+    if (name === "descripcion_miembro" && value.length > 4000) {
       return;
     }
     setNuevoMiembro((prev) => ({
@@ -255,17 +270,28 @@ export default function EditModal({
               >
                 Tipo de Candidato
               </label>
-              <input
+              <select
                 id="tipo_miembro"
-                type="text"
-                placeholder="Tipo de Candidato"
                 name="tipo_miembro"
                 value={nuevoMiembro.tipo_miembro || ""}
-                onChange={handleInputChange}
+                onChange={(e) => handleInputChange(e)}
                 className="border p-2 rounded w-full"
                 required
-                maxLength="50"
-              />
+              >
+                <option value="">Seleccione un tipo</option>
+                {nivel &&
+                  Object.keys(restricciones[nivel] || {}).map((tipo) => {
+                    const limite = restricciones[nivel][tipo];
+                    const conteoActual = conteos[tipo] || 0;
+                    const disponible = conteoActual < limite;
+
+                    return (
+                      <option key={tipo} value={tipo} disabled={!disponible}>
+                        {tipo} {disponible ? "" : "(Límite alcanzado)"}
+                      </option>
+                    );
+                  })}
+              </select>
             </div>
 
             <div className="relative col-span-2">
@@ -283,7 +309,7 @@ export default function EditModal({
                 onChange={handleInputChange}
                 className="border p-2 rounded w-full"
                 rows="3"
-                maxLength="210"
+                maxLength="4000"
                 required
               />
             </div>

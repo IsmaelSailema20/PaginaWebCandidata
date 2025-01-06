@@ -24,14 +24,17 @@ try {
     $restricciones = [
         "Pais" => [
             "PRESIDENTE" => 1,
-            "VICEPRESIDENTE" => 1
+            "VICEPRESIDENTE" => 1,
+            "ASAMBLEISTA"=>10
         ],
         "Provincia" => [
             "ALCALDE" => 1,
-            "PREFECTO" => 1
+            "PREFECTO" => 1,
+            "CONCEJAL" => 10
         ],
         "Universidad" => [
-            "*" => 4
+            "RECTOR" => 1,
+            "VICERRECTOR" => 3
         ]
     ];
 
