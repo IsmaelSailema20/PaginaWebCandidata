@@ -4,6 +4,7 @@ import { useSettings } from "./SettingsContext";
 
 function Home() {
   const {
+    menuColor,
     backgroundColor,
     textColor,
     font,
@@ -206,8 +207,7 @@ function Home() {
                     fontSize: "2rem",
                     marginBottom: "20px",
                     padding: "10px",
-                    backgroundColor: "#007bff",
-                    color: "white",
+                    backgroundColor: menuColor,
                     borderRadius: "5px",
                     textAlign: "center",
                   }}
@@ -252,14 +252,19 @@ function Home() {
                 <h3
                   style={{
                     fontSize: "2.1rem",
-                    color: "fuchsia",
                     lineHeight: "1.5",
                     marginTop: "30px",
                   }}
                 >
                   {leader.descripcion_miembro}
                 </h3>
-                <h3 style={{ fontSize: "2rem", marginBottom: "30px" }}>
+                <h3
+                  style={{
+                    fontSize: "2rem",
+                    marginBottom: "30px",
+                    color: menuColor,
+                  }}
+                >
                   {leader.nombre_miembro}
                 </h3>
               </div>
@@ -526,7 +531,7 @@ function Home() {
 
                   {/* Botón Leer más */}
                   <button
-                    className="mt-6 mb-6 bg-blue-700  py-2 px-4 w-max mx-auto rounded-md hover:bg-blue-800"
+                    className="text-white mt-6 mb-6 bg-blue-700  py-2 px-4 w-max mx-auto rounded-md hover:bg-blue-800"
                     onClick={() =>
                       (window.location.href = "http://localhost:5173/eventos")
                     }
