@@ -84,7 +84,7 @@ export default function EditModal({
   }, [open, mode, miembroEditado]);
   useEffect(() => {
     fetch(
-      "http://localhost/ProyectoManejo/paginaWebCandidata/models/ConsultarNivel.php"
+      "http://localhost:8081/ProyectoManejo/paginaWebCandidata/models/ConsultarNivel.php"
     )
       .then((response) => response.json())
       .then((data) => {
@@ -169,8 +169,8 @@ export default function EditModal({
 
     const url =
       mode === "edit"
-        ? "http://localhost/ProyectoManejo/paginaWebCandidata/models/editCandidato.php"
-        : "http://localhost/ProyectoManejo/paginaWebCandidata/models/createCandidato.php";
+        ? "http://localhost:8081/ProyectoManejo/paginaWebCandidata/models/editCandidato.php"
+        : "http://localhost:8081/ProyectoManejo/paginaWebCandidata/models/createCandidato.php";
 
     try {
       const response = await fetch(url, {
@@ -219,7 +219,7 @@ export default function EditModal({
   const handleInputChange = (event) => {
     const { name, value } = event.target;
 
-    if (name === "descripcion_miembro" && value.length > 210) {
+    if (name === "descripcion_miembro" && value.length > 4000) {
       return;
     }
     setNuevoMiembro((prev) => ({
@@ -309,7 +309,7 @@ export default function EditModal({
                 onChange={handleInputChange}
                 className="border p-2 rounded w-full"
                 rows="3"
-                maxLength="210"
+                maxLength="4000"
                 required
               />
             </div>

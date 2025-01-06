@@ -20,7 +20,7 @@ export function ListWithAvatar() {
   const fetchMiembros = async () => {
     try {
       const response = await fetch(
-        "http://localhost/ProyectoManejo/paginaWebCandidata/models/ConsultaMiembros.php"
+        "http://localhost:8081/ProyectoManejo/paginaWebCandidata/models/ConsultaMiembros.php"
       );
       const data = await response.json();
       setMiembros(data);
@@ -63,7 +63,7 @@ export function ListWithAvatar() {
   const handleConfirmDelete = async () => {
     try {
       const response = await fetch(
-        "http://localhost/Proyectomanejo/paginaWebCandidata/models/deleteCandidato.php",
+        "http://localhost:8081/Proyectomanejo/paginaWebCandidata/models/deleteCandidato.php",
         {
           method: "POST",
           headers: {
