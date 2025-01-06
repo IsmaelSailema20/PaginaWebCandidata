@@ -15,11 +15,13 @@ import {
   LogOut,
   MessageSquareShare,
   ChartNoAxesColumn,
+  MonitorCog,
   Menu,
 } from "lucide-react";
 import SeccionVotacionesAdm from "../components/ComponentesAdmin/SeccionVotacionesAdm";
 import SeccionSugerenciasAdm from "../components/ComponentesAdmin/SeccionSugerenciasAdm";
 import SeccionEstadisticasVotos from "../components/ComponentesAdmin/SeccionEstadisticasVotos";
+import SeccionConfiguracionPagina from "../components/ComponentesAdmin/SeccionConfiguracionPagina";
 
 function PanelAdministracion() {
   // Estado para la sección activa
@@ -57,7 +59,13 @@ function PanelAdministracion() {
               <House />
               <span className="mx-4 font-medium">Home</span>
             </a>
-
+            <a
+              onClick={() => handleSectionClick("configuracion")}
+              className="flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 cursor-pointer"
+            >
+              <MonitorCog />
+              <span className="mx-4 font-medium">Configuración Sitio Web</span>
+            </a>
             <a
               onClick={() => handleSectionClick("inicio")}
               className="flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 cursor-pointer"
@@ -133,6 +141,7 @@ function PanelAdministracion() {
           </section>
         )}
         {activeSection === "inicio" && <SeccionInicioAdm />}
+        {activeSection === "configuracion" && <SeccionConfiguracionPagina />}
         {activeSection === "eventos" && <SeccionEventosAdm />}
         {activeSection === "candidatos" && <SeccionCandidatosAdm />}
         {activeSection === "propuestas" && <SeccionPropuestasAdm />}
