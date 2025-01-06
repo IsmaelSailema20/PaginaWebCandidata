@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
-const ENDPOINT = "http://localhost/ProyectoManejo/PaginaWebCandidata/models/agregar_seccion_inicio.php";
+const ENDPOINT =
+  "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/agregar_seccion_inicio.php";
 
 function FormularioSeccionInicio({ onCancel, onSectionAdded }) {
   const [nombre, setNombre] = useState("");

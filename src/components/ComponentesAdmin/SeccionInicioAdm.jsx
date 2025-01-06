@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { PlusCircle, Edit2, Trash2, Eye, EyeOff, Star } from "lucide-react"; // Importación de los iconos
 import FormularioSeccionInicio from "../FormularioSeccionInicio.jsx";
 import FormularioEditarSeccion from "../FormularioEditarSeccion.jsx";
-import FormularioInfoPartido from "../FormularioInfoPartido.jsx";
 
 function SeccionInicioAdm() {
-  const API_BASE_URL = "http://localhost/ProyectoManejo/PaginaWebCandidata/models";
+  const API_BASE_URL =
+    "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models";
 
   const [isAddingNew, setIsAddingNew] = useState(false);
   const [secciones, setSecciones] = useState([]);
@@ -79,7 +79,6 @@ function SeccionInicioAdm() {
     <div className="p-6 bg-gray-50 min-h-screen">
       {/* Título "Información del Partido" con el botón al lado */}
       <div className="bg-white shadow-md rounded-lg p-6">
-        
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold text-gray-800">
             Gestión de Secciones de Inicio
@@ -127,14 +126,14 @@ function SeccionInicioAdm() {
               {secciones.map((seccion) => (
                 <div
                   key={seccion.id}
-                  className="grid grid-cols-4 gap-4 items-center border-b py-4"
+                  className="grid grid-cols-4 gap-1 items-center border-b py-4"
                 >
                   {/* Columna para la imagen */}
                   <div className="col-span-1">
                     <img
                       src={seccion.url_de_la_imagen}
                       alt={seccion.nombre}
-                      className="w-32 h-32 object-cover"
+                      className="w-32 h-32 object-cover ml-16"
                     />
                   </div>
 
@@ -162,17 +161,15 @@ function SeccionInicioAdm() {
                   <div className="col-span-1 flex justify-center">
                     <button
                       onClick={() => handleEdit(seccion)}
-                      className="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 transition mr-2"
+                      className="text-blue-500 hover:bg-blue-100 p-2 rounded"
                     >
                       <Edit2 className="mr-2" />
-                      Editar
                     </button>
                     <button
                       onClick={() => handleDeleteClick(seccion.id)}
-                      className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition"
+                      className="text-red-500 hover:bg-red-100 p-2 rounded"
                     >
                       <Trash2 className="mr-2" />
-                      Eliminar
                     </button>
                   </div>
                 </div>
@@ -184,7 +181,9 @@ function SeccionInicioAdm() {
         {isModalVisible && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
             <div className="bg-white p-6 rounded-lg shadow-lg relative w-96">
-              <h3 className="text-lg font-semibold text-gray-800">Confirmación</h3>
+              <h3 className="text-lg font-semibold text-gray-800">
+                Confirmación
+              </h3>
               <p className="text-gray-600 mt-4">
                 ¿Estás seguro de que quieres eliminar esta sección?
               </p>

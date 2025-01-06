@@ -217,10 +217,10 @@ const TeamSection = () => {
                     {selectedCandidate.nombre_miembro}
                   </h2>
                   <p className="text-lg font-semibold text-gray-700">
-                     {selectedCandidate.nivel_academico}
+                    {selectedCandidate.nivel_academico}
                   </p>
                   <p className="text-lg font-semibold text-gray-700">
-                   {selectedCandidate.tipo_miembro}
+                    {selectedCandidate.tipo_miembro}
                   </p>
 
                   {/* Descripción con altura más corta */}

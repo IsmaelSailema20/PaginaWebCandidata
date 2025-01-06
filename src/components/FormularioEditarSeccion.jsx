@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 const ENDPOINT =
-  "http://localhost/ProyectoManejo/PaginaWebCandidata/models/editar_seccion.php";
+  "http://localhost:8081/ProyectoManejo/PaginaWebCandidata/models/editar_seccion.php";
 
 function FormularioEditarSeccion({ seccion, onCancel, onSectionUpdated }) {
   const [nombre, setNombre] = useState("");
