@@ -3,6 +3,8 @@ import { FaFacebook, FaInstagram } from "react-icons/fa";
 
 const TeamSection = () => {
   const [teamMembers, setTeamMembers] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedCandidate, setSelectedCandidate] = useState(null);
 
   useEffect(() => {
     fetch(
@@ -27,7 +29,7 @@ const TeamSection = () => {
         };
 
         const sortedMembers = data
-          .filter((member) => member.visible === "1") // Solo miembros visibles
+          .filter((member) => member.visible == 1) // Solo miembros visibles
           .sort(
             (a, b) =>
               levelsOrder[a.tipo_miembro.toLowerCase()] -
@@ -40,19 +42,36 @@ const TeamSection = () => {
         console.error("Error fetching the team members:", error);
       });
   }, []);
-
+  const openModal = (candidate) => {
+    setSelectedCandidate(candidate);
+    setIsModalOpen(true);
+    console.log(selectedCandidate);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedCandidate(null);
+  };
+  const truncateText = (text, maxLength, candidate) => {
+    if (text.length > maxLength) {
+      return (
+        <>
+          {text.slice(0, maxLength)}
+          <span
+            className="text-blue-600 cursor-pointer"
+            onClick={() => openModal(candidate)}
+          >
+            ... Ver más
+          </span>
+        </>
+      );
+    }
+    return text;
+  };
   if (teamMembers.length === 0) {
     return <p className="text-center">Cargando...</p>;
   }
 
   const [mainCandidate, secondCandidate, ...otherCandidates] = teamMembers;
-
-  const truncateText = (text, maxLength) => {
-    if (text.length > maxLength) {
-      return text.slice(0, maxLength) + "...";
-    }
-    return text;
-  };
 
   return (
     <section className="relative w-full min-h-screen overflow-hidden bg-white text-black py-16">
@@ -93,13 +112,36 @@ const TeamSection = () => {
               {mainCandidate.tipo_miembro}
             </p>
             <p className="text-lg mb-4">
-              {truncateText(mainCandidate.descripcion_miembro, 350)}
+              {truncateText(
+                mainCandidate.descripcion_miembro,
+                100,
+                mainCandidate
+              )}
             </p>
             <p className="text-md mb-6 font-semibold">
               Nivel Académico: {mainCandidate.nivel_academico}
             </p>
+            <div className="flex space-x-4">
+              <a
+                href={mainCandidate.facebook_url || "#"}
+                className="bg-gradient-to-r from-[#8bb9ff] to-[#72D5FF] text-white p-3 rounded-full shadow-lg hover:opacity-90 transition-all duration-300 transform hover:scale-110"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <FaFacebook size={24} />
+              </a>
+              <a
+                href={mainCandidate.instagram_url || "#"}
+                className="bg-gradient-to-r from-[#8bb9ff] to-[#72D5FF] text-white p-3 rounded-full shadow-lg hover:opacity-90 transition-all duration-300 transform hover:scale-110"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <FaInstagram size={24} />
+              </a>
+            </div>
           </div>
         </div>
+
         {/* Segundo candidato */}
         {secondCandidate && (
           <div className="flex flex-col lg:flex-row items-center mb-12">
@@ -124,15 +166,84 @@ const TeamSection = () => {
                 {secondCandidate.tipo_miembro}
               </p>
               <p className="text-lg mb-4">
-                {truncateText(secondCandidate.descripcion_miembro, 350)}
+                {truncateText(
+                  secondCandidate.descripcion_miembro,
+                  100,
+                  secondCandidate
+                )}
               </p>
               <p className="text-md mb-6 font-semibold">
                 Nivel Académico: {secondCandidate.nivel_academico}
               </p>
+              <div className="flex space-x-4">
+                <a
+                  href={secondCandidate.facebook_url || "#"}
+                  className="bg-gradient-to-r from-[#8bb9ff] to-[#72D5FF] text-white p-3 rounded-full shadow-lg hover:opacity-90 transition-all duration-300 transform hover:scale-110"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <FaFacebook size={24} />
+                </a>
+                <a
+                  href={secondCandidate.instagram_url || "#"}
+                  className="bg-gradient-to-r from-[#8bb9ff] to-[#72D5FF] text-white p-3 rounded-full shadow-lg hover:opacity-90 transition-all duration-300 transform hover:scale-110"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <FaInstagram size={24} />
+                </a>
+              </div>
             </div>
           </div>
         )}
         {/* Otros miembros */}
+        {isModalOpen && selectedCandidate && (
+          <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+            <div className="bg-white rounded-2xl shadow-xl w-11/12 md:w-3/5 h-[63%] overflow-hidden flex relative">
+              {/* Botón de cierre */}
+              <button
+                className="absolute top-4 right-4 bg-gray-100 hover:bg-red-500 text-gray-800 hover:text-white text-xl rounded-full w-10 h-10 flex items-center justify-center transition-all"
+                onClick={closeModal}
+              >
+                &times;
+              </button>
+
+              {/* Contenido del modal */}
+              <div className="flex flex-col md:flex-row w-full h-full">
+                {/* Información textual */}
+                <div className="w-full md:w-2/3 p-6 space-y-4">
+                  {/* Título */}
+                  <h2 className="text-3xl font-bold text-gray-800">
+                    {selectedCandidate.nombre_miembro}
+                  </h2>
+                  <p className="text-lg font-semibold text-gray-700">
+                     {selectedCandidate.nivel_academico}
+                  </p>
+                  <p className="text-lg font-semibold text-gray-700">
+                   {selectedCandidate.tipo_miembro}
+                  </p>
+
+                  {/* Descripción con altura más corta */}
+                  <div className="overflow-y-scroll h-80 border-t mt-4 pt-4 border-gray-200 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100">
+                    <p className="text-gray-600 text-justify">
+                      {selectedCandidate.descripcion_miembro}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Imagen del candidato */}
+                <div className="w-full md:w-1/3 h-full bg-gray-100 flex items-center justify-center">
+                  <img
+                    src={selectedCandidate.imgSrc}
+                    alt={selectedCandidate.nombre_miembro}
+                    className="rounded-lg shadow-lg object-cover max-h-full max-w-full"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {otherCandidates.map((member, index) => (
             <div key={index} className="relative group">
@@ -148,7 +259,7 @@ const TeamSection = () => {
                       {member.tipo_miembro}
                     </p>
                     <p className="text-sm text-white">
-                      {truncateText(member.descripcion_miembro, 200)}
+                      {truncateText(member.descripcion_miembro, 200, member)}
                     </p>
                   </div>
                   <div className="flex space-x-4">
