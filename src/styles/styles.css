@@ -1,122 +1,138 @@
 .hero-section {
-    background-color: #003366;  /* Fondo azul solo para la hero-section */
-    color: white;
-    height: 100vh;  /* Haciendo que la sección ocupe toda la pantalla */
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 20px;  /* Eliminando el padding superior e inferior para que ocupe toda la pantalla */
+  background-color: #003366; /* Fondo azul solo para la hero-section */
+  color: white;
+  height: 100vh; /* Haciendo que la sección ocupe toda la pantalla */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px; /* Eliminando el padding superior e inferior para que ocupe toda la pantalla */
+}
+
+.hero-section .content {
+  width: 55%; /* Haciendo que el contenido ocupe más espacio */
+}
+
+.hero-section .content h1 {
+  font-size: 4rem; /* Aumentando el tamaño del título */
+  font-weight: bold;
+}
+
+.hero-section .content p {
+  font-size: 1.5rem; /* Aumentando el tamaño del párrafo */
+}
+
+.hero-section .hero-image img {
+  width: 50%; /* Ajustando el tamaño de la imagen */
+}
+
+.mission-section,
+.vision-section {
+  background-color: white; /* Fondo blanco para misión y visión */
+  color: #333;
+  padding: 60px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mission-section .content,
+.vision-section .content {
+  width: 50%;
+}
+
+.mission-section .image,
+.vision-section .image {
+  width: 40%;
+}
+
+.mission-section .content h1,
+.vision-section .content h1 {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.mission-section .content p,
+.vision-section .content p {
+  font-size: 1.2rem;
+}
+.hero-section,
+.mission-section,
+.vision-section,
+.news-section,
+.events-section {
+  padding: 60px 20px;
+}
+
+.content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+h1 {
+  font-size: 2.5rem;
+  color: #333;
+}
+
+.subtitle {
+  font-size: 1.5rem;
+  color: #777;
+  margin-bottom: 10px;
+}
+
+.image img,
+.hero-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.news-section,
+.events-section {
+  background-color: #f4f4f4;
+  border-radius: 8px;
+  margin-top: 40px;
+  padding: 60px 20px;
+}
+
+.news-items,
+.events-items {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px; /* Aumentado el espacio entre los cuadros */
+}
+
+.news-item,
+.event-item {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 30px; /* Aumentado el padding dentro de los cuadros */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Sombras más pronunciadas */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.news-item h3,
+.event-item h3 {
+  font-size: 1.5rem; /* Títulos más grandes */
+  color: #333;
+}
+
+.news-item p,
+.event-item p {
+  font-size: 1.1rem; /* Textos más grandes */
+  color: #555;
+}
+
+.news-item:hover,
+.event-item:hover {
+  background-color: #f1f1f1;
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* Efecto hover más notorio */
+}
+
+@media (max-width: 768px) {
+  .news-items,
+  .events-items {
+    grid-template-columns: 1fr; /* En pantallas pequeñas, mostrar un solo cuadro por fila */
   }
-  
-  .hero-section .content {
-    width: 55%;  /* Haciendo que el contenido ocupe más espacio */
-  }
-  
-  .hero-section .content h1 {
-    font-size: 4rem;  /* Aumentando el tamaño del título */
-    font-weight: bold;
-  }
-  
-  .hero-section .content p {
-    font-size: 1.5rem;  /* Aumentando el tamaño del párrafo */
-  }
-  
-  .hero-section .hero-image img {
-    width: 50%;  /* Ajustando el tamaño de la imagen */
-  }
-  
-  .mission-section, .vision-section {
-    background-color: white;  /* Fondo blanco para misión y visión */
-    color: #333;
-    padding: 60px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  
-  .mission-section .content, .vision-section .content {
-    width: 50%;
-  }
-  
-  .mission-section .image, .vision-section .image {
-    width: 40%;
-  }
-  
-  .mission-section .content h1, .vision-section .content h1 {
-    font-size: 2rem;
-    font-weight: bold;
-  }
-  
-  .mission-section .content p, .vision-section .content p {
-    font-size: 1.2rem;
-  }
-  .hero-section, .mission-section, .vision-section, .news-section, .events-section {
-    padding: 60px 20px;
-  }
-  
-  .content {
-    max-width: 800px;
-    margin: 0 auto;
-  }
-  
-  h1 {
-    font-size: 2.5rem;
-    color: #333;
-  }
-  
-  .subtitle {
-    font-size: 1.5rem;
-    color: #777;
-    margin-bottom: 10px;
-  }
-  
-  .image img, .hero-image img {
-    width: 100%;
-    height: auto;
-    border-radius: 10px;
-  }
-  
-  .news-section, .events-section {
-    background-color: #f4f4f4;
-    border-radius: 8px;
-    margin-top: 40px;
-    padding: 60px 20px;
-  }
-  
-  .news-items, .events-items {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 30px; /* Aumentado el espacio entre los cuadros */
-  }
-  
-  .news-item, .event-item {
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 30px; /* Aumentado el padding dentro de los cuadros */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Sombras más pronunciadas */
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .news-item h3, .event-item h3 {
-    font-size: 1.5rem; /* Títulos más grandes */
-    color: #333;
-  }
-  
-  .news-item p, .event-item p {
-    font-size: 1.1rem; /* Textos más grandes */
-    color: #555;
-  }
-  
-  .news-item:hover, .event-item:hover {
-    background-color: #f1f1f1;
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* Efecto hover más notorio */
-  }
-  
-  @media (max-width: 768px) {
-    .news-items, .events-items {
-      grid-template-columns: 1fr; /* En pantallas pequeñas, mostrar un solo cuadro por fila */
-    }
-  }
-  
+}

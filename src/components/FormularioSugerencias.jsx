@@ -5,7 +5,17 @@ import ErrorAlert from "./ErrorAlert";
 import useFieldValidation from "../logic/useFieldValidation";
 import { useState } from "react";
 import { enviarCorreoConfirmacion } from "../logic/emailService";
+import { useSettings } from "../pages/SettingsContext";
 const FormElementInput = () => {
+  const {
+    backgroundColor,
+    textColor,
+    font,
+    cardPrimaryColor,
+    cardSecondaryColor,
+    cardTextPrimaryColor,
+    cardTextSecondaryColor,
+  } = useSettings();
   const optionsGenero = ["Masculino", "Femenino", "Prefiero no decirlo"];
   const optionsPersona = [
     "Simpatizante",
@@ -158,7 +168,10 @@ const FormElementInput = () => {
       )}
       <div className="relative bg-slate-100 w-[580px] p-8 m-4 rounded-xl shadow-xl fade-in">
         <form id="form-sugerencias" onSubmit={guardar}>
-          <h1 className="text-4xl text-black font-bold text-center mb-5">
+          <h1
+            className="text-4xl  font-bold text-center mb-5"
+            style={{ color: textColor, font: font }}
+          >
             Sugerencias
           </h1>
           <div className="grid md:grid-cols-2 md:gap-4">

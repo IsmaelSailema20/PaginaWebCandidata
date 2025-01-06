@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import CardVotaciones from "../components/CardVotaciones";
 import EstadisticaGraficoBarras from "../components/EstadisticaGraficoBarras";
 import { CircleX } from "lucide-react";
+import { useSettings } from "./SettingsContext";
 
 function Votaciones() {
+  const { backgroundColor, textColor, font } = useSettings();
   const [votedCandidate, setVotedCandidate] = useState(null);
   const [votaciones, setVotaciones] = useState([]); // Estado para las votaciones desde el backend
   const [isModalOpen, setIsModalOpen] = useState(false); // Estado para abrir/cerrar el modal
@@ -63,9 +65,13 @@ function Votaciones() {
   };
 
   return (
-    <section className="relative w-full min-h-screen py-6 flex justify-center items-center">
-      <style>
-        {`
+    <>
+      <section
+        className="relative w-full min-h-screen py-6 flex justify-center items-center"
+        style={{ backgroundColor: backgroundColor }}
+      >
+        <style>
+          {`
         @keyframes float {
           0% {
             transform: translateY(0) rotate(0deg);
@@ -92,89 +98,96 @@ function Votaciones() {
           will-change: transform;
         }
       `}
-      </style>
-      <div className="absolute w-full h-full overflow-hidden">
-        {[...Array(20)].map((_, i) => {
-          const size = Math.random() * 4 + 1;
-          const left = Math.random() * 100;
-          const delay = Math.random() * 5;
-          const duration = Math.random() * 3 + 6;
+        </style>
+        <div className="absolute w-full h-full overflow-hidden">
+          {[...Array(20)].map((_, i) => {
+            const size = Math.random() * 4 + 1;
+            const left = Math.random() * 100;
+            const delay = Math.random() * 5;
+            const duration = Math.random() * 3 + 6;
 
-          return (
-            <div
-              key={i}
-              className="bubble"
-              style={{
-                width: `${size}rem`,
-                height: `${size}rem`,
-                left: `${left}%`,
-                bottom: `-20px`,
-                animation: `float ${duration}s linear infinite`,
-                animationDelay: `${delay}s`,
-              }}
-            />
-          );
-        })}
-      </div>
-      <div className="w-full flex flex-col items-center justify-center px-4">
-        <div className="w-full max-w-screen-2xl p-10 rounded-xl flex flex-col">
-          <button
-            onClick={() => setIsModalOpen(true)} // Abrir modal
-            className=" w-1/4 mb-5 text-lg px-14 py-3 font-bold text-center rounded-lg  focus:ring-4 focus:outline-none bg-gradient-to-r bg-blue-600 text-white p-3  shadow-lg hover:opacity-90 transition-all duration-300 transform hover:scale-110 disabled:opacity-50"
-          >
-            Estadísticas de votos
-          </button>
-          <h1 className="text-4xl font-bold text-center mb-6">
-            Queremos Conocer A quién Apoyas
-          </h1>
-          <div className="flex-grow flex flex-wrap gap-8 justify-center items-center">
-            {/* Renderizar tarjetas dinámicamente */}
-            {votaciones.length > 0 ? (
-              votaciones.map((votacion) => (
-                <CardVotaciones
-                  key={votacion.id_votacion}
-                  src={votacion.imagen}
-                  candidata={votacion.nombre_votacion}
-                  alt={`Imagen de ${votacion.nombre_votacion}`}
-                  hasVoted={votedCandidate !== null}
-                  votedFor={votedCandidate}
-                  onVote={() => handleVote(votacion)}
-                  descripcion={votacion.descripcion}
-                />
-              ))
-            ) : (
-              <p className="text-gray-500">
-                No existen información para las votaciones
-              </p>
-            )}
-          </div>
-          <h5 className="my-6 font-semibold text-sm text-gray-700 text-center">
-            Los votos de apoyo solo serán utilizados a manera de encuesta.
-            Ninguno de estos votos son significativos durante las encuestas.
-          </h5>
+            return (
+              <div
+                key={i}
+                className="bubble"
+                style={{
+                  width: `${size}rem`,
+                  height: `${size}rem`,
+                  left: `${left}%`,
+                  bottom: `-20px`,
+                  animation: `float ${duration}s linear infinite`,
+                  animationDelay: `${delay}s`,
+                }}
+              />
+            );
+          })}
         </div>
-      </div>
-      {/* Modal */}
-      {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="w-4/5 h-[90%] mx-auto p-2 bg-white rounded-lg shadow-md overflow-auto relative">
-            <div className="flex justify-end">
-              <button
-                onClick={() => setIsModalOpen(false)} // Cerrar modal
-                className="text-red-600 hover:text-red-700 p-2 "
-              >
-                <CircleX className="w-6 h-6" />
-              </button>
+        <div className="w-full flex flex-col items-center justify-center px-4">
+          <div className="w-full max-w-screen-2xl p-10 rounded-xl flex flex-col">
+            <button
+              onClick={() => setIsModalOpen(true)} // Abrir modal
+              className=" w-1/4 mb-5 text-lg px-14 py-3 font-bold text-center rounded-lg  focus:ring-4 focus:outline-none bg-gradient-to-r bg-blue-600 text-white p-3  shadow-lg hover:opacity-90 transition-all duration-300 transform hover:scale-110 disabled:opacity-50"
+            >
+              Estadísticas de votos
+            </button>
+            <h1
+              className="text-4xl font-bold text-center mb-6"
+              style={{ color: textColor, fontFamily: font }}
+            >
+              Queremos Conocer A quién Apoyas
+            </h1>
+            <div className="flex-grow flex flex-wrap gap-8 justify-center items-center">
+              {/* Renderizar tarjetas dinámicamente */}
+              {votaciones.length > 0 ? (
+                votaciones.map((votacion) => (
+                  <CardVotaciones
+                    key={votacion.id_votacion}
+                    src={votacion.imagen}
+                    candidata={votacion.nombre_votacion}
+                    alt={`Imagen de ${votacion.nombre_votacion}`}
+                    hasVoted={votedCandidate !== null}
+                    votedFor={votedCandidate}
+                    onVote={() => handleVote(votacion)}
+                    descripcion={votacion.descripcion}
+                  />
+                ))
+              ) : (
+                <p className="text-gray-500">
+                  No existen información para las votaciones
+                </p>
+              )}
             </div>
-            <div className="w-full h-full flex items-center justify-center">
-              <div className="w-full h-full max-h-full max-w-full">
-                <EstadisticaGraficoBarras />
+            <h5
+              className="my-6 font-semibold text-sm text-gray-700 text-center"
+              style={{ color: textColor, fontFamily: font }}
+            >
+              Los votos de apoyo solo serán utilizados a manera de encuesta.
+              Ninguno de estos votos son significativos durante las encuestas.
+            </h5>
+          </div>
+        </div>
+        {/* Modal */}
+        {isModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+            <div className="w-4/5 h-[90%] mx-auto p-2 bg-white rounded-lg shadow-md overflow-auto relative">
+              <div className="flex justify-end">
+                <button
+                  onClick={() => setIsModalOpen(false)} // Cerrar modal
+                  className="text-red-600 hover:text-red-700 p-2 "
+                >
+                  <CircleX className="w-6 h-6" />
+                </button>
+              </div>
+              <div className="w-full h-full flex items-center justify-center">
+                <div className="w-full h-full max-h-full max-w-full">
+                  <EstadisticaGraficoBarras />
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      )}
-    </section>
+        )}
+      </section>
+    </>
   );
 }
 
