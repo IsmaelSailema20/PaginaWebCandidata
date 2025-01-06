@@ -259,7 +259,11 @@ function Home() {
       </section>
 
       {/* Sección de Miembros (no el líder) */}
+
       <section className="min-h-[600px] relative bg-dark text-white p-8 mb-0">
+        <h3 className="text-3xl text-black my-10 text-center">
+          Miembros del partido político
+        </h3>
         <div className="content container mx-auto relative flex flex-col items-center gap-4">
           {selectedMember ? (
             <div className="grid grid-cols-2 items-center w-full max-w-5xl">
