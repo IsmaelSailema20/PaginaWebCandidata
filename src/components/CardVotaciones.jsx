@@ -1,4 +1,5 @@
 import React from "react";
+import { useSettings } from "../pages/SettingsContext";
 
 function CardVotaciones({
   src,
@@ -14,20 +15,37 @@ function CardVotaciones({
       onVote(candidata);
     }
   };
-
+  const {
+    backgroundColor,
+    textColor,
+    font,
+    cardPrimaryColor,
+    cardSecondaryColor,
+    cardTextPrimaryColor,
+    cardTextSecondaryColor,
+  } = useSettings();
   return (
-    <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-lg transform transition duration-300 hover:scale-105 hover:shadow-2xl fade-in">
+    <div
+      className="w-full max-w-sm  border border-gray-200 rounded-lg shadow-lg transform transition duration-300 hover:scale-105 hover:shadow-2xl fade-in"
+      style={{ backgroundColor: cardPrimaryColor }}
+    >
       <div className="flex flex-col items-center p-6">
         <img
           className="w-52 h-52 mb-4 rounded-full shadow-lg mt-4 transform transition duration-500 hover:scale-105"
           src={src}
           alt={alt}
         />
-        <h5 className="text-2xl font-bold text-center my-4">
-          <span className="text-black">{candidata}</span>
+        <h5
+          className="text-2xl font-bold text-center my-4"
+          style={{ color: cardTextPrimaryColor, fontFamily: font }}
+        >
+          <span className="">{candidata}</span>
         </h5>
-        <h3 className="text-sm font-bold text-black text-center my-2">
-          <span className="text-gray-500">{descripcion}</span>
+        <h3
+          className="text-sm font-bold  text-center my-2"
+          style={{ color: cardSecondaryColor, fontFamily: font }}
+        >
+          <span className="">{descripcion}</span>
         </h3>
         <div className="flex mt-4 md:mt-6">
           <button
