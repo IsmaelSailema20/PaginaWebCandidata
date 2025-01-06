@@ -4,27 +4,11 @@ import { Link } from "react-router-dom";
 const Navbar = () => {
   const navItems = [
     { name: "Inicio", image: "iconosBarra/inicio.png", path: "/" },
+    { name: "Candidatos", image: "iconosBarra/candidatos.png", path: "/candidatos" },
+    { name: "Propuestas", image: "iconosBarra/propuestas.png", path: "/propuestas" },
     { name: "Eventos", image: "iconosBarra/eventos.png", path: "/eventos" },
-    {
-      name: "Candidatos",
-      image: "iconosBarra/candidatos.png",
-      path: "/candidatos",
-    },
-    {
-      name: "Propuestas",
-      image: "iconosBarra/propuestas.png",
-      path: "/propuestas",
-    },
-    {
-      name: "Sugerencias",
-      image: "iconosBarra/sugerencias.png",
-      path: "/sugerencias",
-    },
-    {
-      name: "Votaciones",
-      image: "iconosBarra/caja-de-votacion.png",
-      path: "/votaciones",
-    },
+    { name: "Sugerencias", image: "iconosBarra/sugerencias.png", path: "/sugerencias" },
+    { name: "Votaciones", image: "iconosBarra/caja-de-votacion.png", path: "/votaciones" },
   ];
 
   return (
