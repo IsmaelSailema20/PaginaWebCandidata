@@ -16,6 +16,7 @@ import "./index.css";
 import PaginaSugerenciasVotos from "./pages/PaginaSugerenciasVotos.jsx";
 import PanelAdministracion from "./pages/PanelAdministracion.jsx";
 import Login from "./pages/Login.jsx";
+import Footer from "./pages/Footer.jsx"; // Importa el Footer
 
 function App() {
   return (
@@ -50,6 +51,9 @@ function Main() {
         <Route path="/login" element={<Login />} />
         <Route path="/panelAdministracion" element={<PanelAdministracion />} />
       </Routes>
+
+      {/* El Footer se muestra en todas las rutas, excepto en las excluidas */}
+      {!isExcludedPage && <Footer />}
     </div>
   );
 }

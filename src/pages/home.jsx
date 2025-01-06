@@ -427,75 +427,75 @@ function Home() {
 
       {/* Sección de Propuestas */}
       <section className="py-8 bg-gray-100 text-center">
-      <div className="content mb-6">
-        <h1 className="mt-4 text-4xl font-semibold">Propuestas Destacadas</h1>
-      </div>
+        <div className="content mb-6">
+          <h1 className="mt-4 text-4xl font-semibold">Propuestas Destacadas</h1>
+        </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-7xl mx-auto px-16">
-        {proposals.length > 0 ? (
-          proposals.map((proposal, index) => (
-            <div
-              className={`flex flex-col border rounded-lg overflow-hidden shadow-md ${index < 2 ? "col-span-1" : "col-span-1"}`}
-              key={index}
-            >
-              {/* Header con información relevante */}
-              <div className="flex items-center bg-green-600 text-white px-4 py-2">
-                <span className="mr-2">Alcance:</span>
-                <span className="font-medium">{proposal.alcance_propuesta.toUpperCase()}</span>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-7xl mx-auto px-16">
+          {proposals.length > 0 ? (
+            proposals.map((proposal, index) => (
+              <div
+                className={`flex flex-col border rounded-lg overflow-hidden shadow-md ${index < 2 ? "col-span-1" : "col-span-1"}`}
+                key={index}
+              >
+                {/* Header con información relevante */}
+                <div className="flex items-center bg-green-600 text-white px-4 py-2">
+                  <span className="mr-2">Alcance:</span>
+                  <span className="font-medium">{proposal.alcance_propuesta.toUpperCase()}</span>
+                </div>
+
+                {/* Imagen de la propuesta */}
+                <img
+                  className="w-full h-48 object-cover"
+                  src={proposal.img_url}  // Reemplaza con la URL de la imagen de la propuesta
+                  alt={proposal.titulo_propuesta}
+                />
+
+                {/* Cuerpo de la propuesta */}
+                <div className="text-black p-4 flex-1 text-left">
+                  <h3 className="text-black font-semibold mb-2">{proposal.titulo_propuesta}</h3>
+                  <p className="text-black ">
+                    {proposal.descripcion_propuesta.split(' ').slice(0, 5).join(' ')}...
+                  </p>
+                </div>
+
+                {/* Botón Leer más */}
+                <button
+                  onClick={() => openModal(proposal)}
+                  className="mt-6 mb-6 bg-blue-700 text-white py-2 px-4 w-max mx-auto rounded-md hover:bg-blue-800"
+                >
+                  Leer más
+                </button>
               </div>
+            ))
+          ) : (
+            <p className="text-gray-500">Cargando propuestas...</p>
+          )}
+        </div>
 
-              {/* Imagen de la propuesta */}
+        {/* Modal */}
+        {isModalOpen && selectedProposal && (
+          <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
+            <div className="bg-white p-8 rounded-lg max-w-3xl w-full">
+              <h3 className="text-xl font-semibold mb-4 justify-start">{selectedProposal.titulo_propuesta}</h3>
               <img
-                className="w-full h-48 object-cover"
-                src={proposal.img_url}  // Reemplaza con la URL de la imagen de la propuesta
-                alt={proposal.titulo_propuesta}
+                className="w-full h-48 object-cover mb-4"
+                src={selectedProposal.img_url}
+                alt={selectedProposal.titulo_propuesta}
               />
-
-              {/* Cuerpo de la propuesta */}
-              <div className="text-black p-4 flex-1 text-left">
-                <h3 className="text-black font-semibold mb-2">{proposal.titulo_propuesta}</h3>
-                <p className="text-black ">
-                  {proposal.descripcion_propuesta.split(' ').slice(0, 5).join(' ')}...
-                </p>
+              <p className="mb-4 justify-start">{selectedProposal.descripcion_propuesta}</p>
+              <div className="flex justify-end">
+                <button
+                  onClick={closeModal}
+                  className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600"
+                >
+                  Cerrar
+                </button>
               </div>
-
-              {/* Botón Leer más */}
-              <button
-                onClick={() => openModal(proposal)}
-                className="mt-6 mb-6 bg-blue-700 text-white py-2 px-4 w-max mx-auto rounded-md hover:bg-blue-800"
-              >
-                Leer más
-              </button>
-            </div>
-          ))
-        ) : (
-          <p className="text-gray-500">Cargando propuestas...</p>
-        )}
-      </div>
-
-      {/* Modal */}
-      {isModalOpen && selectedProposal && (
-        <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-8 rounded-lg max-w-3xl w-full">
-            <h3 className="text-xl font-semibold mb-4 justify-start">{selectedProposal.titulo_propuesta}</h3>
-            <img
-              className="w-full h-48 object-cover mb-4"
-              src={selectedProposal.img_url}
-              alt={selectedProposal.titulo_propuesta}
-            />
-            <p className="mb-4 justify-start">{selectedProposal.descripcion_propuesta}</p>
-            <div className="flex justify-end">
-              <button
-                onClick={closeModal}
-                className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600"
-              >
-                Cerrar
-              </button>
             </div>
           </div>
-        </div>
-      )}
-    </section>
+        )}
+      </section>
 
       {/* Sección de Secciones Dinámicas */}
       <section className="sections-section">
@@ -528,6 +528,7 @@ function Home() {
           </div>
         </div>
       </section>
+
     </>
   );
 }
