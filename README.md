@@ -30,7 +30,7 @@ Sigue estos pasos para configurar el proyecto en tu máquina local:
 
 1. **Clona el Repositorio:**
 ```
-   git clone [https://github.com/usuario/mi-proyecto-politico.git](https://github.com/IsmaelSailema20/PaginaWebCandidata.git)
+   git clone https://github.com/IsmaelSailema20/PaginaWebCandidata.git
 ```
 
 2. **Accede al Proyecto:**
