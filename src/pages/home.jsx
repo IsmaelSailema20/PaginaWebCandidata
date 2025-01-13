@@ -142,7 +142,7 @@ function Home() {
       .then((response) => response.json())
       .then((data) => {
         if (Array.isArray(data)) {
-          setProposals(data.slice(0, 3));
+          setProposals(data.slice(0, 4));
         } else {
           console.error("La respuesta no es un arreglo de propuestas válido");
         }
@@ -207,7 +207,6 @@ function Home() {
                     fontSize: "2rem",
                     marginBottom: "20px",
                     padding: "10px",
-                    backgroundColor: menuColor,
                     borderRadius: "5px",
                     textAlign: "center",
                   }}
@@ -256,7 +255,7 @@ function Home() {
                     marginTop: "30px",
                   }}
                 >
-                  {leader.descripcion_miembro}
+                  {leader.tipo_miembro}
                 </h3>
                 <h3
                   style={{
