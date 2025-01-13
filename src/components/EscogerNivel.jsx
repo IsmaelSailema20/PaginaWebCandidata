@@ -46,7 +46,7 @@ const DiagonalBackground = () => {
     setPendingOption(""); // Limpiar la opción pendiente
 
     fetch(
-      "http://localhost/ProyectoManejo/paginaWebCandidata/models/CrearNivel.php",
+      "http://localhost:8081/ProyectoManejo/paginaWebCandidata/models/CrearNivel.php",
       {
         method: "POST",
         headers: {
